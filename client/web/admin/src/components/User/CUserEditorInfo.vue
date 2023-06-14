@@ -4,6 +4,7 @@
     data-test-id="card-user-info"
     header-bg-variant="white"
     footer-bg-variant="white"
+    footer-class="d-flex flex-wrap gap-3"
   >
     <b-form
       @submit.prevent="$emit('submit', user)"
@@ -119,14 +120,6 @@
     </template>
 
     <template #footer>
-      <c-submit-button
-        class="float-right"
-        :processing="processing"
-        :success="success"
-        :disabled="saveDisabled"
-        @submit="$emit('submit', user)"
-      />
-
       <confirmation-toggle
         v-if="!fresh && user.canDeleteUser"
         :data-test-id="deletedButtonStatusCypressId"
@@ -138,7 +131,6 @@
       <confirmation-toggle
         v-if="!fresh"
         :data-test-id="suspendButtonStatusCypressId"
-        class="ml-1"
         cta-class="light"
         @confirmed="$emit('status')"
       >
@@ -149,7 +141,6 @@
         v-if="!fresh"
         data-test-id="button-sessions-revoke"
         :disabled="user.userID === userID"
-        class="ml-1"
         cta-class="secondary"
         @confirmed="$emit('sessionsRevoke')"
       >
@@ -159,7 +150,6 @@
       <b-button
         v-if="!fresh && !user.emailConfirmed"
         variant="light"
-        class="ml-1"
         @click="$emit('patch', '/emailConfirmed', true)"
       >
         {{ $t('confirmEmail') }}
@@ -170,8 +160,15 @@
         ui-slot="infoFooter"
         resource-type="system:user"
         default-variant="secondary"
-        class="ml-2"
         @click="dispatchCortezaSystemUserEvent($event, { user })"
+      />
+
+      <c-submit-button
+        :processing="processing"
+        :success="success"
+        :disabled="saveDisabled"
+        class="ml-auto"
+        @submit="$emit('submit', user)"
       />
     </template>
   </b-card>

@@ -5,6 +5,7 @@
     class="shadow-sm auth-clients"
     header-bg-variant="white"
     footer-bg-variant="white"
+    footer-class="d-flex flex-wrap gap-3"
   >
     <b-form
       @submit.prevent="submit"
@@ -38,6 +39,7 @@
         >
           {{ $t('handle.invalid-handle-characters') }}
         </b-form-invalid-feedback>
+
         <template
           v-if="resource.isDefault"
           #description
@@ -182,29 +184,32 @@
       >
         <b-form-checkbox
           data-test-id="checkbox-allow-access-to-user-profile"
-          :checked="(resource.scope || []).includes('profile')"
+          :checked="((resource.scope || []).includes('profile'))"
           @change="setScope($event, 'profile')"
         >
           {{ $t('profile') }}
         </b-form-checkbox>
+
         <b-form-checkbox
           data-test-id="checkbox-allow-access-to-corteza-api"
-          :checked="(resource.scope || []).includes('api')"
+          :checked="((resource.scope || []).includes('api'))"
           @change="setScope($event, 'api')"
         >
           {{ $t('api') }}
         </b-form-checkbox>
+
         <b-form-checkbox
           data-test-id="checkbox-allow-client-to-use-oidc"
-          :checked="(resource.scope || []).includes('openid')"
+          :checked="((resource.scope || []).includes('openid'))"
           @change="setScope($event, 'openid')"
         >
           {{ $t('openid') }}
         </b-form-checkbox>
+
         <b-form-checkbox
           v-if="discoveryEnabled"
           data-test-id="checkbox-allow-client-access-to-discovery"
-          :checked="(resource.scope || []).includes('discovery')"
+          :checked="((resource.scope || []).includes('discovery'))"
           @change="setScope($event, 'discovery')"
         >
           {{ $t('discovery') }}
@@ -220,6 +225,7 @@
         >
           {{ $t('trusted.label') }}
         </b-form-checkbox>
+
         <b-form-text>{{ $t('trusted.description') }}</b-form-text>
       </b-form-group>
 
@@ -254,6 +260,7 @@
             @updateUser="onUpdateUser"
           />
         </b-form-group>
+
         <div v-if="!fresh">
           <b-form-group label-cols="3">
             <b-button
@@ -265,11 +272,13 @@
               <template v-if="curlVisible">
                 {{ $t('hideCurl') }}
               </template>
+
               <template v-else>
                 {{ $t('generateCurl') }}
               </template>
             </b-button>
           </b-form-group>
+
           <b-form-group
             v-if="curlVisible"
             :label="$t('cUrl')"
@@ -283,11 +292,12 @@
                   data-test-id="cURL-string"
                   style="word-break: break-word;"
                 >
-curl -X POST {{ curlURL }} \
--d grant_type=client_credentials \
--d scope='profile api' \
--u {{ resource.authClientID }}:{{ secret || 'PLACE-YOUR-CLIENT-SECRET-HERE' }}
+                  curl -X POST {{ curlURL }} \
+                  -d grant_type=client_credentials \
+                  -d scope='profile api' \
+                  -u {{ resource.resourceID }}:{{ secret || 'PLACE-YOUR-CLIENT-SECRET-HERE' }}
                 </pre>
+
                 <b-button
                   data-test-id="button-copy-cURL"
                   variant="link"
@@ -299,6 +309,7 @@ curl -X POST {{ curlURL }} \
                   />
                 </b-button>
               </div>
+
               <div class="d-flex">
                 <div
                   class="overflow-wrap mr-2 mb-2"
@@ -306,6 +317,7 @@ curl -X POST {{ curlURL }} \
                 >
                   {{ tokenRequest.token || tokenRequest.error }}
                 </div>
+
                 <b-button
                   v-if="tokenRequest.token"
                   data-test-id="copy-token-from-request"
@@ -319,6 +331,7 @@ curl -X POST {{ curlURL }} \
                 </b-button>
               </div>
             </div>
+
             <div
               v-if="secretVisible"
               class="d-flex mb-3"
@@ -443,14 +456,6 @@ curl -X POST {{ curlURL }} \
     </template>
 
     <template #footer>
-      <c-submit-button
-        class="float-right"
-        :disabled="saveDisabled"
-        :processing="processing"
-        :success="success"
-        @submit="submit"
-      />
-
       <template
         v-if="canDelete"
       >
@@ -462,6 +467,7 @@ curl -X POST {{ curlURL }} \
         >
           {{ $t('undelete') }}
         </confirmation-toggle>
+
         <confirmation-toggle
           v-else
           data-test-id="button-delete"
@@ -470,6 +476,14 @@ curl -X POST {{ curlURL }} \
         >
           {{ $t('delete') }}
         </confirmation-toggle>
+
+        <c-submit-button
+          class="ml-auto"
+          :disabled="saveDisabled"
+          :processing="processing"
+          :success="success"
+          @submit="submit"
+        />
       </template>
     </template>
   </b-card>

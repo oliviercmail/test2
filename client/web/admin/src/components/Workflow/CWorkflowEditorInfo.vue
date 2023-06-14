@@ -3,6 +3,7 @@
     class="shadow-sm"
     header-bg-variant="white"
     footer-bg-variant="white"
+    footer-class="d-flex flex-wrap gap-3"
   >
     <b-form
       @submit.prevent="$emit('submit', workflow)"
@@ -39,6 +40,7 @@
           v-model="workflow.handle"
           :state="handleState"
         />
+
         <b-form-invalid-feedback :state="handleState">
           {{ $t('invalid-handle-characters') }}
         </b-form-invalid-feedback>
@@ -123,14 +125,6 @@
     </template>
 
     <template #footer>
-      <c-submit-button
-        class="float-right"
-        :processing="processing"
-        :success="success"
-        :disabled="saveDisabled"
-        @submit="$emit('submit', workflow)"
-      />
-
       <confirmation-toggle
         v-if="workflow && workflow.workflowID && workflow.canDeleteWorkflow"
         :disabled="deleteDisabled"
@@ -138,6 +132,14 @@
       >
         {{ getDeleteStatus }}
       </confirmation-toggle>
+
+      <c-submit-button
+        class="ml-auto"
+        :processing="processing"
+        :success="success"
+        :disabled="saveDisabled"
+        @submit="$emit('submit', workflow)"
+      />
     </template>
   </b-card>
 </template>

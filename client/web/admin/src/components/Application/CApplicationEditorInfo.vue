@@ -4,6 +4,7 @@
     data-test-id="card-application-info"
     header-bg-variant="white"
     footer-bg-variant="white"
+    footer-class="d-flex flex-wrap gap-3"
   >
     <b-form
       @submit.prevent="$emit('submit', application)"
@@ -103,14 +104,6 @@
     </template>
 
     <template #footer>
-      <c-submit-button
-        class="float-right"
-        :processing="processing"
-        :success="success"
-        :disabled="saveDisabled"
-        @submit="$emit('submit', application)"
-      />
-
       <confirmation-toggle
         v-if="application && application.applicationID && application.canDeleteApplication"
         :data-test-id="deleteButtonStatusCypressId"
@@ -118,6 +111,14 @@
       >
         {{ getDeleteStatus }}
       </confirmation-toggle>
+
+      <c-submit-button
+        :processing="processing"
+        :success="success"
+        :disabled="saveDisabled"
+        class="ml-auto"
+        @submit="$emit('submit', application)"
+      />
     </template>
   </b-card>
 </template>

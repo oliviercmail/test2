@@ -3,6 +3,7 @@
     class="shadow-sm"
     header-bg-variant="white"
     footer-bg-variant="white"
+    footer-class="d-flex flex-wrap gap-3"
   >
     <b-form
       @submit.prevent="$emit('submit', node)"
@@ -133,20 +134,20 @@
     </template>
 
     <template #footer>
-      <c-submit-button
-        class="float-right"
-        :disabled="saveDisabled"
-        :processing="processing"
-        :success="success"
-        @submit="$emit('submit', node)"
-      />
-
       <confirmation-toggle
         v-if="node && node.nodeID"
         @confirmed="$emit('delete')"
       >
         {{ getDeleteStatus }}
       </confirmation-toggle>
+
+      <c-submit-button
+        class="ml-auto"
+        :disabled="saveDisabled"
+        :processing="processing"
+        :success="success"
+        @submit="$emit('submit', node)"
+      />
     </template>
   </b-card>
 </template>

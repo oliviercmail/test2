@@ -4,6 +4,7 @@
     class="shadow-sm"
     header-bg-variant="white"
     footer-bg-variant="white"
+    footer-class="d-flex flex-wrap gap-3"
   >
     <b-form @submit="$emit('submit', queue)">
       <b-form-group
@@ -15,6 +16,7 @@
           data-test-id="input-name"
           :state="handleState"
         />
+
         <b-form-invalid-feedback
           :state="handleState"
           data-test-id="feedback-invalid-name"
@@ -96,14 +98,6 @@
     </template>
 
     <template #footer>
-      <c-submit-button
-        class="float-right"
-        :processing="processing"
-        :success="success"
-        :disabled="saveDisabled"
-        @submit="$emit('submit', queue)"
-      />
-
       <confirmation-toggle
         v-if="queue && queue.queueID && queue.canDeleteQueue"
         :data-test-id="deleteButtonStatusCypressId"
@@ -111,6 +105,14 @@
       >
         {{ getDeleteStatus }}
       </confirmation-toggle>
+
+      <c-submit-button
+        class="ml-auto"
+        :processing="processing"
+        :success="success"
+        :disabled="saveDisabled"
+        @submit="$emit('submit', queue)"
+      />
     </template>
   </b-card>
 </template>

@@ -4,6 +4,7 @@
     data-test-id="card-route-edit"
     header-bg-variant="white"
     footer-bg-variant="white"
+    footer-class="d-flex flex-wrap gap-3"
   >
     <b-form
       @submit.prevent="$emit('submit', route)"
@@ -87,6 +88,7 @@
           v-model="route.enabled"
           data-test-id="checkbox-enabled"
         >
+
           {{ $t('enabled') }}
         </b-form-checkbox>
       </b-form-group>
@@ -139,14 +141,6 @@
     </template>
 
     <template #footer>
-      <c-submit-button
-        class="float-right"
-        :processing="processing"
-        :success="success"
-        :disabled="saveDisabled"
-        @submit="$emit('submit', route)"
-      />
-
       <confirmation-toggle
         v-if="route && route.routeID && route.canDeleteApigwRoute"
         :data-test-id="deletedButtonStatusCypressId"
@@ -154,6 +148,14 @@
       >
         {{ getDeleteStatus }}
       </confirmation-toggle>
+
+      <c-submit-button
+        class="ml-auto"
+        :processing="processing"
+        :success="success"
+        :disabled="saveDisabled"
+        @submit="$emit('submit', route)"
+      />
     </template>
   </b-card>
 </template>

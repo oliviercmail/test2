@@ -4,6 +4,7 @@
     class="shadow-sm"
     header-bg-variant="white"
     footer-bg-variant="white"
+    footer-class="d-flex flex-wrap gap-3"
   >
     <b-form
       @submit.prevent="$emit('submit', sensitivityLevel)"
@@ -37,6 +38,7 @@
               :placeholder="$t('handle.placeholder')"
               :state="handleState"
             />
+
             <b-form-invalid-feedback :state="handleState">
               {{ $t('handle.invalid-characters') }}
             </b-form-invalid-feedback>
@@ -119,20 +121,20 @@
     </template>
 
     <template #footer>
-      <c-submit-button
-        class="float-right"
-        :processing="processing"
-        :success="success"
-        :disabled="saveDisabled"
-        @submit="$emit('submit', sensitivityLevel)"
-      />
-
       <confirmation-toggle
         v-if="sensitivityLevel && sensitivityLevel.sensitivityLevelID"
         @confirmed="$emit('delete')"
       >
         {{ getDeleteStatus }}
       </confirmation-toggle>
+
+      <c-submit-button
+        class="ml-auto"
+        :processing="processing"
+        :success="success"
+        :disabled="saveDisabled"
+        @submit="$emit('submit', sensitivityLevel)"
+      />
     </template>
   </b-card>
 </template>

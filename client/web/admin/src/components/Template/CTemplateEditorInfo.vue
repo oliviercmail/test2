@@ -4,6 +4,7 @@
     data-test-id="card-template-info"
     header-bg-variant="white"
     footer-bg-variant="white"
+    footer-class="d-flex flex-wrap gap-3"
   >
     <b-form
       @submit="$emit('submit', template)"
@@ -124,14 +125,6 @@
     </template>
 
     <template #footer>
-      <c-submit-button
-        class="float-right"
-        :processing="processing"
-        :success="success"
-        :disabled="saveDisabled"
-        @submit="$emit('submit', template)"
-      />
-
       <confirmation-toggle
         v-if="!fresh && template.canDeleteTemplate"
         :data-test-id="getDeletedButtonStatusCypressId"
@@ -139,6 +132,14 @@
       >
         {{ getDeleteStatus }}
       </confirmation-toggle>
+
+      <c-submit-button
+        :processing="processing"
+        :success="success"
+        :disabled="saveDisabled"
+        class="ml-auto"
+        @submit="$emit('submit', template)"
+      />
     </template>
   </b-card>
 </template>

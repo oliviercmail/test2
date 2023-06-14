@@ -4,6 +4,7 @@
     data-test-id="card-role-info"
     header-bg-variant="white"
     footer-bg-variant="white"
+    footer-class="d-flex flex-wrap gap-3"
   >
     <b-form
       @submit.prevent="submit()"
@@ -62,6 +63,7 @@
             {{ $t('context.label') }}
           </b-form-checkbox>
         </b-form-group>
+
         <div v-if="isContextual">
           <b-form-group
             :label="$t('context.expression-label')"
@@ -73,6 +75,7 @@
               :disabled="!editable"
             />
           </b-form-group>
+
           <b-form-group
             :label="$t('context.resource-types-label')"
             label-cols="3"
@@ -158,14 +161,6 @@
     </template>
 
     <template #footer>
-      <c-submit-button
-        class="float-right"
-        :processing="processing"
-        :success="success"
-        :disabled="saveDisabled"
-        @submit="submit()"
-      />
-
       <confirmation-toggle
         v-if="!fresh && editable && role.canDeleteRole && !isDataPrivacyOfficer"
         :data-test-id="deletedButtonStatusCypressId"
@@ -177,12 +172,19 @@
       <confirmation-toggle
         v-if="!fresh && editable && !isDataPrivacyOfficer"
         :data-test-id="archivedButtonStatusCypressId"
-        class="ml-2"
         cta-class="secondary"
         @confirmed="$emit('status')"
       >
         {{ getArchiveStatus }}
       </confirmation-toggle>
+
+      <c-submit-button
+        :processing="processing"
+        :success="success"
+        :disabled="saveDisabled"
+        class="ml-auto"
+        @submit="submit()"
+      />
     </template>
   </b-card>
 </template>

@@ -88,7 +88,6 @@
           v-model="route.enabled"
           data-test-id="checkbox-enabled"
         >
-
           {{ $t('enabled') }}
         </b-form-checkbox>
       </b-form-group>

@@ -10,138 +10,159 @@
     <b-form
       @submit.prevent="submit"
     >
-      <b-form-group
-        :label="$t('name')"
-        label-cols="3"
-      >
-        <b-form-input
-          v-model="resource.meta.name"
-          data-test-id="input-name"
-          required
-          :state="nameState"
-        />
-      </b-form-group>
-
-      <b-form-group
-        :label="$t('handle.label')"
-        label-cols="3"
-      >
-        <b-form-input
-          v-model="resource.handle"
-          data-test-id="input-handle"
-          :disabled="resource.isDefault"
-          :placeholder="$t('handle.placeholder-handle')"
-          :state="handleState"
-        />
-        <b-form-invalid-feedback
-          data-test-id="feedback-invalid-handle"
-          :state="handleState"
+      <b-row>
+        <b-col
+          cols="12"
+          lg="6"
         >
-          {{ $t('handle.invalid-handle-characters') }}
-        </b-form-invalid-feedback>
-
-        <template
-          v-if="resource.isDefault"
-          #description
-        >
-          {{ $t('handle.disabledFootnote') }}
-        </template>
-      </b-form-group>
-
-      <b-form-group
-        :label="$t('redirectURI')"
-        label-cols="3"
-      >
-        <b-button
-          data-test-id="button-add-redirect-uris"
-          variant="light"
-          class="align-top"
-          @click="redirectURI.push('')"
-        >
-          + {{ $t('add') }}
-        </b-button>
-
-        <div
-          v-if="redirectURI.length"
-        >
-          <b-input-group
-            v-for="(value, index) in redirectURI"
-            :key="index"
-            class="mt-2"
+          <b-form-group
+            :label="$t('name')"
+            label-class="text-primary"
           >
             <b-form-input
-              v-model="redirectURI[index]"
-              data-test-id="input-uri"
-              :placeholder="$t('uri')"
+              v-model="resource.meta.name"
+              data-test-id="input-name"
+              required
+              :state="nameState"
             />
+          </b-form-group>
+        </b-col>
 
-            <b-button
-              data-test-id="button-remove-uri"
-              class="ml-1 text-danger"
-              variant="link"
-              @click="redirectURI.splice(index, 1)"
+        <b-col
+          cols="12"
+          lg="6"
+        >
+          <b-form-group
+            :label="$t('handle.label')"
+            label-class="text-primary"
+          >
+            <b-form-input
+              v-model="resource.handle"
+              data-test-id="input-handle"
+              :disabled="resource.isDefault"
+              :placeholder="$t('handle.placeholder-handle')"
+              :state="handleState"
+            />
+            <b-form-invalid-feedback
+              data-test-id="feedback-invalid-handle"
+              :state="handleState"
             >
-              <font-awesome-icon
-                :icon="['fas', 'times']"
-              />
+              {{ $t('handle.invalid-handle-characters') }}
+            </b-form-invalid-feedback>
+
+            <template
+              v-if="resource.isDefault"
+              #description
+            >
+              {{ $t('handle.disabledFootnote') }}
+            </template>
+          </b-form-group>
+        </b-col>
+
+        <b-col
+          cols="12"
+        >
+          <b-form-group
+            :label="$t('redirectURI')"
+            label-class="text-primary"
+          >
+            <b-button
+              data-test-id="button-add-redirect-uris"
+              variant="light"
+              class="align-top"
+              @click="redirectURI.push('')"
+            >
+              + {{ $t('add') }}
             </b-button>
-          </b-input-group>
-        </div>
-      </b-form-group>
+            <div
+              v-if="redirectURI.length"
+            >
+              <b-input-group
+                v-for="(value, index) in redirectURI"
+                :key="index"
+                class="mt-2"
+              >
+                <b-form-input
+                  v-model="redirectURI[index]"
+                  data-test-id="input-uri"
+                  :placeholder="$t('uri')"
+                />
 
-      <b-form-group
-        v-if="!fresh"
-        :label="$t('secret')"
-        label-cols="3"
-        class="mb-3"
-      >
-        <div class="d-flex">
-          <b-form-input
-            v-model="secret"
-            data-test-id="input-client-secret"
-            disabled
-            placeholder="****************************************************************"
-          />
+                <b-button
+                  data-test-id="button-remove-uri"
+                  class="ml-1 text-danger"
+                  variant="link"
+                  @click="redirectURI.splice(index, 1)"
+                >
+                  <font-awesome-icon
+                    :icon="['fas', 'times']"
+                  />
+                </b-button>
+              </b-input-group>
+            </div>
+          </b-form-group>
+        </b-col>
 
-          <b-button
-            v-if="!secretVisible"
-            data-test-id="button-show-client-secret"
-            class="text-primary border-0 px-3"
-            variant="outline-light"
-            @click="$emit('request-secret')"
+        <b-col
+          cols="12"
+        >
+          <b-form-group
+            v-if="!fresh"
+            :label="$t('secret')"
+            label-class="text-primary"
           >
-            <font-awesome-icon
-              :icon="['fas', 'eye']"
-            />
-          </b-button>
+            <b-input-group>
+              <b-form-input
+                v-model="secret"
+                data-test-id="input-client-secret"
+                disabled
+                placeholder="****************************************************************"
+              />
 
-          <b-button
-            v-else
-            data-test-id="button-regenerate-client-secret"
-            class="text-primary border-0 px-3"
-            variant="outline-light"
-            :title="$t('tooltip.regenerate-secret')"
-            @click="$emit('regenerate-secret')"
+              <b-button
+                v-if="!secretVisible"
+                data-test-id="button-show-client-secret"
+                class="ml-1 text-primary"
+                variant="link"
+                @click="$emit('request-secret')"
+              >
+                <font-awesome-icon
+                  :icon="['fas', 'eye']"
+                />
+              </b-button>
+
+              <b-button
+                v-else
+                data-test-id="button-regenerate-client-secret"
+                class="ml-1 text-primary"
+                variant="link"
+                :title="$t('tooltip.regenerate-secret')"
+                @click="$emit('regenerate-secret')"
+              >
+                <font-awesome-icon
+                  :icon="['fas', 'sync']"
+                />
+              </b-button>
+            </b-input-group>
+          </b-form-group>
+        </b-col>
+
+        <b-col
+          cols="12"
+        >
+          <b-form-group
+            label-class="text-primary"
           >
-            <font-awesome-icon
-              :icon="['fas', 'sync']"
+            <b-form-radio-group
+              v-model="resource.validGrant"
+              value="authorization_code"
+              :options="[
+                { value: 'authorization_code', text: $t('grant.authorization_code') },
+                { value: 'client_credentials', text: $t('grant.client_credentials') },
+              ]"
             />
-          </b-button>
-        </div>
-      </b-form-group>
-
-      <b-form-group
-        label-cols="3"
-      >
-        <b-form-radio-group
-          v-model="resource.validGrant"
-          value="authorization_code"
-          :options="[
-            { value: 'authorization_code', text: $t('grant.authorization_code') },
-            { value: 'client_credentials', text: $t('grant.client_credentials') },
-          ]"
-        />
-      </b-form-group>
+          </b-form-group>
+        </b-col>
 
       <b-form-group
         data-test-id="valid-from"
@@ -190,63 +211,91 @@
           {{ $t('profile') }}
         </b-form-checkbox>
 
-        <b-form-checkbox
-          data-test-id="checkbox-allow-access-to-corteza-api"
-          :checked="((resource.scope || []).includes('api'))"
-          @change="setScope($event, 'api')"
-        >
-          {{ $t('api') }}
-        </b-form-checkbox>
+            <b-form-checkbox
+              data-test-id="checkbox-allow-access-to-corteza-api"
+              :checked="((resource.scope || []).includes('api'))"
+              @change="setScope($event, 'api')"
+            >
+              {{ $t('api') }}
+            </b-form-checkbox>
 
-        <b-form-checkbox
-          data-test-id="checkbox-allow-client-to-use-oidc"
-          :checked="((resource.scope || []).includes('openid'))"
-          @change="setScope($event, 'openid')"
-        >
-          {{ $t('openid') }}
-        </b-form-checkbox>
+            <b-form-checkbox
+              data-test-id="checkbox-allow-client-to-use-oidc"
+              :checked="((resource.scope || []).includes('openid'))"
+              @change="setScope($event, 'openid')"
+            >
+              {{ $t('openid') }}
+            </b-form-checkbox>
 
-        <b-form-checkbox
-          v-if="discoveryEnabled"
-          data-test-id="checkbox-allow-client-access-to-discovery"
-          :checked="((resource.scope || []).includes('discovery'))"
-          @change="setScope($event, 'discovery')"
-        >
-          {{ $t('discovery') }}
-        </b-form-checkbox>
-      </b-form-group>
+            <b-form-checkbox
+              v-if="discoveryEnabled"
+              data-test-id="checkbox-allow-client-access-to-discovery"
+              :checked="((resource.scope || []).includes('discovery'))"
+              @change="setScope($event, 'discovery')"
+            >
+              {{ $t('discovery') }}
+            </b-form-checkbox>
+          </b-form-group>
+        </b-col>
 
-      <b-form-group
-        label-cols="3"
-      >
-        <b-form-checkbox
-          v-model="resource.trusted"
-          data-test-id="checkbox-is-client-trusted"
+        <b-col
+          cols="12"
+          lg="6"
         >
-          {{ $t('trusted.label') }}
-        </b-form-checkbox>
+          <b-form-group
+            data-test-id="permitted-roles"
+            :label="$t('security.permittedRoles.label')"
+            label-class="text-primary"
+          >
+            <c-role-picker
+              v-model="resource.security.permittedRoles"
+            >
+              <template #description>
+                {{ $t('security.permittedRoles.description') }}
+              </template>
+            </c-role-picker>
+          </b-form-group>
+        </b-col>
 
-        <b-form-text>{{ $t('trusted.description') }}</b-form-text>
-      </b-form-group>
-
-      <b-form-group
-        label-cols="3"
-      >
-        <b-form-checkbox
-          v-model="resource.enabled"
-          data-test-id="checkbox-is-client-enabled"
-          :disabled="resource.isDefault"
+        <b-col
+          cols="12"
+          lg="6"
         >
-          {{ $t('enabled.label') }}
-        </b-form-checkbox>
+          <b-form-group
+            :label="$t('security.prohibitedRoles.label')"
+            data-test-id="prohibited-roles"
+            label-class="text-primary"
+          >
+            <c-role-picker
+              v-model="resource.security.prohibitedRoles"
+            >
+              <template #description>
+                {{ $t('security.prohibitedRoles.description') }}
+              </template>
+            </c-role-picker>
+          </b-form-group>
+        </b-col>
 
-        <template
-          v-if="resource.isDefault"
-          #description
+        <b-col
+          cols="12"
+          lg="6"
         >
-          {{ $t('enabled.disabledFootnote') }}
-        </template>
-      </b-form-group>
+          <b-form-group
+            data-test-id="forced-roles"
+            :label="$t('security.forcedRoles.label')"
+            label-class="text-primary"
+          >
+            <c-role-picker
+              v-model="resource.security.forcedRoles"
+              class="mb-3"
+            >
+              <template #description>
+                {{ $t('security.forcedRoles.description') }}
+              </template>
+            </c-role-picker>
+          </b-form-group>
+        </b-col>
+      </b-row>
 
       <div v-if="isClientCredentialsGrant">
         <b-form-group
@@ -282,11 +331,11 @@
           <b-form-group
             v-if="curlVisible"
             :label="$t('cUrl')"
-            label-cols="3"
             class="curl"
+            label-class="text-primary"
           >
-            <div class="w-100">
-              <div class="d-flex">
+            <div>
+              <div class="w-50 d-flex">
                 <pre
                   ref="cUrl"
                   data-test-id="cURL-string"
@@ -310,26 +359,39 @@
                 </b-button>
               </div>
 
-              <div class="d-flex">
-                <div
-                  class="overflow-wrap mr-2 mb-2"
-                  :class="[tokenRequest.token ? 'text-success' : 'text-danger']"
-                >
-                  {{ tokenRequest.token || tokenRequest.error }}
-                </div>
+              <b-button
+                variant="light"
+                @click="toggleCurlSnippet()"
+              >
+                <template v-if="curlVisible">
+                  {{ $t('hideCurl') }}
+                </template>
 
-                <b-button
-                  v-if="tokenRequest.token"
-                  data-test-id="copy-token-from-request"
-                  variant="link"
-                  class="align-top ml-auto fit-content text-secondary"
-                  @click="copyToClipboard('token')"
-                >
-                  <font-awesome-icon
-                    :icon="['far', 'copy']"
-                  />
-                </b-button>
+                <template v-else>
+                  {{ $t('generateCurl') }}
+                </template>
+              </b-button>
+            </div>
+
+            <div class="d-flex w-50 my-3">
+              <div
+                class="overflow-wrap"
+                :class="[tokenRequest.token ? 'text-success' : 'text-danger']"
+              >
+                {{ tokenRequest.token || tokenRequest.error }}
               </div>
+
+              <b-button
+                v-if="tokenRequest.token"
+                data-test-id="copy-token-from-request"
+                variant="link"
+                class="ml-auto fit-content text-secondary"
+                @click="copyToClipboard('token')"
+              >
+                <font-awesome-icon
+                  :icon="['far', 'copy']"
+                />
+              </b-button>
             </div>
 
             <div
@@ -346,96 +408,13 @@
               </b-button>
             </div>
           </b-form-group>
-        </div>
-      </div>
+        </b-col>
+      </b-row>
 
-      <b-form-group
-        data-test-id="permitted-roles"
-        :label="$t('security.permittedRoles.label')"
-        label-cols="3"
-        class="mb-0"
-      >
-        <c-role-picker
-          v-model="resource.security.permittedRoles"
-          class="mb-3"
-        >
-          <template #description>
-            {{ $t('security.permittedRoles.description') }}
-          </template>
-        </c-role-picker>
-      </b-form-group>
-
-      <b-form-group
-        :label="$t('security.prohibitedRoles.label')"
-        data-test-id="prohibited-roles"
-        label-cols="3"
-        class="mb-0"
-      >
-        <c-role-picker
-          v-model="resource.security.prohibitedRoles"
-          class="mb-3"
-        >
-          <template #description>
-            {{ $t('security.prohibitedRoles.description') }}
-          </template>
-        </c-role-picker>
-      </b-form-group>
-
-      <b-form-group
-        data-test-id="forced-roles"
-        :label="$t('security.forcedRoles.label')"
-        label-cols="3"
-        class="mb-0"
-      >
-        <c-role-picker
-          v-model="resource.security.forcedRoles"
-          class="mb-3"
-        >
-          <template #description>
-            {{ $t('security.forcedRoles.description') }}
-          </template>
-        </c-role-picker>
-      </b-form-group>
-
-      <b-form-group
-        v-if="resource.createdAt"
-        :label="$t('createdAt')"
-        label-cols="3"
-        class="mb-0"
-      >
-        <b-form-input
-          data-test-id="created-at"
-          :value="resource.createdAt | locFullDateTime"
-          plaintext
-          disabled
-        />
-      </b-form-group>
-
-      <b-form-group
-        v-if="resource.updatedAt"
-        :label="$t('updatedAt')"
-        label-cols="3"
-      >
-        <b-form-input
-          data-test-id="updated-at"
-          :value="resource.updatedAt | locFullDateTime"
-          plaintext
-          disabled
-        />
-      </b-form-group>
-
-      <b-form-group
-        v-if="resource.deletedAt"
-        :label="$t('deletedAt')"
-        label-cols="3"
-      >
-        <b-form-input
-          data-test-id="deleted-at"
-          :value="resource.deletedAt | locFullDateTime"
-          plaintext
-          disabled
-        />
-      </b-form-group>
+      <c-system-fields
+        :resource="resource"
+        :date-value="true"
+      />
 
       <!--
         include hidden input to enable
@@ -559,6 +538,11 @@ export default {
         token: '',
         error: '',
       },
+
+      checkboxLabel: {
+        on: this.$t('general:label.general.yes'),
+        off: this.$t('general:label.general.no'),
+      },
     }
   },
 
@@ -678,6 +662,10 @@ export default {
     .col {
       max-width: 84.3%;
     }
+  }
+
+  pre {
+    white-space: collapse;
   }
 }
 </style>

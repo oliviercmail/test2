@@ -95,16 +95,12 @@
             @confirmed="handleDelete(q)"
           >
             <font-awesome-icon
-              :icon="['far', 'trash-alt']"
+              :icon="getActionIcon(q)"
               class="text-danger"
             />
 
-            <span v-if="!q.deletedAt">
-              {{ $t('delete') }}
-            </span>
-
-            <span v-else>
-              {{ $t('undelete') }}
+            <span class="p-1">
+              {{ getActionText(q) }}
             </span>
           </c-input-confirm>
         </b-dropdown>

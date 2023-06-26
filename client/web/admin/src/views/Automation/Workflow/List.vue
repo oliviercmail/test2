@@ -120,13 +120,12 @@
             @confirmed="handleDelete(w)"
           >
             <font-awesome-icon
-              :icon="['far', 'trash-alt']"
+              :icon="getActionIcon(w)"
               class="text-danger"
             />
-            <span
-              class="p-1"
-            >
-              {{ $t('delete') }}
+
+            <span class="p-1">
+              {{ getActionText(w) }}
             </span>
           </c-input-confirm>
 
@@ -140,13 +139,12 @@
             @confirmed="handleDelete(w)"
           >
             <font-awesome-icon
-              :icon="['far', 'trash-alt']"
+              :icon="getActionIcon(w)"
               class="text-danger"
             />
-            <span
-              class="p-1"
-            >
-              {{ $t('undelete') }}
+
+            <span class="p-1">
+              {{ getActionText(w) }}
             </span>
           </c-input-confirm>
         </b-dropdown>

@@ -1,0 +1,68 @@
+<template>
+  <b-row
+    class="py-4"
+  >
+    <b-col
+      v-for="(f, i) in systemFields"
+      :key="i"
+      cols="12"
+      lg="4"
+    >
+      <b-form-group
+        :label="$t(f) || $t(label)"
+        label-class="text-primary"
+        :data-test-id="`input-${generateTestID(f)}`"
+      >
+        {{ getFieldValue(f) }}
+      </b-form-group>
+    </b-col>
+    <slot name="custom-field" />
+  </b-row>
+</template>
+
+<script>
+import { getSystemFields, kebabize } from 'corteza-webapp-admin/src/lib/sysFields'
+export default {
+  name: 'CSystemFields',
+
+  props: {
+    resource: {
+      type: Object,
+      required: true,
+    },
+
+    dateValue: {
+      type: Boolean,
+      default: false,
+    },
+
+    label: {
+      type: String,
+      default: '',
+    },
+  },
+
+  computed: {
+    systemFields () {
+      return getSystemFields(this.resource)
+    },
+  },
+
+  methods: {
+    generateTestID (field) {
+      return kebabize(field)
+    },
+
+    getFieldValue (field) {
+      const isTimeValue = field.substring(field.length - 2) === 'At'
+      let value = isTimeValue ? this.$options.filters.locFullDateTime(this.resource[field]) : this.resource[field]
+      console.log(value)
+      return value
+    },
+  },
+}
+</script>
+
+<style>
+
+</style>

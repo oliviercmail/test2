@@ -200,6 +200,7 @@ export default {
     },
 
     handleRowClicked (item) {
+      console.log(item)
       this.$router.push({ name: this.editRoute, params: { [this.primaryKey]: item[this.primaryKey] } })
     },
 
@@ -231,6 +232,14 @@ export default {
         return true
       })
       return condition
+    },
+
+    getActionText (r) {
+      return r.deletedAt ? this.$t('undelete') : this.$t('delete')
+    },
+
+    getActionIcon (r) {
+      return r.deletedAt ? ['fa', 'trash-restore'] : ['far', 'trash-alt']
     },
   },
 }

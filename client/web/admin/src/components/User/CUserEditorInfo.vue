@@ -9,98 +9,67 @@
     <b-form
       @submit.prevent="$emit('submit', user)"
     >
-      <b-form-group
-        :label="$t('email')"
-        label-cols="2"
-      >
-        <b-form-input
-          v-model="user.email"
-          data-test-id="input-email"
-          required
-          :state="emailState"
-          type="email"
-        />
-      </b-form-group>
+      <b-row>
+        <b-col
+          cols="12"
+          lg="6"
+        >
+          <b-form-group
+            :label="$t('email')"
+            label-class="text-primary"
+          >
+            <b-form-input
+              v-model="user.email"
+              data-test-id="input-email"
+              required
+              :state="emailState"
+              type="email"
+            />
+          </b-form-group>
+        </b-col>
 
-      <b-form-group
-        :label="$t('name')"
-        label-cols="2"
-      >
-        <b-form-input
-          v-model="user.name"
-          data-test-id="input-name"
-          required
-        />
-      </b-form-group>
+        <b-col
+          cols="12"
+          lg="6"
+        >
+          <b-form-group
+            :label="$t('name')"
+            label-class="text-primary"
+          >
+            <b-form-input
+              v-model="user.name"
+              data-test-id="input-name"
+              required
+            />
+          </b-form-group>
+        </b-col>
 
-      <b-form-group
-        :label="$t('handle')"
-        label-cols="2"
-        :class="{ 'mb-0': !user.userID }"
-      >
-        <b-form-input
-          v-model="user.handle"
-          data-test-id="input-handle"
-          :placeholder="$t('placeholder-handle')"
-          :state="handleState"
-        />
-        <b-form-invalid-feedback :state="handleState">
-          {{ $t('invalid-handle-characters') }}
-        </b-form-invalid-feedback>
-      </b-form-group>
+        <b-col
+          cols="12"
+          lg="6"
+        >
+          <b-form-group
+            :label="$t('handle')"
+            :class="{ 'mb-0': !user.userID }"
+            label-class="text-primary"
+          >
+            <b-form-input
+              v-model="user.handle"
+              data-test-id="input-handle"
+              :placeholder="$t('placeholder-handle')"
+              :state="handleState"
+            />
+            <b-form-invalid-feedback :state="handleState">
+              {{ $t('invalid-handle-characters') }}
+            </b-form-invalid-feedback>
+          </b-form-group>
+        </b-col>
+      </b-row>
 
-      <b-form-group
-        v-if="user.updatedAt"
-        :label="$t('updatedAt')"
-        label-cols="2"
-      >
-        <b-form-input
-          data-test-id="input-updated-at"
-          :value="user.updatedAt | locFullDateTime"
-          plaintext
-          disabled
-        />
-      </b-form-group>
-
-      <b-form-group
-        v-if="user.suspendedAt"
-        :label="$t('suspendedAt')"
-        label-cols="2"
-      >
-        <b-form-input
-          data-test-id="input-suspended-at"
-          :value="user.suspendedAt | locFullDateTime"
-          plaintext
-          disabled
-        />
-      </b-form-group>
-
-      <b-form-group
-        v-if="user.deletedAt"
-        :label="$t('deletedAt')"
-        label-cols="2"
-      >
-        <b-form-input
-          data-test-id="input-deleted-at"
-          :value="user.deletedAt | locFullDateTime"
-          plaintext
-          disabled
-        />
-      </b-form-group>
-
-      <b-form-group
-        v-if="user.createdAt"
-        :label="$t('createdAt')"
-        label-cols="2"
-        class="mb-0"
-      >
-        <b-form-input
-          data-test-id="input-created-at"
-          :value="user.createdAt | locFullDateTime"
-          plaintext
-          disabled
-        />
-      </b-form-group>
+      <c-system-fields
+        :resource="user"
+        :date-value="true"
+      />
 
       <!--
         include hidden input to enable
@@ -179,6 +148,7 @@ import { NoID } from '@cortezaproject/corteza-js'
 import { handle } from '@cortezaproject/corteza-vue'
 import ConfirmationToggle from 'corteza-webapp-admin/src/components/ConfirmationToggle'
 import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
+import { getSystemFields } from 'corteza-webapp-admin/src/lib/sysFields'
 
 export default {
   name: 'CUserEditorInfo',
@@ -258,6 +228,10 @@ export default {
 
     suspendButtonStatusCypressId () {
       return `button-${this.getSuspendStatus.toLowerCase()}`
+    },
+
+    systemFields () {
+      return getSystemFields(this.role)
     },
   },
 }

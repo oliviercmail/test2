@@ -44,65 +44,41 @@
             </b-form-invalid-feedback>
           </b-form-group>
         </b-col>
+
+        <b-col
+          cols="12"
+          lg="6"
+        >
+          <b-form-group
+            :label="$t('level', sensitivityLevel)"
+          >
+            <b-form-input
+              v-model="sensitivityLevel.level"
+              number
+              type="range"
+              min="1"
+              max="10"
+            />
+          </b-form-group>
+        </b-col>
+
+        <b-col
+          cols="12"
+          lg="6"
+        >
+          <b-form-group
+            :label="$t('description')"
+          >
+            <b-form-textarea
+              v-model="sensitivityLevel.meta.description"
+            />
+          </b-form-group>
+        </b-col>
       </b-row>
-
-      <b-form-group
-        :label="$t('level', sensitivityLevel)"
-      >
-        <b-form-input
-          v-model="sensitivityLevel.level"
-          number
-          type="range"
-          min="1"
-          max="10"
-        />
-      </b-form-group>
-
-      <b-form-group
-        :label="$t('description')"
-      >
-        <b-form-textarea
-          v-model="sensitivityLevel.meta.description"
-        />
-      </b-form-group>
-
-      <b-form-group
-        v-if="sensitivityLevel.updatedAt"
-        :label="$t('updatedAt')"
-        label-cols="2"
-      >
-        <b-form-input
-          :value="sensitivityLevel.updatedAt | locFullDateTime"
-          plaintext
-          disabled
-        />
-      </b-form-group>
-
-      <b-form-group
-        v-if="sensitivityLevel.deletedAt"
-        :label="$t('deletedAt')"
-        label-cols="2"
-      >
-        <b-form-input
-          :value="sensitivityLevel.deletedAt | locFullDateTime"
-          plaintext
-          disabled
-        />
-      </b-form-group>
-
-      <b-form-group
-        v-if="sensitivityLevel.createdAt"
-        :label="$t('createdAt')"
-        label-cols="2"
-        class="mb-0"
-      >
-        <b-form-input
-          :value="sensitivityLevel.createdAt | locFullDateTime"
-          plaintext
-          disabled
-        />
-      </b-form-group>
-
+      <c-system-fields
+        :resource="sensitivityLevel"
+        :date-value="true"
+      />
       <!--
         include hidden input to enable
         trigger submit event w/ ENTER

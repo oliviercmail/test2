@@ -21,6 +21,9 @@ editor:
     uploader:
       instructions: 'Click or drop favicon file here to upload'
       uploading: 'Uploading favicon'
+
+  corteza-studio:
+    title: Branding
   
   custom-css:
     title: Custom CSS

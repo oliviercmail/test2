@@ -110,6 +110,7 @@
 </template>
 
 <script>
+import { isEqual } from 'lodash'
 import { mapGetters, mapActions } from 'vuex'
 import Grid from 'corteza-webapp-compose/src/components/Public/Page/Grid'
 import RecordToolbar from 'corteza-webapp-compose/src/components/Common/RecordToolbar'
@@ -277,6 +278,7 @@ export default {
       immediate: true,
       handler () {
         this.record = undefined
+        this.initialRecordState = undefined
         this.loadRecord().then(() => {
           this.determineLayout()
         })
@@ -324,7 +326,11 @@ export default {
   // Destroy event before route leave to ensure it doesn't destroy the newly created one
   beforeRouteLeave (to, from, next) {
     this.$root.$off('refetch-record-blocks', this.refetchRecordBlocks)
-    next()
+    this.checkUnsavedChanges(next, to)
+  },
+
+  beforeRouteUpdate (to, from, next) {
+    this.checkUnsavedChanges(next, to)
   },
 
   methods: {
@@ -352,6 +358,7 @@ export default {
           return response()
             .then(record => {
               this.record = new compose.Record(module, record)
+              this.initialRecordState = this.record.clone()
             })
             .catch(e => {
               if (!axios.isCancel(e)) {
@@ -361,6 +368,7 @@ export default {
             })
         } else {
           this.record = new compose.Record(module, { values: this.values })
+          this.initialRecordState = this.record.clone()
 
           this.inEditing = true
           this.inCreating = true
@@ -405,6 +413,7 @@ export default {
       this.inEditing = true
       this.inCreating = true
       this.record = new compose.Record(this.module, { values: this.values })
+      this.initialRecordState = this.record.clone()
       this.$emit('handle-record-redirect', { recordID: NoID, recordPageID: this.page.pageID })
     },
 
@@ -416,6 +425,8 @@ export default {
 
       this.inEditing = true
       this.inCreating = true
+      this.record = new compose.Record(this.module, { values: this.record.values })
+      this.initialRecordState = this.record.clone()
       this.$emit('handle-record-redirect', { recordID: NoID, recordPageID: this.page.pageID, values: this.record.values })
     },
 
@@ -558,6 +569,13 @@ export default {
 
     destroyEvents () {
       this.$root.$off('refetch-record-blocks', this.refetchRecordBlocks)
+    },
+
+    checkUnsavedChanges (next, to) {
+      const recordValues = JSON.parse(JSON.stringify(this.record.values))
+      const initialRecordState = JSON.parse(JSON.stringify(this.initialRecordState.values))
+
+      next(!isEqual(recordValues, initialRecordState) ? window.confirm(this.$t('general:editor.unsavedChanges')) : true)
     },
   },
 }

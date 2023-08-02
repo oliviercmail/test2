@@ -101,6 +101,7 @@
 
 <script>
 import axios from 'axios'
+import { isEqual } from 'lodash'
 import { mapGetters } from 'vuex'
 import RecordToolbar from 'corteza-webapp-compose/src/components/Common/RecordToolbar'
 import record from 'corteza-webapp-compose/src/mixins/record'
@@ -240,6 +241,14 @@ export default {
     this.setDefaultValues()
   },
 
+  beforeRouteLeave (to, from, next) {
+    this.checkUnsavedChanges(next, to)
+  },
+
+  beforeRouteUpdate (to, from, next) {
+    this.checkUnsavedChanges(next, to)
+  },
+
   methods: {
     createBlocks () {
       this.fields.forEach(f => {
@@ -268,6 +277,7 @@ export default {
         response()
           .then(record => {
             this.record = new compose.Record(module, record)
+            this.initialRecordState = this.record.clone()
           })
           .catch((e) => {
             if (!axios.isCancel(e)) {
@@ -322,6 +332,13 @@ export default {
       this.abortableRequests.forEach((cancel) => {
         cancel()
       })
+    },
+
+    checkUnsavedChanges (next, to) {
+      const recordValues = JSON.parse(JSON.stringify(this.record.values))
+      const initialRecordState = JSON.parse(JSON.stringify(this.initialRecordState.values))
+
+      next(!isEqual(recordValues, initialRecordState) ? window.confirm(this.$t('general:editor.unsavedChanges')) : true)
     },
   },
 }

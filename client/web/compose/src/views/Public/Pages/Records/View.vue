@@ -315,6 +315,10 @@ export default {
 
   mounted () {
     this.$root.$on('refetch-record-blocks', this.refetchRecordBlocks)
+
+    if (this.showRecordModal) {
+      this.$root.$on('bv::modal::hide', this.checkUnsavedChangesOnModal)
+    }
   },
 
   beforeDestroy () {
@@ -569,13 +573,35 @@ export default {
 
     destroyEvents () {
       this.$root.$off('refetch-record-blocks', this.refetchRecordBlocks)
+
+      if (this.showRecordModal) {
+        this.$root.$off('bv::modal::hide', this.checkUnsavedChangesOnModal)
+      }
+    },
+
+    compareRecordValues () {
+      const recordValues = JSON.parse(JSON.stringify(this.record ? this.record.values : {}))
+      const initialRecordState = JSON.parse(JSON.stringify(this.initialRecordState ? this.initialRecordState.values : {}))
+
+      return !isEqual(recordValues, initialRecordState)
     },
 
     checkUnsavedChanges (next, to) {
-      const recordValues = JSON.parse(JSON.stringify(this.record.values))
-      const initialRecordState = JSON.parse(JSON.stringify(this.initialRecordState.values))
+      if (this.inCreating) {
+        next(true)
+      } else {
+        next(this.compareRecordValues() ? window.confirm(this.$t('general:editor.unsavedChanges')) : true)
+      }
+    },
 
-      next(!isEqual(recordValues, initialRecordState) ? window.confirm(this.$t('general:editor.unsavedChanges')) : true)
+    checkUnsavedChangesOnModal (bvEvent, modalId) {
+      if (modalId === 'record-modal' && !this.inCreating) {
+        const recordStateChange = this.compareRecordValues() ? window.confirm(this.$t('general:editor.unsavedChanges')) : true
+
+        if (!recordStateChange) {
+          bvEvent.preventDefault()
+        }
+      }
     },
   },
 }

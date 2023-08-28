@@ -743,7 +743,11 @@ export default {
       const isApplicationState = !(this.isApplication === this.isApplicationInitialState)
       const namespaceAssetsState = !isEqual(this.namespaceAssets, this.namespaceAssetsInitialState)
 
-      next((namespaceState || isApplicationState || namespaceAssetsState) ? window.confirm(this.$t('manage.unsavedChanges')) : true)
+      if (this.isNew) {
+        next(true)
+      } else {
+        next((namespaceState || isApplicationState || namespaceAssetsState) ? window.confirm(this.$t('manage.unsavedChanges')) : true)
+      }
     },
 
     setDefaultValues () {

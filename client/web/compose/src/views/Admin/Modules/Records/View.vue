@@ -234,6 +234,7 @@ export default {
   created () {
     this.createBlocks()
     this.record = new compose.Record(this.module, { values: this.values })
+    this.initialRecordState = this.record.clone()
   },
 
   beforeDestroy () {

@@ -736,7 +736,10 @@ export default {
       if (this.isNew) {
         next(true)
       } else {
-        next(!isEqual(this.module.clone(), this.initialModuleState.clone()) ? window.confirm(this.$t('general.unsavedChanges')) : true)
+        const moduleState = this.module ? this.module.clone() : {}
+        const initialModuleState = this.initialModuleState ? this.initialModuleState.clone() : {}
+
+        next(!isEqual(moduleState, initialModuleState) ? window.confirm(this.$t('general.unsavedChanges')) : true)
       }
     },
 

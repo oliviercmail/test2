@@ -158,6 +158,10 @@ export default {
       getNextAndPrevRecord: 'ui/getNextAndPrevRecord',
     }),
 
+    isNew () {
+      return this.record.recordID === NoID
+    },
+
     title () {
       const { name, handle } = this.module
       const titlePrefix = this.inCreating ? 'create' : this.inEditing ? 'edit' : 'view'
@@ -336,10 +340,14 @@ export default {
     },
 
     checkUnsavedChanges (next, to) {
-      const recordValues = JSON.parse(JSON.stringify(this.record.values))
-      const initialRecordState = JSON.parse(JSON.stringify(this.initialRecordState.values))
+      if (this.isNew) {
+        return true
+      } else {
+        const recordValues = JSON.parse(JSON.stringify(this.record.values))
+        const initialRecordState = JSON.parse(JSON.stringify(this.initialRecordState.values))
 
-      next(!isEqual(recordValues, initialRecordState) ? window.confirm(this.$t('general:editor.unsavedChanges')) : true)
+        next(!isEqual(recordValues, initialRecordState) ? window.confirm(this.$t('general:editor.unsavedChanges')) : true)
+      }
     },
   },
 }

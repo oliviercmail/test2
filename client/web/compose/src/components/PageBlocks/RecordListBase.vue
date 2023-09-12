@@ -1068,6 +1068,22 @@ export default {
       this.$root.$on(`page-block:validate:${this.uniqueID}`, this.validatePageBlock)
       this.$root.$on(`drill-down-recordList:${this.uniqueID}`, this.setDrillDownFilter)
       this.$root.$on(`refetch-non-record-blocks:${pageID}`, this.refreshAndResetPagination)
+      this.$root.$on('module-records-updated', this.refreshOnRelatedRecordsUpdate)
+    },
+
+    refreshOnRelatedRecordsUpdate (module) {
+      if (this.recordListModule.moduleID === module.moduleID) {
+        this.refresh(true)
+      } else {
+        const recordFields = this.fields.filter((f) => f.moduleField.kind === 'Record')
+        const hasMatchingModule = recordFields.some((r) => {
+          return r.moduleField.options.moduleID === module.moduleID
+        })
+
+        if (hasMatchingModule) {
+          this.refresh(false)
+        }
+      }
     },
 
     onFilter (filter = []) {
@@ -1766,7 +1782,6 @@ export default {
 
     onBulkUpdate () {
       this.selectedAllRecords = false
-      this.refresh(true)
     },
 
     editInlineField (record, field) {
@@ -1782,7 +1797,6 @@ export default {
     },
 
     onInlineEdit () {
-      this.refresh(true)
       this.onInlineEditClose()
     },
 
@@ -1881,6 +1895,7 @@ export default {
       this.$root.$off(`page-block:validate:${this.uniqueID}`, this.validatePageBlock)
       this.$root.$off(`drill-down-recordList:${this.uniqueID}`, this.setDrillDownFilter)
       this.$root.$off(`refetch-non-record-blocks:${pageID}`, this.refreshAndResetPagination)
+      this.$root.$off('module-records-updated', this.refreshOnRelatedRecordsUpdate)
     },
 
     handleAddRecord () {

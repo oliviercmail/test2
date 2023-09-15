@@ -21,7 +21,7 @@
           @click.prevent="$emit('back')"
         >
           <font-awesome-icon
-            :icon="['fas', showRecordModal ? 'times' : 'chevron-left']"
+            :icon="['fas', 'chevron-left']"
             class="back-icon"
           />
           {{ backLabel }}
@@ -332,7 +332,7 @@ export default {
 
     backLabel () {
       if (this.showRecordModal) {
-        return this.$t('label.close')
+        return this.$t('label.back')
       }
 
       return this.hasBack ? this.labels.back || this.$t('label.back') : this.$t('label.home')

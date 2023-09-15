@@ -71,6 +71,7 @@ export default {
       module: undefined,
       page: undefined,
       values: undefined,
+      prevRouteQuery: {},
     }
   },
 
@@ -79,6 +80,7 @@ export default {
       getModuleByID: 'module/getByID',
       getPageByID: 'page/getByID',
       recordPaginationUsable: 'ui/recordPaginationUsable',
+      modalPreviousPage: 'ui/modalPreviousPage',
     }),
   },
 
@@ -88,6 +90,7 @@ export default {
       handler (recordPageID, oldRecordPageID) {
         if (!recordPageID) {
           this.showModal = false
+          this.clearModalPreviousPage()
         }
 
         if (recordPageID !== oldRecordPageID) {
@@ -121,6 +124,8 @@ export default {
     ...mapActions({
       setRecordPaginationUsable: 'ui/setRecordPaginationUsable',
       clearRecordIDs: 'ui/clearRecordIDs',
+      pushModalPreviousPage: 'ui/pushModalPreviousPage',
+      clearModalPreviousPage: 'ui/clearModalPreviousPage',
     }),
 
     loadRecord ({ recordID, recordPageID, values }) {
@@ -140,6 +145,12 @@ export default {
 
     loadModal ({ recordID, recordPageID }) {
       if (recordID && recordPageID) {
+        const latestHistory = this.modalPreviousPage.slice(-1)[0] || {}
+
+        if (latestHistory.recordID !== recordID && latestHistory.recordPageID !== recordPageID) {
+          this.pushModalPreviousPage({ recordID, recordPageID })
+        }
+
         this.recordID = recordID
 
         if (!this.page || this.page.pageID !== recordPageID) {
@@ -174,6 +185,7 @@ export default {
       this.recordID = undefined
       this.module = undefined
       this.page = undefined
+      this.clearModalPreviousPage()
     },
 
     destroyEvents () {

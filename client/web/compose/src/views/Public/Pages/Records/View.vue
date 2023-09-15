@@ -203,6 +203,7 @@ export default {
       getNextAndPrevRecord: 'ui/getNextAndPrevRecord',
       getPageLayouts: 'pageLayout/getByPageID',
       previousPages: 'ui/previousPages',
+      modalPreviousPage: 'ui/modalPreviousPage',
     }),
 
     portalTopbarTitle () {
@@ -331,6 +332,7 @@ export default {
     ...mapActions({
       popPreviousPages: 'ui/popPreviousPages',
       clearRecordSet: 'record/clearSet',
+      popModalPreviousPage: 'ui/popModalPreviousPage',
     }),
 
     async loadRecord (recordID = this.recordID) {
@@ -383,7 +385,19 @@ export default {
        * came from (and "where" is back).
       */
       if (this.showRecordModal) {
-        this.$bvModal.hide('record-modal')
+        const { recordID, recordPageID } = this.modalPreviousPage.slice(-1)[0] || {}
+
+        if (recordID && recordPageID) {
+          this.$root.$emit('show-record-modal', {
+            recordID,
+            recordPageID,
+          })
+
+          this.popModalPreviousPage()
+        } else {
+          this.$bvModal.hide('record-modal')
+        }
+
         return
       }
 

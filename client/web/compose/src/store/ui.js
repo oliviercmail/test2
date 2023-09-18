@@ -13,7 +13,7 @@ const types = {
   popPreviousPages: 'popPreviousPages',
   previousPage: 'previousPage',
   setPreviousPage: 'setPreviousPage',
-  modalPreviousPage: 'modalPreviousPage',
+  modalPreviousPages: 'modalPreviousPages',
   pushModalPreviousPage: 'pushModalPreviousPage',
   clearModalPreviousPage: 'clearModalPreviousPage',
   popModalPreviousPage: 'popModalPreviousPage',
@@ -31,7 +31,7 @@ export default function (ComposeAPI) {
 
       previousPages: [],
       previousPage: null,
-      modalPreviousPage: [],
+      modalPreviousPages: [],
     },
 
     getters: {
@@ -53,7 +53,7 @@ export default function (ComposeAPI) {
         return { prev, next }
       },
 
-      modalPreviousPage: (state) => state.modalPreviousPage,
+      modalPreviousPages: (state) => state.modalPreviousPages,
     },
 
     actions: {
@@ -120,10 +120,10 @@ export default function (ComposeAPI) {
       },
 
       popModalPreviousPage ({ commit, state }) {
-        const previousPage = state.modalPreviousPage.slice(-1)[0]
+        const previousPage = state.modalPreviousPages.slice(-1)[0]
         commit(types.popModalPreviousPage)
         return new Promise((resolve) => resolve(previousPage))
-      }
+      },
     },
 
     mutations: {
@@ -172,15 +172,15 @@ export default function (ComposeAPI) {
       },
 
       [types.pushModalPreviousPage] (state, value) {
-        state.modalPreviousPage.push(value)
+        state.modalPreviousPages.push(value)
       },
 
       [types.clearModalPreviousPage] (state) {
-        state.modalPreviousPage = []
+        state.modalPreviousPages = []
       },
 
       [types.popModalPreviousPage] (state) {
-        state.modalPreviousPage.pop()
+        state.modalPreviousPages.pop()
       },
     },
   }

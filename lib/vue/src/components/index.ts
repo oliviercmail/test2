@@ -84,4 +84,8 @@ export {
   CProgress,
 } from './progress'
 
+export {
+  CButtonSubmit,
+} from './button'
+
 export { default as C3 } from './c3'

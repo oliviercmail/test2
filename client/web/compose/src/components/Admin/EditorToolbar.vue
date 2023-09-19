@@ -73,27 +73,31 @@
         >
           {{ $t('label.saveAndClose') }}
         </b-button>
-
-        <b-button
+        <c-button-submit
           v-if="!hideSave"
-          data-test-id="button-save"
           :disabled="disableSave || processing"
-          variant="primary"
-          size="lg"
+          :processing="true"
+          :button-text="$t('label.save')"
+          :button-size="'lg'"
           class="ml-2"
-          @click.prevent="$emit('save')"
-        >
-          {{ $t('label.save') }}
-        </b-button>
+          @submit="$emit('save')"
+        />
       </div>
     </b-row>
   </b-container>
 </template>
 <script>
 
+import { components } from '@cortezaproject/corteza-vue'
+const { CButtonSubmit } = components
+
 export default {
   i18nOptions: {
     namespaces: 'general',
+  },
+
+  components: {
+    CButtonSubmit,
   },
 
   inheritAttrs: true,

@@ -637,6 +637,7 @@
             >
               {{ $t('recordList.pagination.showing', getPagination) }}
             </span>
+
             <span
               v-else
               data-test-id="pagination-single-number"
@@ -650,6 +651,17 @@
           v-if="showPageNavigation"
           class="d-flex align-items-center justify-content-end"
         >
+          <div class="d-flex align-items-center gap-1">
+            <b-form-select
+              v-model="filter.limit"
+              :options="rowsOptions"
+              @input="updateTable"
+            />
+
+            <span>
+              {{ $t('recordList.pagination.recordsLabel') }}
+            </span>
+          </div>
           <b-pagination
             v-if="options.fullPageNavigation"
             data-test-id="pagination"
@@ -666,15 +678,19 @@
             <template #first-text>
               <font-awesome-icon :icon="['fas', 'angle-double-left']" />
             </template>
+
             <template #prev-text>
               <font-awesome-icon :icon="['fas', 'angle-left']" />
             </template>
+
             <template #next-text>
               <font-awesome-icon :icon="['fas', 'angle-right']" />
             </template>
+
             <template #last-text>
               <font-awesome-icon :icon="['fas', 'angle-double-right']" />
             </template>
+
             <template #elipsis-text>
               <font-awesome-icon :icon="['fas', 'ellipsis-h']" />
             </template>
@@ -690,6 +706,7 @@
             >
               <font-awesome-icon :icon="['fas', 'angle-double-left']" />
             </b-button>
+
             <b-button
               :disabled="!hasPrevPage || processing"
               data-test-id="previous-page"
@@ -703,6 +720,7 @@
               />
               {{ $t('recordList.pagination.prev') }}
             </b-button>
+
             <b-button
               :disabled="!hasNextPage || processing"
               data-test-id="next-page"
@@ -832,6 +850,12 @@ export default {
       selectedAllRecords: false,
 
       abortableRequests: [],
+      rowsOptions: [
+        { text: '14', value: 14 },
+        { text: '25', value: 25 },
+        { text: '50', value: 50 },
+        { text: '100', value: 100 },
+      ],
     }
   },
 
@@ -1097,6 +1121,11 @@ export default {
 
       this.recordListFilter = filter
       this.setStorageRecordListFilter()
+      this.refresh(true)
+    },
+
+    updateTable () {
+      this.options.perPage = this.filter.limit
       this.refresh(true)
     },
 

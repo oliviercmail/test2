@@ -66,7 +66,6 @@
 
       <c-system-fields
         :resource="application"
-        :date-value="true"
       />
 
       <!--

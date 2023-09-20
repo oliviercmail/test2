@@ -82,7 +82,6 @@
 
       <c-system-fields
         :resource="workflow"
-        :date-value="true"
       />
 
       <!--

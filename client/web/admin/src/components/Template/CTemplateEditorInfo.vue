@@ -102,7 +102,6 @@
 
       <c-system-fields
         :resource="template"
-        :date-value="true"
       />
 
       <!--

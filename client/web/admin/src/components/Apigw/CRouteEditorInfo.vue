@@ -123,7 +123,6 @@
 
       <c-system-fields
         :resource="route"
-        :date-value="true"
       />
     </b-form>
 

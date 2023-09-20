@@ -68,7 +68,6 @@
 
       <c-system-fields
         :resource="user"
-        :date-value="true"
       />
 
       <!--

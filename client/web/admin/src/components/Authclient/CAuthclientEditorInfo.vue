@@ -164,52 +164,56 @@
           </b-form-group>
         </b-col>
 
-      <b-form-group
-        data-test-id="valid-from"
-        :label="$t('validFrom.label')"
-        label-cols="3"
-        :description="$t('validFrom.description')"
-      >
-        <c-input-date-time
-          v-model="resource.validFrom"
-          data-test-id="input-valid-from"
-          :labels="{
-            clear: $t('general:label.clear'),
-            none: $t('general:label.none'),
-            now: $t('general:label.now'),
-            today: $t('general:label.today'),
-          }"
-        />
-      </b-form-group>
-
-      <b-form-group
-        data-test-id="expires-at"
-        :label="$t('expiresAt.label')"
-        label-cols="3"
-        :description="$t('expiresAt.description')"
-      >
-        <c-input-date-time
-          v-model="resource.expiresAt"
-          data-test-id="input-expires-at"
-          :labels="{
-            clear: $t('general:label.clear'),
-            none: $t('general:label.none'),
-            now: $t('general:label.now'),
-            today: $t('general:label.today'),
-          }"
-        />
-      </b-form-group>
-
-      <b-form-group
-        label-cols="3"
-      >
-        <b-form-checkbox
-          data-test-id="checkbox-allow-access-to-user-profile"
-          :checked="((resource.scope || []).includes('profile'))"
-          @change="setScope($event, 'profile')"
+        <b-col
+          cols="12"
+          lg="6"
         >
-          {{ $t('profile') }}
-        </b-form-checkbox>
+          <b-form-group
+            data-test-id="valid-from"
+            :label="$t('validFrom.label')"
+            label-cols="3"
+            :description="$t('validFrom.description')"
+          >
+            <c-input-date-time
+              v-model="resource.validFrom"
+              data-test-id="input-valid-from"
+              :labels="{
+                clear: $t('general:label.clear'),
+                none: $t('general:label.none'),
+                now: $t('general:label.now'),
+                today: $t('general:label.today'),
+              }"
+            />
+          </b-form-group>
+
+          <b-form-group
+            data-test-id="expires-at"
+            :label="$t('expiresAt.label')"
+            label-cols="3"
+            :description="$t('expiresAt.description')"
+          >
+            <c-input-date-time
+              v-model="resource.expiresAt"
+              data-test-id="input-expires-at"
+              :labels="{
+                clear: $t('general:label.clear'),
+                none: $t('general:label.none'),
+                now: $t('general:label.now'),
+                today: $t('general:label.today'),
+              }"
+            />
+          </b-form-group>
+
+          <b-form-group
+            label-cols="3"
+          >
+            <b-form-checkbox
+              data-test-id="checkbox-allow-access-to-user-profile"
+              :checked="((resource.scope || []).includes('profile'))"
+              @change="setScope($event, 'profile')"
+            >
+              {{ $t('profile') }}
+            </b-form-checkbox>
 
             <b-form-checkbox
               data-test-id="checkbox-allow-access-to-corteza-api"
@@ -297,123 +301,129 @@
         </b-col>
       </b-row>
 
-      <div v-if="isClientCredentialsGrant">
-        <b-form-group
-          data-test-id="impersonate-user"
-          label-cols="3"
-          :label="$t('security.impersonateUser.label')"
-          :description="$t('security.impersonateUser.description')"
+      <b-row>
+        <b-col
+          cols="12"
+          lg="6"
         >
-          <c-select-user
-            :user-i-d="resource.security.impersonateUser"
-            @updateUser="onUpdateUser"
-          />
-        </b-form-group>
-
-        <div v-if="!fresh">
-          <b-form-group label-cols="3">
-            <b-button
-              data-test-id="button-cURL-snippet"
-              variant="light"
-              class="align-top"
-              @click="toggleCurlSnippet()"
+          <div v-if="isClientCredentialsGrant">
+            <b-form-group
+              data-test-id="impersonate-user"
+              label-cols="3"
+              :label="$t('security.impersonateUser.label')"
+              :description="$t('security.impersonateUser.description')"
             >
-              <template v-if="curlVisible">
-                {{ $t('hideCurl') }}
-              </template>
+              <c-select-user
+                :user-i-d="resource.security.impersonateUser"
+                @updateUser="onUpdateUser"
+              />
+            </b-form-group>
 
-              <template v-else>
-                {{ $t('generateCurl') }}
-              </template>
-            </b-button>
-          </b-form-group>
-
-          <b-form-group
-            v-if="curlVisible"
-            :label="$t('cUrl')"
-            class="curl"
-            label-class="text-primary"
-          >
-            <div>
-              <div class="w-50 d-flex">
-                <pre
-                  ref="cUrl"
-                  data-test-id="cURL-string"
-                  style="word-break: break-word;"
+            <div v-if="!fresh">
+              <b-form-group label-cols="3">
+                <b-button
+                  data-test-id="button-cURL-snippet"
+                  variant="light"
+                  class="align-top"
+                  @click="toggleCurlSnippet()"
                 >
-                  curl -X POST {{ curlURL }} \
-                  -d grant_type=client_credentials \
-                  -d scope='profile api' \
-                  -u {{ resource.resourceID }}:{{ secret || 'PLACE-YOUR-CLIENT-SECRET-HERE' }}
+                  <template v-if="curlVisible">
+                    {{ $t('hideCurl') }}
+                  </template>
+
+                  <template v-else>
+                    {{ $t('generateCurl') }}
+                  </template>
+                </b-button>
+              </b-form-group>
+
+              <b-form-group
+                v-if="true"
+                :label="$t('cUrl')"
+                class="curl"
+                label-class="text-primary"
+              >
+                <div>
+                  <div class="w-50 d-flex">
+                    <pre
+                      ref="cUrl"
+                      data-test-id="cURL-string"
+                      style="word-break: break-word;"
+                    >
+curl -X POST {{ curlURL }} \
+-d grant_type=client_credentials \
+-d scope='profile api' \
+-u {{ resource.resourceID }}:{{ secret || 'PLACE-YOUR-CLIENT-SECRET-HERE' }}
                 </pre>
 
-                <b-button
-                  data-test-id="button-copy-cURL"
-                  variant="link"
-                  class="align-top ml-auto fit-content text-secondary mr-5"
-                  @click="copyToClipboard('cUrl')"
+                    <b-button
+                      data-test-id="button-copy-cURL"
+                      variant="link"
+                      class="align-top ml-auto fit-content text-secondary mr-5"
+                      @click="copyToClipboard('cUrl')"
+                    >
+                      <font-awesome-icon
+                        :icon="['far', 'copy']"
+                      />
+                    </b-button>
+                  </div>
+
+                  <b-button
+                    variant="light"
+                    @click="toggleCurlSnippet()"
+                  >
+                    <template v-if="curlVisible">
+                      {{ $t('hideCurl') }}
+                    </template>
+
+                    <template v-else>
+                      {{ $t('generateCurl') }}
+                    </template>
+                  </b-button>
+                </div>
+
+                <div class="d-flex w-50 my-3">
+                  <div
+                    class="overflow-wrap"
+                    :class="[tokenRequest.token ? 'text-success' : 'text-danger']"
+                  >
+                    {{ tokenRequest.token || tokenRequest.error }}
+                  </div>
+
+                  <b-button
+                    v-if="tokenRequest.token"
+                    data-test-id="copy-token-from-request"
+                    variant="link"
+                    class="ml-auto fit-content text-secondary"
+                    @click="copyToClipboard('token')"
+                  >
+                    <font-awesome-icon
+                      :icon="['far', 'copy']"
+                    />
+                  </b-button>
+                </div>
+
+                <div
+                  v-if="secretVisible"
+                  class="d-flex mb-3"
                 >
-                  <font-awesome-icon
-                    :icon="['far', 'copy']"
-                  />
-                </b-button>
-              </div>
-
-              <b-button
-                variant="light"
-                @click="toggleCurlSnippet()"
-              >
-                <template v-if="curlVisible">
-                  {{ $t('hideCurl') }}
-                </template>
-
-                <template v-else>
-                  {{ $t('generateCurl') }}
-                </template>
-              </b-button>
+                  <b-button
+                    data-test-id="button-test-cURL"
+                    variant="light"
+                    class="align-top fit-content"
+                    @click="getAccessTokenAPI()"
+                  >
+                    {{ $t('testCurl') }}
+                  </b-button>
+                </div>
+              </b-form-group>
             </div>
-
-            <div class="d-flex w-50 my-3">
-              <div
-                class="overflow-wrap"
-                :class="[tokenRequest.token ? 'text-success' : 'text-danger']"
-              >
-                {{ tokenRequest.token || tokenRequest.error }}
-              </div>
-
-              <b-button
-                v-if="tokenRequest.token"
-                data-test-id="copy-token-from-request"
-                variant="link"
-                class="ml-auto fit-content text-secondary"
-                @click="copyToClipboard('token')"
-              >
-                <font-awesome-icon
-                  :icon="['far', 'copy']"
-                />
-              </b-button>
-            </div>
-
-            <div
-              v-if="secretVisible"
-              class="d-flex mb-3"
-            >
-              <b-button
-                data-test-id="button-test-cURL"
-                variant="light"
-                class="align-top fit-content"
-                @click="getAccessTokenAPI()"
-              >
-                {{ $t('testCurl') }}
-              </b-button>
-            </div>
-          </b-form-group>
+          </div>
         </b-col>
       </b-row>
 
       <c-system-fields
         :resource="resource"
-        :date-value="true"
       />
 
       <!--

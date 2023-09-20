@@ -130,7 +130,6 @@
 
       <c-system-fields
         :resource="role"
-        :date-value="true"
       />
 
       <!--

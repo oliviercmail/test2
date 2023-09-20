@@ -77,7 +77,6 @@
       </b-row>
       <c-system-fields
         :resource="sensitivityLevel"
-        :date-value="true"
       />
       <!--
         include hidden input to enable

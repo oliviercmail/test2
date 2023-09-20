@@ -73,7 +73,6 @@
 
       <c-system-fields
         :resource="node"
-        :date-value="true"
       />
 
       <!--

@@ -31,11 +31,6 @@ export default {
       required: true,
     },
 
-    dateValue: {
-      type: Boolean,
-      default: false,
-    },
-
     label: {
       type: String,
       default: '',
@@ -56,7 +51,6 @@ export default {
     getFieldValue (field) {
       const isTimeValue = field.substring(field.length - 2) === 'At'
       let value = isTimeValue ? this.$options.filters.locFullDateTime(this.resource[field]) : this.resource[field]
-      console.log(value)
       return value
     },
   },

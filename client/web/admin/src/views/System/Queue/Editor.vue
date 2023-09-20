@@ -5,7 +5,7 @@
   >
     <c-content-header
       :title="title"
-      class="mb-2 jfd"
+      class="mb-2"
     >
       <b-button
         v-if="queueID && canCreate"

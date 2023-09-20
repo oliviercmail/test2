@@ -23,6 +23,7 @@ list:
     actions: ''
     consumer: Consumer
     createdAt: Created At
+    createdBy: Created by
     state: State
     queue: Queue
   export: Export

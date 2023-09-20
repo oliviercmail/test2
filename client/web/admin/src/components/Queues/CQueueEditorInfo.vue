@@ -85,7 +85,6 @@
 
       <c-system-fields
         :resource="queue"
-        :date-value="true"
       />
     </b-form>
 

@@ -52,112 +52,113 @@
                   />
                 </b-button>
 
-            <b-button
-              v-if="showLogoPreview"
-              data-test-id="button-logo-reset"
-              variant="light"
-              size="sm"
-              class="py-0 ml-2"
-              @click="resetLogo()"
-            >
-              {{ $t('logo.reset') }}
-            </b-button>
-          </div>
-        </template>
-        <b-form-file
-          v-model="unifyAssets.logo"
-          data-test-id="file-logo-upload"
-          accept="image/*"
-          :placeholder="$t('logo.placeholder')"
-          @change="$emit('change-detected')"
-        />
-      </b-form-group>
-
-        <b-modal
-          id="logo"
-          hide-header
-          hide-footer
-          centered
-          body-class="p-1"
-        >
-          <b-img
-            data-test-id="img-logo-preview"
-            :src="unify.logo"
-            fluid-grow
-          />
-        </b-modal>
-
-        <b-col
-          cols="12"
-          lg="6"
-        >
-          <b-form-group
-            :label="$t('url.label')"
-            :description="$t('url.description')"
-            label-class="text-primary"
-          >
-            <b-form-input
-              v-model="unify.url"
-              data-test-id="input-url"
+                <b-button
+                  v-if="showLogoPreview"
+                  data-test-id="button-logo-reset"
+                  variant="light"
+                  size="sm"
+                  class="py-0 ml-2"
+                  @click="resetLogo()"
+                >
+                  {{ $t('logo.reset') }}
+                </b-button>
+              </div>
+            </template>
+            <b-form-file
+              v-model="unifyAssets.logo"
+              data-test-id="file-logo-upload"
+              accept="image/*"
+              :placeholder="$t('logo.placeholder')"
+              @change="$emit('change-detected')"
             />
           </b-form-group>
-        </b-col>
 
-        <b-col
-          cols="12"
-          lg="6"
-        >
-          <b-row>
-            <b-col
-              cols="6"
-            >
-              <b-form-group
-                :label="$t('listed')"
-                label-class="text-primary"
-              >
-                <c-input-checkbox
-                  v-model="unify.listed"
-                  data-test-id="checkbox-listed"
-                  switch
-                  :labels="checkboxLabel"
-                />
-              </b-form-group>
-            </b-col>
-
-            <b-col
-              cols="6"
-            >
-              <b-form-group
-                :label="$t('pinned')"
-                label-class="text-primary"
-              >
-                <c-input-checkbox
-                  v-model="unify.pinned"
-                  data-test-id="checkbox-pinned"
-                  switch
-                  :labels="checkboxLabel"
-                  :disabled="!canPin"
-                />
-              </b-form-group>
-            </b-col>
-          </b-row>
-        </b-col>
-
-        <b-col
-          cols="12"
-        >
-          <b-form-group
-            :label="$t('config.label')"
-            :description="$t('config.description')"
-            label-class="text-primary"
+          <b-modal
+            id="logo"
+            hide-header
+            hide-footer
+            centered
+            body-class="p-1"
           >
-            <b-form-textarea
-              v-model="unify.config"
-              data-test-id="textarea-config"
-              :state="configState"
-              rows="10"
+            <b-img
+              data-test-id="img-logo-preview"
+              :src="unify.logo"
+              fluid-grow
             />
-          </b-form-group>
+          </b-modal>
+
+          <b-col
+            cols="12"
+            lg="6"
+          >
+            <b-form-group
+              :label="$t('url.label')"
+              :description="$t('url.description')"
+              label-class="text-primary"
+            >
+              <b-form-input
+                v-model="unify.url"
+                data-test-id="input-url"
+              />
+            </b-form-group>
+          </b-col>
+
+          <b-col
+            cols="12"
+            lg="6"
+          >
+            <b-row>
+              <b-col
+                cols="6"
+              >
+                <b-form-group
+                  :label="$t('listed')"
+                  label-class="text-primary"
+                >
+                  <c-input-checkbox
+                    v-model="unify.listed"
+                    data-test-id="checkbox-listed"
+                    switch
+                    :labels="checkboxLabel"
+                  />
+                </b-form-group>
+              </b-col>
+
+              <b-col
+                cols="6"
+              >
+                <b-form-group
+                  :label="$t('pinned')"
+                  label-class="text-primary"
+                >
+                  <c-input-checkbox
+                    v-model="unify.pinned"
+                    data-test-id="checkbox-pinned"
+                    switch
+                    :labels="checkboxLabel"
+                    :disabled="!canPin"
+                  />
+                </b-form-group>
+              </b-col>
+            </b-row>
+          </b-col>
+
+          <b-col
+            cols="12"
+          >
+            <b-form-group
+              :label="$t('config.label')"
+              :description="$t('config.description')"
+              label-class="text-primary"
+            >
+              <b-form-textarea
+                v-model="unify.config"
+                data-test-id="textarea-config"
+                :state="configState"
+                rows="10"
+              />
+            </b-form-group>
+          </b-col>
         </b-col>
       </b-row>
     </b-form>

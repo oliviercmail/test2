@@ -626,10 +626,10 @@
         v-if="showFooter"
         class="d-flex align-items-center justify-content-between p-2"
       >
-        <div class="text-truncate">
+        <div class="d-flex gap-3 align-items-center">
           <div
             v-if="options.showTotalCount"
-            class="ml-2 text-nowrap my-1"
+            class="ml-2 text-nowrap my-1 text-truncate"
           >
             <span
               v-if="pagination.count > options.perPage"
@@ -645,23 +645,27 @@
               {{ $t('recordList.pagination.single', getPagination) }}
             </span>
           </div>
+
+          <div
+            v-if="showPerPageSelector"
+            class="d-flex align-items-center gap-1 text-nowrap"
+          >
+            <span>
+              {{ $t('recordList.pagination.recordsPerPage') }}
+            </span>
+
+            <b-form-select
+              v-model="filter.limit"
+              :options="rowOptions"
+              @input="updateTable"
+            />
+          </div>
         </div>
 
         <div
           v-if="showPageNavigation"
           class="d-flex align-items-center justify-content-end"
         >
-          <div class="d-flex align-items-center gap-1">
-            <b-form-select
-              v-model="filter.limit"
-              :options="rowsOptions"
-              @input="updateTable"
-            />
-
-            <span>
-              {{ $t('recordList.pagination.recordsLabel') }}
-            </span>
-          </div>
           <b-pagination
             v-if="options.fullPageNavigation"
             data-test-id="pagination"
@@ -873,6 +877,17 @@ export default {
       return this.showPageNavigation || this.options.showTotalCount
     },
 
+    rowOptions () {
+      return [
+        { text: this.options.perPage, value: this.options.perPage, disabled: true },
+        { text: '25', value: 25 },
+        { text: '50', value: 50 },
+        { text: '100', value: 100 },
+      ]
+      // remove duplicates
+        .filter((v, i, a) => a.findIndex(t => (t.value === v.value)) === i)
+    },
+
     getPagination () {
       const { page = 1, count = 0 } = this.pagination
       const { perPage = 10 } = this.options
@@ -900,6 +915,10 @@ export default {
 
     showPageNavigation () {
       return this.items.length && !this.options.hidePaging
+    },
+
+    showPerPageSelector () {
+      return this.options.showRecordPerPageOption
     },
 
     disableSelectAll () {

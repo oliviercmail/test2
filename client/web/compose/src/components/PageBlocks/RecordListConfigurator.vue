@@ -11,6 +11,7 @@
         <h5 class="mb-3">
           {{ $t('recordList.record.generalLabel') }}
         </h5>
+
         <b-row>
           <b-col
             cols="12"
@@ -490,6 +491,24 @@
                 <c-input-checkbox
                   v-model="options.showTotalCount"
                   data-test-id="show-total-record-count"
+                  switch
+                  :labels="checkboxLabel"
+                />
+              </b-form-group>
+            </b-col>
+          </b-row>
+
+          <b-row>
+            <b-col
+              cols="12"
+              md="6"
+            >
+              <b-form-group
+                :label="$t('recordList.record.showRecordPerPageOption')"
+                label-class="text-primary"
+              >
+                <c-input-checkbox
+                  v-model="options.showRecordPerPageOption"
                   switch
                   :labels="checkboxLabel"
                 />

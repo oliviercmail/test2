@@ -5,6 +5,7 @@
     :variant="variant"
     :disabled="disabled || processing || success"
     :size="buttonSize"
+    :title="title"
     :class="buttonClass"
     @click.prevent="$emit('submit')"
   >
@@ -49,6 +50,11 @@ export default {
     disabled: {
       type: Boolean,
       value: false,
+    },
+
+    title: {
+      type: String,
+      default: '',
     },
 
     buttonClass: {

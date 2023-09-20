@@ -644,16 +644,16 @@ export default {
             this.$router.push({ name: 'admin.charts.edit', params: { chartID: chartID } })
           }
         })
-        .catch(this.toastErrorHandler(this.$t('notification:chart.saveFailed')))
-        .finally(() => {
-          this.buttonProcessing = false
+          .catch(this.toastErrorHandler(this.$t('notification:chart.saveFailed')))
+          .finally(() => {
+            this.buttonProcessing = false
 
-          if (closeOnSuccess) {
-            this.buttonSaveAndCloseProcessing = false
-            return
-          }
-          this.buttonSaveProcessing = false
-        })
+            if (closeOnSuccess) {
+              this.buttonSaveAndCloseProcessing = false
+              return
+            }
+            this.buttonSaveProcessing = false
+          })
       } else {
         this.updateChart(c).then((chart) => {
           this.chart = chartConstructor(chart)
@@ -663,16 +663,16 @@ export default {
             this.redirect()
           }
         })
-        .catch(this.toastErrorHandler(this.$t('notification:chart.saveFailed')))
-        .finally(() => {
-          this.buttonProcessing = false
+          .catch(this.toastErrorHandler(this.$t('notification:chart.saveFailed')))
+          .finally(() => {
+            this.buttonProcessing = false
 
-          if (closeOnSuccess) {
-            this.buttonSaveAndCloseProcessing = false
-            return
-          }
-          this.buttonSaveProcessing = false
-        })
+            if (closeOnSuccess) {
+              this.buttonSaveAndCloseProcessing = false
+              return
+            }
+            this.buttonSaveProcessing = false
+          })
       }
     },
 
@@ -683,8 +683,8 @@ export default {
         this.toastSuccess(this.$t('notification:chart.deleted'))
         this.$router.push({ name: 'admin.charts' })
       })
-      .catch(this.toastErrorHandler(this.$t('notification:chart.deleteFailed')))
-      .finally(() => { this.buttonProcessing = false })
+        .catch(this.toastErrorHandler(this.$t('notification:chart.deleteFailed')))
+        .finally(() => { this.buttonProcessing = false })
     },
 
     redirect () {

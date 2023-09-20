@@ -819,10 +819,10 @@ export default {
             this.buttonProcessing = false
 
             if (closeOnSuccess) {
-            this.buttonSaveAndCloseProcessing = false
-            return
-          }
-          this.buttonSaveProcessing = false
+              this.buttonSaveAndCloseProcessing = false
+              return
+            }
+            this.buttonSaveProcessing = false
           })
       } else {
         this.updateModule({ ...this.module, resourceTranslationLanguage }).then(module => {

@@ -259,6 +259,7 @@
         :button-processing="buttonProcessing"
         :button-save-processing="buttonSaveProcessing"
         :button-save-and-close-processing="buttonSaveAndCloseProcessing"
+        :button-clone-processing="buttonCloneProcessing"
         @save="handleSaveLayout()"
         @delete="handleDeleteLayout()"
         @saveAndClose="handleSaveLayout({ closeOnSuccess: true })"
@@ -365,6 +366,7 @@ export default {
       buttonProcessing: false,
       buttonSaveProcessing: false,
       buttonSaveAndCloseProcessing: false,
+      buttonCloneProcessing: false,
 
       processingLayout: false,
 
@@ -862,6 +864,7 @@ export default {
       this.processing = true
       this.processingLayout = true
       this.buttonProcessing = true
+      this.buttonCloneProcessing = true
 
       const layout = {
         ...this.layout.clone(),
@@ -912,6 +915,7 @@ export default {
         this.processing = false
         this.processingLayout = false
         this.buttonProcessing = false
+        this.buttonCloneProcessing = false
       }).catch(this.toastErrorHandler(this.$t('notification:page.page-layout.clone.failed')))
     },
 

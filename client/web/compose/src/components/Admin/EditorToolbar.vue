@@ -47,20 +47,20 @@
         >
           {{ $t('label.delete') }}
         </c-input-confirm>
-
         <slot name="saveAsCopy" />
-        <b-button
+
+        <c-button-submit
           v-if="!hideClone"
           data-test-id="button-clone"
+          :disabled="disableClone || buttonCloneProcessing"
           :title="cloneTooltip"
-          :disabled="disableClone || buttonProcessing"
-          variant="light"
-          size="lg"
+          :processing="buttonCloneProcessing"
+          :variant="'light'"
+          :button-text="$t('label.saveAsCopy')"
+          :button-size="'lg'"
           class="ml-2"
-          @click="$emit('clone')"
-        >
-          {{ $t('label.saveAsCopy') }}
-        </b-button>
+          @submit="$emit('clone')"
+        />
         <c-button-submit
           v-if="!hideSave"
           data-test-id="button-save-and-close"
@@ -114,6 +114,11 @@ export default {
     },
 
     buttonSaveAndCloseProcessing: {
+      type: Boolean,
+      default: false,
+    },
+
+    buttonCloneProcessing: {
       type: Boolean,
       default: false,
     },

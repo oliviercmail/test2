@@ -160,29 +160,17 @@
             {{ labels.new || $t('label.addNew') }}
           </b-button>
 
-          <b-button
+          <c-button-submit
             v-if="inEditing && !(hideSubmit || settings.hideSubmit)"
-            data-test-id="button-submit"
-            :disabled="!record || !canSaveRecord || processing"
-            class="d-flex align-items-center justify-content-center ml-2"
-            variant="primary"
-            size="lg"
+            data-test-id="button-save"
+            :disabled="!record || !canSaveRecord || processingSubmit"
+            :processing="processingSubmit"
+            :button-text="labels.submit || $t('label.save')"
+            :button-size="'lg'"
             style="min-height: 42px; min-width: 73px;"
-            @click.prevent="$emit('submit')"
-          >
-            <b-spinner
-              v-if="processingSubmit"
-              small
-              type="grow"
-            />
-
-            <span
-              v-else
-              data-test-id="button-save"
-            >
-              {{ labels.submit || $t('label.save') }}
-            </span>
-          </b-button>
+            class="d-flex align-items-center justify-content-center ml-2"
+            @submit="$emit('submit')"
+          />
 
           <slot name="end-actions" />
         </template>
@@ -194,10 +182,16 @@
 <script>
 import { compose, NoID } from '@cortezaproject/corteza-js'
 import { throttle } from 'lodash'
+import { components } from '@cortezaproject/corteza-vue'
+const { CButtonSubmit } = components
 
 export default {
   i18nOptions: {
     namespaces: 'general',
+  },
+
+  components: {
+    CButtonSubmit,
   },
 
   props: {

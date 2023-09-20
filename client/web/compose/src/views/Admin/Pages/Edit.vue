@@ -824,6 +824,7 @@
         :button-processing="buttonProcessing"
         :button-save-processing="buttonSaveProcessing"
         :button-save-and-close-processing="buttonSaveAndCloseProcessing"
+        :button-clone-processing="buttonCloneProcessing"
         @clone="handleClone()"
         @delete="handleDeletePage()"
         @save="handleSave()"
@@ -907,6 +908,7 @@ export default {
       buttonProcessing: false,
       buttonSaveProcessing: false,
       buttonSaveAndCloseProcessing: false,
+      buttonCloneProcessing: false,
 
       page: new compose.Page(),
       initialPageState: new compose.Page(),

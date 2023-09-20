@@ -45,46 +45,63 @@
         >
           {{ $t('general:label.delete') }}
         </c-input-confirm>
-        <b-button
-          variant="primary"
+
+        <c-button-submit
           data-test-id="button-save"
-          size="lg"
-          :disabled="saveDisabled || processing"
-          @click="$emit('save')"
-        >
-          {{ $t('general:label.save') }}
-        </b-button>
+          :disabled="saveDisabled || processingSave"
+          :size="'lg'"
+          :processing="processingSave"
+          :text="$t('general:label.save')"
+          @submit="$emit('save')"
+        />
       </b-col>
     </b-row>
   </b-container>
 </template>
+
 <script>
+import { components } from '@cortezaproject/corteza-vue'
+const { CButtonSubmit } = components
 
 export default {
+  components: {
+    CButtonSubmit,
+  },
+
   props: {
     backLink: {
       type: Object,
       required: false,
       default: () => ({ name: 'root' }),
     },
+
     hideDelete: {
       type: Boolean,
       required: false,
     },
+
     deleteDisabled: {
       type: Boolean,
       required: false,
     },
+
     hideSave: {
       type: Boolean,
       required: false,
     },
+
     saveDisabled: {
       type: Boolean,
       required: false,
       default: false,
     },
+
     processing: {
+      type: Boolean,
+      required: false,
+    },
+
+    processingSave: {
       type: Boolean,
       required: false,
     },

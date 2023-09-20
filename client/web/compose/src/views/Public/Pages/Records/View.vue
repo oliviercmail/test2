@@ -273,7 +273,11 @@ export default {
     },
 
     viewHasBack () {
-      return this.previousPages.length > 0 || this.modalPreviousPages.length > 0
+      if (this.showRecordModal) {
+        return this.modalPreviousPages.length > 0
+      }
+
+      return this.previousPages.length > 0
     },
   },
 

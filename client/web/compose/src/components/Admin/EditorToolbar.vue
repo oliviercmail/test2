@@ -14,7 +14,7 @@
         <b-button
           data-test-id="button-back-without-save"
           variant="link"
-          :disabled="processing"
+          :disabled="buttonProcessing"
           class="text-dark back mr-auto"
           @click="$emit('back')"
         >
@@ -37,7 +37,7 @@
         <c-input-confirm
           v-if="!hideDelete"
           v-b-tooltip.hover
-          :disabled="disableDelete || processing"
+          :disabled="disableDelete || buttonProcessing"
           size="lg"
           size-confirm="lg"
           variant="danger"
@@ -53,7 +53,7 @@
           v-if="!hideClone"
           data-test-id="button-clone"
           :title="cloneTooltip"
-          :disabled="disableClone || processing"
+          :disabled="disableClone || buttonProcessing"
           variant="light"
           size="lg"
           class="ml-2"
@@ -61,22 +61,22 @@
         >
           {{ $t('label.saveAsCopy') }}
         </b-button>
-
-        <b-button
-          v-if="!hideSave"
-          data-test-id="button-save-and-close"
-          :disabled="disableSave || processing"
-          variant="light"
-          size="lg"
-          class="ml-2"
-          @click.prevent="$emit('saveAndClose')"
-        >
-          {{ $t('label.saveAndClose') }}
-        </b-button>
         <c-button-submit
           v-if="!hideSave"
-          :disabled="disableSave || processing"
-          :processing="true"
+          data-test-id="button-save-and-close"
+          :disabled="disableSave || buttonSaveAndCloseProcessing"
+          :processing="buttonSaveAndCloseProcessing"
+          :variant="'light'"
+          :button-text="$t('label.saveAndClose')"
+          :button-size="'lg'"
+          class="ml-2"
+          @submit="$emit('saveAndClose')"
+        />
+        <c-button-submit
+          v-if="!hideSave"
+          data-test-id="button-save"
+          :disabled="disableSave || buttonSaveProcessing"
+          :processing="buttonSaveProcessing"
           :button-text="$t('label.save')"
           :button-size="'lg'"
           class="ml-2"
@@ -103,46 +103,65 @@ export default {
   inheritAttrs: true,
 
   props: {
-    processing: {
+    buttonProcessing: {
       type: Boolean,
       default: false,
     },
+
+    buttonSaveProcessing: {
+      type: Boolean,
+      default: false,
+    },
+
+    buttonSaveAndCloseProcessing: {
+      type: Boolean,
+      default: false,
+    },
+
     backLink: {
       type: Object,
       required: false,
       default: undefined,
     },
+
     hideDelete: {
       type: Boolean,
       required: false,
     },
+
     hideSave: {
       type: Boolean,
       required: false,
     },
+
     hideClone: {
       type: Boolean,
       required: false,
     },
+
     disableDelete: {
       type: Boolean,
       required: false,
       default: false,
     },
+
     disableSave: {
       type: Boolean,
       required: false,
       default: false,
     },
+
     disableClone: {
       type: Boolean,
       default: false,
     },
+
     deleteTooltip: {
       type: String,
       required: false,
       default: '',
     },
+
     cloneTooltip: {
       type: String,
       default: '',

@@ -46,7 +46,7 @@
     </portal>
 
     <div
-      v-if="processing"
+      v-if="buttonProcessing"
       class="d-flex align-items-center justify-content-center h-100"
     >
       <b-spinner />
@@ -775,7 +775,7 @@
           label-class="text-primary"
         >
           <div
-            v-if="processing"
+            v-if="buttonProcessing"
             class="d-flex align-items-center justify-content-center h-100"
           >
             <b-spinner />
@@ -821,7 +821,9 @@
         :hide-clone="hideClone"
         :hide-save="hideSave"
         :disable-save="disableSave"
-        :processing="processing"
+        :button-processing="buttonProcessing"
+        :button-save-processing="buttonSaveProcessing"
+        :button-save-and-close-processing="buttonSaveAndCloseProcessing"
         @clone="handleClone()"
         @delete="handleDeletePage()"
         @save="handleSave()"
@@ -902,7 +904,9 @@ export default {
 
   data () {
     return {
-      processing: false,
+      buttonProcessing: false,
+      buttonSaveProcessing: false,
+      buttonSaveAndCloseProcessing: false,
 
       page: new compose.Page(),
       initialPageState: new compose.Page(),
@@ -1072,7 +1076,7 @@ export default {
         this.removedLayouts = new Set()
 
         if (pageID) {
-          this.processing = true
+          this.buttonProcessing = true
 
           const { namespaceID } = this.namespace
           this.findPageByID({ namespaceID, pageID, force: true }).then((page) => {
@@ -1081,7 +1085,7 @@ export default {
             return this.fetchAttachments()
           }).then(this.fetchLayouts)
             .finally(() => {
-              this.processing = false
+              this.buttonProcessing = false
             }).catch(this.toastErrorHandler(this.$t('notification:page.loadFailed')))
         }
       },
@@ -1189,7 +1193,13 @@ export default {
     },
 
     handleSave ({ closeOnSuccess = false } = {}) {
-      this.processing = true
+      this.buttonProcessing = true
+
+      if (closeOnSuccess) {
+        this.buttonSaveAndCloseProcessing = true
+      } else {
+        this.buttonSaveProcessing = true
+      }
 
       /**
        * Pass a special tag alongside payload that
@@ -1215,7 +1225,13 @@ export default {
             this.$router.push(this.previousPage || { name: 'admin.pages' })
           }
         }).finally(() => {
-          this.processing = false
+          this.buttonProcessing = false
+
+          if (closeOnSuccess) {
+            this.buttonSaveAndCloseProcessing = false
+            return
+          }
+          this.buttonSaveProcessing = false
         }).catch(this.toastErrorHandler(this.$t('notification:page.saveFailed')))
     },
 
@@ -1309,7 +1325,9 @@ export default {
     },
 
     setDefaultValues () {
-      this.processing = false
+      this.buttonProcessing = false
+      this.buttonSaveAndCloseProcessing = false
+      this.buttonSaveProcessing = false
       this.page = {}
       this.initialPageState = {}
       this.showIconModal = false

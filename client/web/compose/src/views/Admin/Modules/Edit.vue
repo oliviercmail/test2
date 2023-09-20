@@ -438,7 +438,9 @@
 
     <portal to="admin-toolbar">
       <editor-toolbar
-        :processing="processing"
+        :button-processing="buttonProcessing"
+        :button-save-processing="buttonSaveProcessing"
+        :button-save-and-close-processing="buttonSaveAndCloseProcessing"
         :hide-delete="hideDelete"
         hide-clone
         :hide-save="hideSave"
@@ -520,7 +522,9 @@ export default {
       module: undefined,
       initialModuleState: undefined,
       hasRecords: true,
-      processing: false,
+      buttonProcessing: false,
+      buttonSaveProcessing: false,
+      buttonSaveAndCloseProcessing: false,
 
       federationSettings: {
         modal: false,
@@ -766,7 +770,13 @@ export default {
        * instructs store layer to add content-language header to the API request
        */
       const resourceTranslationLanguage = this.currentLanguage
-      this.processing = true
+      this.buttonProcessing = true
+
+      if (closeOnSuccess) {
+        this.buttonSaveAndCloseProcessing = true
+      } else {
+        this.buttonSaveProcessing = true
+      }
 
       if (!this.isEdit) {
         // Filter out record fields that reference this not yet created module
@@ -806,7 +816,13 @@ export default {
           }
         }).catch(this.toastErrorHandler(this.$t('notification:module.saveFailed')))
           .finally(() => {
-            this.processing = false
+            this.buttonProcessing = false
+
+            if (closeOnSuccess) {
+            this.buttonSaveAndCloseProcessing = false
+            return
+          }
+          this.buttonSaveProcessing = false
           })
       } else {
         this.updateModule({ ...this.module, resourceTranslationLanguage }).then(module => {
@@ -819,13 +835,19 @@ export default {
           }
         }).catch(this.toastErrorHandler(this.$t('notification:module.saveFailed')))
           .finally(() => {
-            this.processing = false
+            this.buttonProcessing = false
+
+            if (closeOnSuccess) {
+              this.buttonSaveAndCloseProcessing = false
+              return
+            }
+            this.buttonSaveProcessing = false
           })
       }
     },
 
     handleDelete () {
-      this.processing = true
+      this.buttonProcessing = true
 
       this.deleteModule(this.module).then(() => {
         const moduleRecordPage = this.pages.find(p => p.moduleID === this.module.moduleID)
@@ -835,7 +857,7 @@ export default {
       }).catch(this.toastErrorHandler(this.$t('notification:module.deleteFailed')))
         .finally(() => {
           this.toastSuccess(this.$t('notification:module.deleted'))
-          this.processing = false
+          this.buttonProcessing = false
           this.$router.push({ name: 'admin.modules' })
         })
     },
@@ -849,13 +871,13 @@ export default {
           })
           .catch(this.toastErrorHandler(this.$t('notification:connection.read-failed')))
           .finally(() => {
-            this.processing = false
+            this.buttonProcessing = false
           })
       }
     },
 
     async fetchSensitivityLevels () {
-      this.processing = true
+      this.buttonProcessing = true
 
       return this.$SystemAPI.dalSensitivityLevelList()
         .then(({ set = [] }) => {
@@ -863,7 +885,7 @@ export default {
         })
         .catch(this.toastErrorHandler(this.$t('notification:sensitivity-level.fetch-failed')))
         .finally(() => {
-          this.processing = false
+          this.buttonProcessing = false
         })
     },
 
@@ -875,7 +897,9 @@ export default {
       this.module = undefined
       this.initialModuleState = undefined
       this.hasRecords = true
-      this.processing = false
+      this.buttonProcessing = false
+      this.buttonSaveAndCloseProcessing = false
+      this.buttonSaveProcessing = false
       this.federationSettings = {}
       this.discoverySettings = {}
       this.abortableRequests = []

@@ -6,7 +6,6 @@
     :disabled="disabled || processing || success"
     :size="buttonSize"
     :class="buttonClass"
-    class="d-flex align-items-center justify-content-center text-center"
     @click.prevent="$emit('submit')"
   >
     <b-spinner

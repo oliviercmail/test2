@@ -271,7 +271,7 @@
                 >
                   <b-button
                     :title="$t('edit.loadData')"
-                    :disabled="processing || !reportsValid"
+                    :disabled="buttonProcessing || !reportsValid"
                     variant="outline-light"
                     size="lg"
                     class="d-flex align-items-center text-primary ml-auto border-0 px-2 mt-2 mr-2"
@@ -297,7 +297,9 @@
 
     <portal to="admin-toolbar">
       <editor-toolbar
-        :processing="processing"
+        :button-processing="buttonProcessing"
+        :button-save-processing="buttonSaveProcessing"
+        :button-save-and-close-processing="buttonSaveAndCloseProcessing"
         :hide-delete="hideDelete"
         :hide-save="hideSave"
         hide-clone
@@ -372,7 +374,9 @@ export default {
     return {
       chart: undefined,
       initialChartState: undefined,
-      processing: false,
+      buttonProcessing: false,
+      buttonSaveProcessing: false,
+      buttonSaveAndCloseProcessing: false,
 
       editReportIndex: undefined,
       checkboxLabel: {
@@ -601,7 +605,7 @@ export default {
     },
 
     update () {
-      this.processing = true
+      this.buttonProcessing = true
       this.$refs.chart.updateChart()
     },
 
@@ -610,10 +614,18 @@ export default {
     }, 300),
 
     onUpdated () {
-      this.processing = false
+      this.buttonProcessing = false
     },
 
     handleSave ({ closeOnSuccess = false } = {}) {
+      this.buttonProcessing = true
+
+      if (closeOnSuccess) {
+        this.buttonSaveAndCloseProcessing = true
+      } else {
+        this.buttonSaveProcessing = true
+      }
+
       /**
        * Pass a special tag alongside payload that
        * instructs store layer to add content-language header to the API request
@@ -631,7 +643,17 @@ export default {
           } else {
             this.$router.push({ name: 'admin.charts.edit', params: { chartID: chartID } })
           }
-        }).catch(this.toastErrorHandler(this.$t('notification:chart.saveFailed')))
+        })
+        .catch(this.toastErrorHandler(this.$t('notification:chart.saveFailed')))
+        .finally(() => {
+          this.buttonProcessing = false
+
+          if (closeOnSuccess) {
+            this.buttonSaveAndCloseProcessing = false
+            return
+          }
+          this.buttonSaveProcessing = false
+        })
       } else {
         this.updateChart(c).then((chart) => {
           this.chart = chartConstructor(chart)
@@ -640,15 +662,29 @@ export default {
           if (closeOnSuccess) {
             this.redirect()
           }
-        }).catch(this.toastErrorHandler(this.$t('notification:chart.saveFailed')))
+        })
+        .catch(this.toastErrorHandler(this.$t('notification:chart.saveFailed')))
+        .finally(() => {
+          this.buttonProcessing = false
+
+          if (closeOnSuccess) {
+            this.buttonSaveAndCloseProcessing = false
+            return
+          }
+          this.buttonSaveProcessing = false
+        })
       }
     },
 
     handleDelete () {
+      this.buttonProcessing = true
+
       this.deleteChart(this.chart).then(() => {
         this.toastSuccess(this.$t('notification:chart.deleted'))
         this.$router.push({ name: 'admin.charts' })
-      }).catch(this.toastErrorHandler(this.$t('notification:chart.deleteFailed')))
+      })
+      .catch(this.toastErrorHandler(this.$t('notification:chart.deleteFailed')))
+      .finally(() => { this.buttonProcessing = false })
     },
 
     redirect () {

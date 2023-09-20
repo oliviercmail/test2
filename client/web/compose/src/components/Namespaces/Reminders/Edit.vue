@@ -120,13 +120,13 @@
         {{ $t('label.back') }}
       </b-button>
 
-      <b-button
+      <c-button-submit
         data-test-id="button-save"
-        variant="primary"
-        @click="$emit('save', reminder)"
-      >
-        {{ $t('label.save') }}
-      </b-button>
+        :disabled="disableSave"
+        :processing="buttonSaveProcessing"
+        :button-text="$t('label.save')"
+        @submit="$emit('save', reminder)"
+      />
     </div>
   </div>
 </template>
@@ -136,7 +136,7 @@ import _ from 'lodash'
 import { VueSelect } from 'vue-select'
 import { system } from '@cortezaproject/corteza-js'
 import { components } from '@cortezaproject/corteza-vue'
-const { CInputDateTime } = components
+const { CInputDateTime, CButtonSubmit } = components
 
 export default {
   i18nOptions: {
@@ -146,7 +146,9 @@ export default {
   components: {
     VueSelect,
     CInputDateTime,
+    CButtonSubmit,
   },
+
   props: {
     edit: {
       type: Object,
@@ -158,6 +160,16 @@ export default {
       type: Array,
       required: true,
       default: () => [],
+    },
+
+    disableSave: {
+      type: Boolean,
+      default: false,
+    },
+
+    buttonSaveProcessing: {
+      type: Boolean,
+      default: false,
     },
   },
 

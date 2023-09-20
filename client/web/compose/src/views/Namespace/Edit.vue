@@ -274,7 +274,9 @@
     </div>
 
     <editor-toolbar
-      :processing="processing"
+      :button-processing="buttonProcessing"
+      :button-save-processing="buttonSaveProcessing"
+      :button-save-and-close-processing="buttonSaveAndCloseProcessing"
       :hide-delete="hideDelete"
       :hide-clone="!isEdit"
       :hide-save="hideSave"
@@ -339,7 +341,9 @@ export default {
 
   data () {
     return {
-      processing: false,
+      buttonProcessing: false,
+      buttonSaveProcessing: false,
+      buttonSaveAndCloseProcessing: false,
 
       namespace: undefined,
       initialNamespaceState: undefined,
@@ -468,7 +472,7 @@ export default {
     }),
 
     async fetchNamespace () {
-      this.processing = true
+      this.buttonProcessing = true
 
       const namespaceID = this.$route.params.namespaceID
 
@@ -506,7 +510,7 @@ export default {
       this.initialNamespaceState = this.namespace.clone()
       this.namespaceAssetsInitialState = this.namespaceAssets
 
-      this.processing = false
+      this.buttonProcessing = false
     },
 
     exportNamespace () {
@@ -539,7 +543,13 @@ export default {
     },
 
     async handleSave ({ closeOnSuccess = false } = {}) {
-      this.processing = true
+      this.buttonProcessing = true
+
+      if (closeOnSuccess) {
+        this.buttonSaveAndCloseProcessing = true
+      } else {
+        this.buttonSaveProcessing = true
+      }
 
       /**
        * Pass a special tag alongside payload that
@@ -558,7 +568,7 @@ export default {
         } catch (e) {
           const error = JSON.stringify(e) === '{}' ? '' : e
           this.toastErrorHandler(this.$t('notification:namespace.assetUploadFailed'))(error)
-          this.processing = false
+          this.buttonProcessing = false
           return
         }
       }
@@ -581,7 +591,13 @@ export default {
           })
         } catch (e) {
           this.toastErrorHandler(this.$t('notification:namespace.saveFailed'))(e)
-          this.processing = false
+          this.buttonProcessing = false
+
+          if (closeOnSuccess) {
+            this.buttonSaveAndCloseProcessing = false
+            return
+          }
+          this.buttonSaveProcessing = false
           return
         }
       } else if (this.isClone) {
@@ -591,7 +607,7 @@ export default {
           })
         } catch (e) {
           this.toastErrorHandler(this.$t('notification:namespace.cloneFailed'))(e)
-          this.processing = false
+          this.buttonProcessing = false
           return
         }
       } else {
@@ -604,7 +620,13 @@ export default {
           })
         } catch (e) {
           this.toastErrorHandler(this.$t('notification:namespace.createFailed'))(e)
-          this.processing = false
+          this.buttonProcessing = false
+
+          if (closeOnSuccess) {
+            this.buttonSaveAndCloseProcessing = false
+            return
+          }
+          this.buttonSaveProcessing = false
           return
         }
       }
@@ -615,7 +637,13 @@ export default {
       this.initialNamespaceState = this.namespace.clone()
       this.isApplicationInitialState = this.isApplication
 
-      this.processing = false
+      this.buttonProcessing = false
+
+      if (closeOnSuccess) {
+        this.buttonSaveAndCloseProcessing = false
+      } else {
+        this.buttonSaveProcessing = false
+      }
 
       if (closeOnSuccess) {
         this.$router.push(this.previousPage || { name: 'namespace.manage' })
@@ -625,7 +653,7 @@ export default {
     },
 
     handleDelete () {
-      this.processing = true
+      this.buttonProcessing = true
 
       const { namespaceID } = this.namespace
       const { applicationID } = this.application || {}
@@ -642,7 +670,7 @@ export default {
           this.toastSuccess(this.$t('notification:namespace.deleted'))
         })
         .finally(() => {
-          this.processing = false
+          this.buttonProcessing = false
         })
     },
 
@@ -747,7 +775,9 @@ export default {
     },
 
     setDefaultValues () {
-      this.processing = false
+      this.buttonProcessing = false
+      this.buttonSaveAndCloseProcessing = false
+      this.buttonSaveProcessing = false
       this.namespace = undefined
       this.initialNamespaceState = undefined
       this.namespaceAssets = {}

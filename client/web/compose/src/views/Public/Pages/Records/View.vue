@@ -56,7 +56,7 @@
         :hide-clone="!layoutButtons.has('clone')"
         :hide-edit="!layoutButtons.has('edit')"
         :hide-submit="!layoutButtons.has('submit')"
-        :has-back="previousPages.length > 0"
+        :has-back="viewHasBack"
         @add="handleAdd()"
         @clone="handleClone()"
         @edit="handleEdit()"
@@ -271,6 +271,10 @@ export default {
       const { recordID } = this.record || {}
       return this.getNextAndPrevRecord(recordID)
     },
+
+    viewHasBack () {
+      return this.previousPages.length > 0 || this.modalPreviousPages.length > 0
+    },
   },
 
   watch: {
@@ -332,6 +336,7 @@ export default {
     ...mapActions({
       popPreviousPages: 'ui/popPreviousPages',
       clearRecordSet: 'record/clearSet',
+      popModalPreviousPage: 'ui/popModalPreviousPage',
     }),
 
     async loadRecord (recordID = this.recordID) {
@@ -384,13 +389,10 @@ export default {
        * came from (and "where" is back).
       */
       if (this.showRecordModal) {
-        const { recordID, recordPageID } = this.modalPreviousPages.slice(-1)[0] || {}
-
-        if (recordID && recordPageID) {
+        this.popModalPreviousPage().then(({ recordID, recordPageID }) => {
           this.$emit('on-modal-back', { recordID, recordPageID, pushModalPreviousPage: false })
-        } else {
-          this.$bvModal.hide('record-modal')
-        }
+        })
+
         return
       }
 

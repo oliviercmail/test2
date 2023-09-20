@@ -127,7 +127,6 @@ export default {
       clearRecordIDs: 'ui/clearRecordIDs',
       pushModalPreviousPage: 'ui/pushModalPreviousPage',
       clearModalPreviousPage: 'ui/clearModalPreviousPage',
-      popModalPreviousPage: 'ui/popModalPreviousPage',
     }),
 
     loadRecord ({ recordID, recordPageID, values, pushModalPreviousPage = true }) {
@@ -135,18 +134,8 @@ export default {
       this.loadModal({ recordID, recordPageID })
 
       // Push the previous modal view page to the modal route history stack on the store so we can go back to it
-      const { prevRecordID, prevRecordPageID } = this.prevRouteQuery
-
-      if (prevRecordID && prevRecordPageID && pushModalPreviousPage) {
-        this.pushModalPreviousPage({ recordID: prevRecordID, recordPageID: prevRecordPageID })
-
-        this.prevRouteQuery = { prevRecordID: recordID, prevRecordPageID: recordPageID }
-      } else {
-        this.popModalPreviousPage()
-
-        if (!this.modalPreviousPages.length) {
-          this.prevRouteQuery = { prevRecordID: recordID, prevRecordPageID: recordPageID }
-        }
+      if (pushModalPreviousPage) {
+        this.pushModalPreviousPage({ recordID, recordPageID })
       }
 
       setTimeout(() => {

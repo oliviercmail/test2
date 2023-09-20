@@ -120,7 +120,7 @@ export default function (ComposeAPI) {
       },
 
       popModalPreviousPage ({ commit, state }) {
-        const previousPage = state.modalPreviousPages.slice(-1)[0]
+        const previousPage = state.modalPreviousPages[state.modalPreviousPages.length - 2] || {}
         commit(types.popModalPreviousPage)
         return new Promise((resolve) => resolve(previousPage))
       },

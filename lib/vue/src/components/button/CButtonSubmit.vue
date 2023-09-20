@@ -5,26 +5,35 @@
     :variant="variant"
     :disabled="disabled || processing || success"
     :size="size"
+    :block="block"
     :title="title"
     :class="buttonClass"
     @click.prevent="$emit('submit')"
   >
-    <b-spinner
-      v-if="processing"
-      small
-      :variant="iconVariant"
-    />
-    <font-awesome-icon
-      v-else-if="success"
-      :icon="['fas', 'check']"
-      :class="iconVariant"
-      class="text-white h3 mb-0"
-    />
-    <span
-      v-else
-    >
-      {{ text }}
-    </span>
+    <template v-if="processing">
+      <span
+        v-if="loadingText"
+        class="loading-text mx-2"
+      >
+        {{ loadingText }}
+      </span>
+      <b-spinner
+        v-else
+        small
+        :variant="iconVariant"
+      />
+    </template>
+    <template v-else-if="success">
+      <font-awesome-icon
+        :class="iconVariant"
+        class="text-white h3 mb-0"
+      />
+    </template>
+    <template v-else>
+      <span>
+        {{ text }}
+      </span>
+    </template>
   </b-button>
 </template>
 
@@ -67,9 +76,19 @@ export default {
       default: '',
     },
 
+    loadingText: {
+      type: String,
+      default: '',
+    },
+
     size: {
       type: String,
       default: 'md',
+    },
+
+    block: {
+      type: Boolean,
+      value: false,
     },
 
     variant: {
@@ -94,5 +113,11 @@ export default {
 .submit {
   min-width: 75px;
   min-height: 35px;
+}
+
+.loading-text::after {
+  display: inline-block;
+  animation: saving steps(1, end) 1s infinite;
+  content: '';
 }
 </style>

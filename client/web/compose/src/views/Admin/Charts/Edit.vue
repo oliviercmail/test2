@@ -271,7 +271,7 @@
                 >
                   <b-button
                     :title="$t('edit.loadData')"
-                    :disabled="buttonProcessing || !reportsValid"
+                    :disabled="processing || !reportsValid"
                     variant="outline-light"
                     size="lg"
                     class="d-flex align-items-center text-primary ml-auto border-0 px-2 mt-2 mr-2"
@@ -297,9 +297,9 @@
 
     <portal to="admin-toolbar">
       <editor-toolbar
-        :button-processing="buttonProcessing"
-        :button-save-processing="buttonSaveProcessing"
-        :button-save-and-close-processing="buttonSaveAndCloseProcessing"
+        :processing="processing"
+        :processing-save="processingSave"
+        :processing-save-and-close="processingSaveAndClose"
         :hide-delete="hideDelete"
         :hide-save="hideSave"
         hide-clone
@@ -374,9 +374,9 @@ export default {
     return {
       chart: undefined,
       initialChartState: undefined,
-      buttonProcessing: false,
-      buttonSaveProcessing: false,
-      buttonSaveAndCloseProcessing: false,
+      processing: false,
+      processingSave: false,
+      processingSaveAndClose: false,
 
       editReportIndex: undefined,
       checkboxLabel: {
@@ -605,7 +605,7 @@ export default {
     },
 
     update () {
-      this.buttonProcessing = true
+      this.processing = true
       this.$refs.chart.updateChart()
     },
 
@@ -614,16 +614,16 @@ export default {
     }, 300),
 
     onUpdated () {
-      this.buttonProcessing = false
+      this.processing = false
     },
 
     handleSave ({ closeOnSuccess = false } = {}) {
-      this.buttonProcessing = true
+      this.processing = true
 
       if (closeOnSuccess) {
-        this.buttonSaveAndCloseProcessing = true
+        this.processingSaveAndClose = true
       } else {
-        this.buttonSaveProcessing = true
+        this.processingSave = true
       }
 
       /**
@@ -646,13 +646,13 @@ export default {
         })
           .catch(this.toastErrorHandler(this.$t('notification:chart.saveFailed')))
           .finally(() => {
-            this.buttonProcessing = false
+            this.processing = false
 
             if (closeOnSuccess) {
-              this.buttonSaveAndCloseProcessing = false
+              this.processingSaveAndClose = false
               return
             }
-            this.buttonSaveProcessing = false
+            this.processingSave = false
           })
       } else {
         this.updateChart(c).then((chart) => {
@@ -665,26 +665,26 @@ export default {
         })
           .catch(this.toastErrorHandler(this.$t('notification:chart.saveFailed')))
           .finally(() => {
-            this.buttonProcessing = false
+            this.processing = false
 
             if (closeOnSuccess) {
-              this.buttonSaveAndCloseProcessing = false
+              this.processingSaveAndClose = false
               return
             }
-            this.buttonSaveProcessing = false
+            this.processingSave = false
           })
       }
     },
 
     handleDelete () {
-      this.buttonProcessing = true
+      this.processing = true
 
       this.deleteChart(this.chart).then(() => {
         this.toastSuccess(this.$t('notification:chart.deleted'))
         this.$router.push({ name: 'admin.charts' })
       })
         .catch(this.toastErrorHandler(this.$t('notification:chart.deleteFailed')))
-        .finally(() => { this.buttonProcessing = false })
+        .finally(() => { this.processing = false })
     },
 
     redirect () {

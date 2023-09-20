@@ -4,7 +4,7 @@ import { fetchID } from 'corteza-webapp-compose/src/lib/block'
 export default {
   data () {
     return {
-      buttonCloneProcessing: false,
+      processingClone: false,
     }
   },
 
@@ -24,7 +24,7 @@ export default {
     },
 
     handleClone () {
-      this.buttonCloneProcessing = true
+      this.processingClone = true
       const { namespaceID = NoID } = this.namespace
       const pattern = /\([0-9]+\)/
 
@@ -85,7 +85,7 @@ export default {
           this.$router.push({ name: this.$route.name, params: { pageID } })
         })
         .catch(this.toastErrorHandler(this.$t('notification:page.cloneFailed')))
-        .finally(() => { this.buttonCloneProcessing = false })
+        .finally(() => { this.processingClone = false })
     },
 
     cloneLayouts (pageID) {

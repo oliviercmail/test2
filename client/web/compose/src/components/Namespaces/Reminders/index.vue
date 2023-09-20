@@ -14,7 +14,7 @@
       :edit="edit"
       :users="users"
       :disable-save="disableSave"
-      :button-save-processing="buttonSaveProcessing"
+      :processing-save="processingSave"
       class="flex-fill"
       @dismiss="onDismiss"
       @back="onCancel()"
@@ -40,7 +40,7 @@ export default {
       reminders: [],
       edit: null,
       disableSave: false,
-      buttonSaveProcessing: false,
+      processingSave: false,
     }
   },
 
@@ -81,7 +81,7 @@ export default {
 
     onSave (r) {
       this.disableSave = true
-      this.buttonSaveProcessing = true
+      this.processingSave = true
       const endpoint = r.reminderID && r.reminderID !== NoID ? 'reminderUpdate' : 'reminderCreate'
 
       this.$SystemAPI[endpoint](r).then(() => {
@@ -91,7 +91,7 @@ export default {
         this.$Reminder.prefetch()
       }).finally(() => {
         this.disableSave = false
-        this.buttonSaveProcessing = false
+        this.processingSave = false
       })
     },
 

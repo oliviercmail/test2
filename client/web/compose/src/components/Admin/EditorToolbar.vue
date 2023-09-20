@@ -14,7 +14,7 @@
         <b-button
           data-test-id="button-back-without-save"
           variant="link"
-          :disabled="buttonProcessing"
+          :disabled="processing"
           class="text-dark back mr-auto"
           @click="$emit('back')"
         >
@@ -37,7 +37,7 @@
         <c-input-confirm
           v-if="!hideDelete"
           v-b-tooltip.hover
-          :disabled="disableDelete || buttonProcessing"
+          :disabled="disableDelete || processing"
           size="lg"
           size-confirm="lg"
           variant="danger"
@@ -52,33 +52,33 @@
         <c-button-submit
           v-if="!hideClone"
           data-test-id="button-clone"
-          :disabled="disableClone || buttonCloneProcessing"
+          :disabled="disableClone || processingClone"
           :title="cloneTooltip"
-          :processing="buttonCloneProcessing"
+          :processing="processingClone"
           :variant="'light'"
-          :button-text="$t('label.saveAsCopy')"
-          :button-size="'lg'"
+          :text="$t('label.saveAsCopy')"
+          :size="'lg'"
           class="ml-2"
           @submit="$emit('clone')"
         />
         <c-button-submit
           v-if="!hideSave"
           data-test-id="button-save-and-close"
-          :disabled="disableSave || buttonSaveAndCloseProcessing"
-          :processing="buttonSaveAndCloseProcessing"
+          :disabled="disableSave || processingSaveAndClose"
+          :processing="processingSaveAndClose"
           :variant="'light'"
-          :button-text="$t('label.saveAndClose')"
-          :button-size="'lg'"
+          :text="$t('label.saveAndClose')"
+          :size="'lg'"
           class="ml-2"
           @submit="$emit('saveAndClose')"
         />
         <c-button-submit
           v-if="!hideSave"
           data-test-id="button-save"
-          :disabled="disableSave || buttonSaveProcessing"
-          :processing="buttonSaveProcessing"
-          :button-text="$t('label.save')"
-          :button-size="'lg'"
+          :disabled="disableSave || processingSave"
+          :processing="processingSave"
+          :text="$t('label.save')"
+          :size="'lg'"
           class="ml-2"
           @submit="$emit('save')"
         />
@@ -103,22 +103,22 @@ export default {
   inheritAttrs: true,
 
   props: {
-    buttonProcessing: {
+    processing: {
       type: Boolean,
       default: false,
     },
 
-    buttonSaveProcessing: {
+    processingSave: {
       type: Boolean,
       default: false,
     },
 
-    buttonSaveAndCloseProcessing: {
+    processingSaveAndClose: {
       type: Boolean,
       default: false,
     },
 
-    buttonCloneProcessing: {
+    processingClone: {
       type: Boolean,
       default: false,
     },

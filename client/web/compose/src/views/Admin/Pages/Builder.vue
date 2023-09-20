@@ -256,10 +256,10 @@
       <editor-toolbar
         :hide-save="!page.canUpdatePage"
         hide-clone
-        :button-processing="buttonProcessing"
-        :button-save-processing="buttonSaveProcessing"
-        :button-save-and-close-processing="buttonSaveAndCloseProcessing"
-        :button-clone-processing="buttonCloneProcessing"
+        :processing="processing"
+        :processing-save="processingSave"
+        :processing-save-and-close="processingSaveAndClose"
+        :processing-clone="processingClone"
         @save="handleSaveLayout()"
         @delete="handleDeleteLayout()"
         @saveAndClose="handleSaveLayout({ closeOnSuccess: true })"
@@ -363,10 +363,10 @@ export default {
     return {
       title: '',
 
-      buttonProcessing: false,
-      buttonSaveProcessing: false,
-      buttonSaveAndCloseProcessing: false,
-      buttonCloneProcessing: false,
+      processing: false,
+      processingSave: false,
+      processingSaveAndClose: false,
+      processingClone: false,
 
       processingLayout: false,
 
@@ -802,12 +802,12 @@ export default {
         }
       })
 
-      this.buttonProcessing = true
+      this.processing = true
 
       if (closeOnSuccess) {
-        this.buttonSaveAndCloseProcessing = true
+        this.processingSaveAndClose = true
       } else {
-        this.buttonSaveProcessing = true
+        this.processingSave = true
       }
 
       return Promise.all([
@@ -850,13 +850,13 @@ export default {
         await this.fetchPageLayouts()
         this.setLayout(layout.pageLayoutID, false)
       }).finally(() => {
-        this.buttonProcessing = false
+        this.processing = false
 
         if (closeOnSuccess) {
-          this.buttonSaveAndCloseProcessing = false
+          this.processingSaveAndClose = false
           return
         }
-        this.buttonSaveProcessing = false
+        this.processingSave = false
       }).catch(this.toastErrorHandler(this.$t('notification:page.page-layout.save.failed')))
     },
 
@@ -920,7 +920,7 @@ export default {
     },
 
     handleDeleteLayout () {
-      this.buttonProcessing = true
+      this.processing = true
 
       this.deletePageLayout({ ...this.layout }).then(() => {
         return this.fetchPageLayouts()
@@ -928,7 +928,7 @@ export default {
         this.setLayout()
         this.toastSuccess(this.$t('notification:page.page-layout.delete.success'))
       }).finally(() => {
-        this.buttonProcessing = false
+        this.processing = false
       }).catch(this.toastErrorHandler(this.$t('notification:page.page-layout.delete.failed')))
     },
 
@@ -1077,9 +1077,10 @@ export default {
 
     setDefaultValues () {
       this.title = ''
-      this.buttonProcessing = false
-      this.buttonSaveAndCloseProcessing = false
-      this.buttonSaveProcessing = false
+      this.processing = false
+      this.processingSaveAndClose = false
+      this.processingSave = false
+      this.processingClone = false
       this.processingLayout = false
       this.page = undefined
       this.layout = undefined

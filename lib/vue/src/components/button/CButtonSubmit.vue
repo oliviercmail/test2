@@ -4,7 +4,7 @@
     type="submit"
     :variant="variant"
     :disabled="disabled || processing || success"
-    :size="buttonSize"
+    :size="size"
     :title="title"
     :class="buttonClass"
     @click.prevent="$emit('submit')"
@@ -23,7 +23,7 @@
     <span
       v-else
     >
-      {{ buttonText }}
+      {{ text }}
     </span>
   </b-button>
 </template>
@@ -62,12 +62,12 @@ export default {
       default: '',
     },
 
-    buttonText: {
+    text: {
       type: String,
       default: '',
     },
 
-    buttonSize: {
+    size: {
       type: String,
       default: 'md',
     },

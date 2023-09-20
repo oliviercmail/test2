@@ -123,8 +123,8 @@
       <c-button-submit
         data-test-id="button-save"
         :disabled="disableSave"
-        :processing="buttonSaveProcessing"
-        :button-text="$t('label.save')"
+        :processing="processingSave"
+        :text="$t('label.save')"
         @submit="$emit('save', reminder)"
       />
     </div>
@@ -167,7 +167,7 @@ export default {
       default: false,
     },
 
-    buttonSaveProcessing: {
+    processingSave: {
       type: Boolean,
       default: false,
     },

@@ -46,7 +46,7 @@
     </portal>
 
     <div
-      v-if="buttonProcessing"
+      v-if="processing"
       class="d-flex align-items-center justify-content-center h-100"
     >
       <b-spinner />
@@ -775,7 +775,7 @@
           label-class="text-primary"
         >
           <div
-            v-if="buttonProcessing"
+            v-if="processing"
             class="d-flex align-items-center justify-content-center h-100"
           >
             <b-spinner />
@@ -821,10 +821,10 @@
         :hide-clone="hideClone"
         :hide-save="hideSave"
         :disable-save="disableSave"
-        :button-processing="buttonProcessing"
-        :button-save-processing="buttonSaveProcessing"
-        :button-save-and-close-processing="buttonSaveAndCloseProcessing"
-        :button-clone-processing="buttonCloneProcessing"
+        :processing="processing"
+        :processing-save="processingSave"
+        :processing-save-and-close="processingSaveAndClose"
+        :processing-clone="processingClone"
         @clone="handleClone()"
         @delete="handleDeletePage()"
         @save="handleSave()"
@@ -905,10 +905,10 @@ export default {
 
   data () {
     return {
-      buttonProcessing: false,
-      buttonSaveProcessing: false,
-      buttonSaveAndCloseProcessing: false,
-      buttonCloneProcessing: false,
+      processing: false,
+      processingSave: false,
+      processingSaveAndClose: false,
+      processingClone: false,
 
       page: new compose.Page(),
       initialPageState: new compose.Page(),
@@ -1078,7 +1078,7 @@ export default {
         this.removedLayouts = new Set()
 
         if (pageID) {
-          this.buttonProcessing = true
+          this.processing = true
 
           const { namespaceID } = this.namespace
           this.findPageByID({ namespaceID, pageID, force: true }).then((page) => {
@@ -1087,7 +1087,7 @@ export default {
             return this.fetchAttachments()
           }).then(this.fetchLayouts)
             .finally(() => {
-              this.buttonProcessing = false
+              this.processing = false
             }).catch(this.toastErrorHandler(this.$t('notification:page.loadFailed')))
         }
       },
@@ -1195,12 +1195,12 @@ export default {
     },
 
     handleSave ({ closeOnSuccess = false } = {}) {
-      this.buttonProcessing = true
+      this.processing = true
 
       if (closeOnSuccess) {
-        this.buttonSaveAndCloseProcessing = true
+        this.processingSaveAndClose = true
       } else {
-        this.buttonSaveProcessing = true
+        this.processingSave = true
       }
 
       /**
@@ -1227,13 +1227,13 @@ export default {
             this.$router.push(this.previousPage || { name: 'admin.pages' })
           }
         }).finally(() => {
-          this.buttonProcessing = false
+          this.processing = false
 
           if (closeOnSuccess) {
-            this.buttonSaveAndCloseProcessing = false
+            this.processingSaveAndClose = false
             return
           }
-          this.buttonSaveProcessing = false
+          this.processingSave = false
         }).catch(this.toastErrorHandler(this.$t('notification:page.saveFailed')))
     },
 
@@ -1327,9 +1327,10 @@ export default {
     },
 
     setDefaultValues () {
-      this.buttonProcessing = false
-      this.buttonSaveAndCloseProcessing = false
-      this.buttonSaveProcessing = false
+      this.processing = false
+      this.processingSaveAndClose = false
+      this.processingSave = false
+      this.processingClone = false
       this.page = {}
       this.initialPageState = {}
       this.showIconModal = false

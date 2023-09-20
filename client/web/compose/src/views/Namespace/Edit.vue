@@ -274,9 +274,9 @@
     </div>
 
     <editor-toolbar
-      :button-processing="buttonProcessing"
-      :button-save-processing="buttonSaveProcessing"
-      :button-save-and-close-processing="buttonSaveAndCloseProcessing"
+      :processing="processing"
+      :processing-save="processingSave"
+      :processing-save-and-close="processingSaveAndClose"
       :hide-delete="hideDelete"
       :hide-clone="!isEdit"
       :hide-save="hideSave"
@@ -341,9 +341,9 @@ export default {
 
   data () {
     return {
-      buttonProcessing: false,
-      buttonSaveProcessing: false,
-      buttonSaveAndCloseProcessing: false,
+      processing: false,
+      processingSave: false,
+      processingSaveAndClose: false,
 
       namespace: undefined,
       initialNamespaceState: undefined,
@@ -472,7 +472,7 @@ export default {
     }),
 
     async fetchNamespace () {
-      this.buttonProcessing = true
+      this.processing = true
 
       const namespaceID = this.$route.params.namespaceID
 
@@ -510,7 +510,7 @@ export default {
       this.initialNamespaceState = this.namespace.clone()
       this.namespaceAssetsInitialState = this.namespaceAssets
 
-      this.buttonProcessing = false
+      this.processing = false
     },
 
     exportNamespace () {
@@ -543,12 +543,12 @@ export default {
     },
 
     async handleSave ({ closeOnSuccess = false } = {}) {
-      this.buttonProcessing = true
+      this.processing = true
 
       if (closeOnSuccess) {
-        this.buttonSaveAndCloseProcessing = true
+        this.processingSaveAndClose = true
       } else {
-        this.buttonSaveProcessing = true
+        this.processingSave = true
       }
 
       /**
@@ -568,7 +568,7 @@ export default {
         } catch (e) {
           const error = JSON.stringify(e) === '{}' ? '' : e
           this.toastErrorHandler(this.$t('notification:namespace.assetUploadFailed'))(error)
-          this.buttonProcessing = false
+          this.processing = false
           return
         }
       }
@@ -591,13 +591,13 @@ export default {
           })
         } catch (e) {
           this.toastErrorHandler(this.$t('notification:namespace.saveFailed'))(e)
-          this.buttonProcessing = false
+          this.processing = false
 
           if (closeOnSuccess) {
-            this.buttonSaveAndCloseProcessing = false
+            this.processingSaveAndClose = false
             return
           }
-          this.buttonSaveProcessing = false
+          this.processingSave = false
           return
         }
       } else if (this.isClone) {
@@ -607,7 +607,7 @@ export default {
           })
         } catch (e) {
           this.toastErrorHandler(this.$t('notification:namespace.cloneFailed'))(e)
-          this.buttonProcessing = false
+          this.processing = false
           return
         }
       } else {
@@ -620,13 +620,13 @@ export default {
           })
         } catch (e) {
           this.toastErrorHandler(this.$t('notification:namespace.createFailed'))(e)
-          this.buttonProcessing = false
+          this.processing = false
 
           if (closeOnSuccess) {
-            this.buttonSaveAndCloseProcessing = false
+            this.processingSaveAndClose = false
             return
           }
-          this.buttonSaveProcessing = false
+          this.processingSave = false
           return
         }
       }
@@ -637,12 +637,12 @@ export default {
       this.initialNamespaceState = this.namespace.clone()
       this.isApplicationInitialState = this.isApplication
 
-      this.buttonProcessing = false
+      this.processing = false
 
       if (closeOnSuccess) {
-        this.buttonSaveAndCloseProcessing = false
+        this.processingSaveAndClose = false
       } else {
-        this.buttonSaveProcessing = false
+        this.processingSave = false
       }
 
       if (closeOnSuccess) {
@@ -653,7 +653,7 @@ export default {
     },
 
     handleDelete () {
-      this.buttonProcessing = true
+      this.processing = true
 
       const { namespaceID } = this.namespace
       const { applicationID } = this.application || {}
@@ -670,7 +670,7 @@ export default {
           this.toastSuccess(this.$t('notification:namespace.deleted'))
         })
         .finally(() => {
-          this.buttonProcessing = false
+          this.processing = false
         })
     },
 
@@ -775,9 +775,9 @@ export default {
     },
 
     setDefaultValues () {
-      this.buttonProcessing = false
-      this.buttonSaveAndCloseProcessing = false
-      this.buttonSaveProcessing = false
+      this.processing = false
+      this.processingSaveAndClose = false
+      this.processingSave = false
       this.namespace = undefined
       this.initialNamespaceState = undefined
       this.namespaceAssets = {}

@@ -230,8 +230,8 @@ export default {
 
   beforeDestroy () {
     this.abortRequests()
-    this.setDefaultValues()
     this.destroyEvents()
+    this.setDefaultValues()
   },
 
   methods: {
@@ -244,8 +244,8 @@ export default {
       return user.name || user.handle || user.email || ''
     },
 
-    refreshOnRelatedRecordsUpdate (module) {
-      if (this.options.moduleID === module.moduleID) {
+    refreshOnRelatedRecordsUpdate ({ moduleID, notPageID }) {
+      if (this.options.moduleID === moduleID && this.page.pageID !== notPageID) {
         this.refresh()
       }
     },

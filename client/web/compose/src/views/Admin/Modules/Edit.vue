@@ -3,7 +3,6 @@
     <portal to="topbar-title">
       {{ title }}
     </portal>
-
     <portal to="topbar-tools">
       <b-button-group
         v-if="isEdit"

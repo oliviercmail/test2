@@ -2,7 +2,7 @@
 
 import { compose, validator, NoID } from '@cortezaproject/corteza-js'
 import { mapGetters, mapActions } from 'vuex'
-import { throttle } from 'lodash'
+import { throttle, cloneDeep } from 'lodash'
 
 export default {
   data () {
@@ -153,9 +153,8 @@ export default {
 
           throw err
         })
-        .then(record => {
-          this.record = new compose.Record(this.module, record)
-          this.initialRecordState = this.record.clone()
+        .then(r => {
+          record = new compose.Record(this.module, r)
         })
         .then(() => this.dispatchUiEvent('afterFormSubmit', this.record, { $records: records }))
         .then(() => this.updatePrompts())
@@ -163,6 +162,14 @@ export default {
           if (this.record.valueErrors.set) {
             this.toastWarning(this.$t('notification:record.validationWarnings'))
           } else {
+            if (isNew) {
+              this.inCreating = false
+              this.inEditing = false
+            } else {
+              this.record = record
+              this.initialRecordState = cloneDeep(this.record)
+            }
+
             if (this.showRecordModal) {
               this.$emit('handle-record-redirect', { recordID: record.recordID, recordPageID: this.page.pageID })
             } else {
@@ -218,9 +225,8 @@ export default {
 
           throw err
         })
-        .then(record => {
-          this.record = new compose.Record(this.module, record)
-          this.initialRecordState = this.record.clone()
+        .then(r => {
+          record = new compose.Record(this.module, r)
         })
         .then(() => this.dispatchUiEvent('afterFormSubmit', record))
         .then(() => this.updatePrompts())
@@ -231,6 +237,7 @@ export default {
             this.inCreating = false
             this.inEditing = false
             this.record = record
+            this.initialRecordState = cloneDeep(this.record)
 
             this.$router.push({ name: route, params: { ...this.$route.params, recordID: record.recordID } })
           }
@@ -327,7 +334,7 @@ export default {
           this.onModalHide()
           this.fields = []
           this.record = new compose.Record(this.module, {})
-          this.initialRecordState = this.record.clone()
+          this.initialRecordState = cloneDeep(this.record)
           this.$emit('save')
         })
         .catch(this.toastErrorHandler(this.$t('notification:record.deleteBulkRecordUpdateFailed')))

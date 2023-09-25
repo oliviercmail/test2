@@ -2,7 +2,7 @@
 
 import { compose, validator, NoID } from '@cortezaproject/corteza-js'
 import { mapGetters, mapActions } from 'vuex'
-import { throttle, cloneDeep } from 'lodash'
+import { throttle } from 'lodash'
 
 export default {
   data () {

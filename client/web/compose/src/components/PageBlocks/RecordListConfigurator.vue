@@ -422,9 +422,7 @@
             {{ $t('recordList.record.pagingLabel') }}
           </h5>
 
-          <b-row
-            class="mb-3"
-          >
+          <b-row>
             <b-col
               cols="12"
               md="6"
@@ -468,14 +466,14 @@
               md="6"
             >
               <b-form-group
-                :label="$t('recordList.record.fullPageNavigation')"
+                :label="$t('recordList.record.showTotalCount')"
                 label-class="text-primary"
               >
                 <c-input-checkbox
-                  v-model="options.fullPageNavigation"
+                  v-model="options.showTotalCount"
+                  data-test-id="show-total-record-count"
                   switch
                   :labels="checkboxLabel"
-                  data-test-id="hide-page-navigation"
                 />
               </b-form-group>
             </b-col>
@@ -485,12 +483,11 @@
               md="6"
             >
               <b-form-group
-                :label="$t('recordList.record.showTotalCount')"
+                :label="$t('recordList.record.showRecordPerPageOption')"
                 label-class="text-primary"
               >
                 <c-input-checkbox
-                  v-model="options.showTotalCount"
-                  data-test-id="show-total-record-count"
+                  v-model="options.showRecordPerPageOption"
                   switch
                   :labels="checkboxLabel"
                 />
@@ -504,13 +501,14 @@
               md="6"
             >
               <b-form-group
-                :label="$t('recordList.record.showRecordPerPageOption')"
+                :label="$t('recordList.record.fullPageNavigation')"
                 label-class="text-primary"
               >
                 <c-input-checkbox
-                  v-model="options.showRecordPerPageOption"
+                  v-model="options.fullPageNavigation"
                   switch
                   :labels="checkboxLabel"
+                  data-test-id="hide-page-navigation"
                 />
               </b-form-group>
             </b-col>

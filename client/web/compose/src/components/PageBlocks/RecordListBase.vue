@@ -619,20 +619,18 @@
       />
     </template>
 
-    <template
-      #footer
-    >
+    <template #footer>
       <div
         v-if="showFooter"
-        class="d-flex align-items-center justify-content-between p-2"
+        class="d-flex align-items-center flex-wrap justify-content-between p-2"
       >
-        <div class="d-flex gap-3 align-items-center">
+        <div class="d-flex gap-col-3 align-items-center flex-wrap">
           <div
             v-if="options.showTotalCount"
             class="ml-2 text-nowrap my-1 text-truncate"
           >
             <span
-              v-if="pagination.count > options.perPage"
+              v-if="pagination.count > recordsPerPage"
               data-test-id="pagination-range"
             >
               {{ $t('recordList.pagination.showing', getPagination) }}
@@ -648,23 +646,23 @@
 
           <div
             v-if="showPerPageSelector"
-            class="d-flex align-items-center gap-1 text-nowrap"
+            class="d-flex align-items-center ml-2 my-1 gap-1 text-nowrap"
           >
             <span>
               {{ $t('recordList.pagination.recordsPerPage') }}
             </span>
 
             <b-form-select
-              v-model="filter.limit"
-              :options="rowOptions"
-              @input="updateTable"
+              v-model="recordsPerPage"
+              :options="perPageOptions"
+              @change="showMoreRecords"
             />
           </div>
         </div>
 
         <div
           v-if="showPageNavigation"
-          class="d-flex align-items-center justify-content-end"
+          class="d-flex align-items-center justify-content-end "
         >
           <b-pagination
             v-if="options.fullPageNavigation"
@@ -854,12 +852,7 @@ export default {
       selectedAllRecords: false,
 
       abortableRequests: [],
-      rowsOptions: [
-        { text: '14', value: 14 },
-        { text: '25', value: 25 },
-        { text: '50', value: 50 },
-        { text: '100', value: 100 },
-      ],
+      recordsPerPage: undefined,
     }
   },
 
@@ -874,12 +867,12 @@ export default {
     },
 
     showFooter () {
-      return this.showPageNavigation || this.options.showTotalCount
+      return this.showPageNavigation || this.options.showTotalCount || this.options.showPerPageSelector
     },
 
-    rowOptions () {
+    perPageOptions () {
       return [
-        { text: this.options.perPage, value: this.options.perPage, disabled: true },
+        { text: this.options.perPage, value: this.options.perPage },
         { text: '25', value: 25 },
         { text: '50', value: 50 },
         { text: '100', value: 100 },
@@ -890,7 +883,7 @@ export default {
 
     getPagination () {
       const { page = 1, count = 0 } = this.pagination
-      const { perPage = 10 } = this.options
+      const perPage = this.recordsPerPage
 
       return {
         from: ((page - 1) * perPage) + 1,
@@ -1089,6 +1082,7 @@ export default {
     if (!this.inlineEditing) {
       this.refreshBlock(this.refresh, false, true)
     }
+    this.recordsPerPage = this.options.perPage
   },
 
   methods: {
@@ -1143,8 +1137,8 @@ export default {
       this.refresh(true)
     },
 
-    updateTable () {
-      this.options.perPage = this.filter.limit
+    showMoreRecords () {
+      this.filter.limit = this.recordsPerPage
       this.refresh(true)
     },
 
@@ -1643,7 +1637,7 @@ export default {
               if (!paginationOptions.incTotal) {
                 if (pages.length > 1) {
                   const lastPageCount = pages[pages.length - 1].items
-                  count = ((pages.length - 1) * this.options.perPage) + lastPageCount
+                  count = ((pages.length - 1) * this.recordsPerPage) + lastPageCount
                 } else {
                   count = records.length
                 }

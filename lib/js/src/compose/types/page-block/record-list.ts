@@ -121,7 +121,7 @@ const defaults: Readonly<Options> = Object.freeze({
   bulkRecordEditEnabled: true,
   inlineRecordEditEnabled: false,
   filterPresets: [],
-  showRecordPerPageOption: true,
+  showRecordPerPageOption: false,
 })
 
 export class PageBlockRecordList extends PageBlock {

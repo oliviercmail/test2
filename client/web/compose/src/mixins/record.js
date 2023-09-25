@@ -167,7 +167,7 @@ export default {
               this.inEditing = false
             } else {
               this.record = record
-              this.initialRecordState = cloneDeep(this.record)
+              this.initialRecordState = this.record.clone()
             }
 
             if (this.showRecordModal) {
@@ -237,7 +237,7 @@ export default {
             this.inCreating = false
             this.inEditing = false
             this.record = record
-            this.initialRecordState = cloneDeep(this.record)
+            this.initialRecordState = this.record.clone()
 
             this.$router.push({ name: route, params: { ...this.$route.params, recordID: record.recordID } })
           }
@@ -334,7 +334,7 @@ export default {
           this.onModalHide()
           this.fields = []
           this.record = new compose.Record(this.module, {})
-          this.initialRecordState = cloneDeep(this.record)
+          this.initialRecordState = this.record.clone()
           this.$emit('save')
         })
         .catch(this.toastErrorHandler(this.$t('notification:record.deleteBulkRecordUpdateFailed')))

@@ -76,8 +76,8 @@ export default {
     },
 
     module () {
-      if (this.$attrs.moduleID) {
-        return this.getModuleByID(this.$attrs.moduleID)
+      if (this.$route.params.moduleID) {
+        return this.getModuleByID(this.$route.params.moduleID)
       } else {
         return undefined
       }
@@ -102,6 +102,41 @@ export default {
     },
   },
 
+  watch: {
+    module (module) {
+      const { meta = { ui: {} } } = module || {}
+
+      let fields = ((meta.ui || {}).admin || {}).fields || []
+      fields = fields.length ? fields : module.fields
+
+      // Init block
+      const block = new compose.PageBlockRecordList({
+        blockIndex: 0,
+        options: {
+          moduleID: module.moduleID,
+          fields,
+          hideRecordReminderButton: true,
+          hideRecordViewButton: true,
+          hideRecordCloneButton: false,
+          hideRecordPermissionsButton: false,
+          selectable: true,
+          allowExport: true,
+          perPage: 14,
+          fullPageNavigation: true,
+          showTotalCount: true,
+          showDeletedRecordsOption: true,
+          presort: 'createdAt DESC',
+          enableRecordPageNavigation: true,
+          hideConfigureFieldsButton: false,
+          inlineRecordEditEnabled: true,
+          customFilterPresets: true,
+        },
+      })
+
+      this.block = block
+    },
+  },
+
   created () {
     const { meta = { ui: {} } } = this.module || {}
 
@@ -112,7 +147,7 @@ export default {
     const block = new compose.PageBlockRecordList({
       blockIndex: 0,
       options: {
-        moduleID: this.$attrs.moduleID,
+        moduleID: this.$route.params.moduleID,
         fields,
         hideRecordReminderButton: true,
         hideRecordViewButton: true,

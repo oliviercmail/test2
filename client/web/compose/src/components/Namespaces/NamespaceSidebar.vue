@@ -119,24 +119,9 @@ import { NoID } from '@cortezaproject/corteza-js'
 import { components, filter } from '@cortezaproject/corteza-vue'
 import { Portal } from 'portal-vue'
 import { VueSelect } from 'vue-select'
+
 const { CSidebarNavItems, CInputSearch } = components
 
-const moduleWrap = (module) => {
-  return {
-    page: {
-      name: 'admin.modules.edit',
-      pageID: `module-${module.moduleID}`,
-      selfID: 'modules',
-      rootSelfID: 'modules',
-      title: module.name || module.handle,
-      visible: true,
-    },
-    children: [],
-    params: {
-      moduleID: module.moduleID,
-    },
-  }
-}
 const chartWrap = (chart) => {
   return {
     page: {
@@ -230,6 +215,7 @@ export default {
       if (this.namespace) {
         // If on admin page, show admin pages. Otherwise show public pages
         const pages = [...(this.isAdminPage ? this.adminRoutes() : this.publicPageWrap(this.publicRoutes))]
+
         if (!this.query) {
           return pages
         }
@@ -319,6 +305,26 @@ export default {
   },
 
   methods: {
+    moduleWrap (module) {
+      const routeName = this.$route.name
+      const currentPageType = routeName.endsWith('record.list') ? 'record.list' : 'edit'
+
+      return {
+        page: {
+          name: `admin.modules.${currentPageType}`,
+          pageID: `module-${module.moduleID}`,
+          selfID: 'modules',
+          rootSelfID: 'modules',
+          title: module.name || module.handle,
+          visible: true,
+        },
+        children: [],
+        params: {
+          moduleID: module.moduleID,
+        },
+      }
+    },
+
     namespaceSelected ({ namespaceID, canManageNamespace, slug = '' }) {
       let { name, params } = this.$route
 
@@ -358,7 +364,7 @@ export default {
           },
           children: [],
         },
-        ...this.modules.map(moduleWrap),
+        ...this.modules.map(this.moduleWrap),
         {
           page: {
             pageID: 'pages',
@@ -428,9 +434,12 @@ export default {
           iconSrc = `${this.$ComposeAPI.baseURL}${src}`
         }
 
+        const routeName = this.$route.name
+        const currentPageType = routeName.endsWith('edit') ? 'edit' : 'builder'
+
         return {
           page: {
-            name: 'admin.pages.builder',
+            name: `admin.pages.${currentPageType}`,
             pageID: `page-${pageID}`,
             selfID: selfID !== NoID ? `page-${selfID}` : 'pages',
             rootSelfID: 'pages',

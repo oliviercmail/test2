@@ -122,6 +122,23 @@ import { VueSelect } from 'vue-select'
 
 const { CSidebarNavItems, CInputSearch } = components
 
+const moduleWrap = (module, pageName) => {
+  return {
+    page: {
+      name: pageName,
+      pageID: `module-${module.moduleID}`,
+      selfID: 'modules',
+      rootSelfID: 'modules',
+      title: module.name || module.handle,
+      visible: true,
+    },
+    children: [],
+    params: {
+      moduleID: module.moduleID,
+    },
+  }
+}
+
 const chartWrap = (chart) => {
   return {
     page: {
@@ -305,26 +322,6 @@ export default {
   },
 
   methods: {
-    moduleWrap (module) {
-      const routeName = this.$route.name
-      const currentPageType = routeName.endsWith('record.list') ? 'record.list' : 'edit'
-
-      return {
-        page: {
-          name: `admin.modules.${currentPageType}`,
-          pageID: `module-${module.moduleID}`,
-          selfID: 'modules',
-          rootSelfID: 'modules',
-          title: module.name || module.handle,
-          visible: true,
-        },
-        children: [],
-        params: {
-          moduleID: module.moduleID,
-        },
-      }
-    },
-
     namespaceSelected ({ namespaceID, canManageNamespace, slug = '' }) {
       let { name, params } = this.$route
 
@@ -353,6 +350,9 @@ export default {
     },
 
     adminRoutes () {
+      const routeName = this.$route.name
+      const pageName = routeName.endsWith('edit') ? 'admin.modules.edit' : 'admin.modules.record.list'
+
       return [
         {
           page: {
@@ -364,7 +364,7 @@ export default {
           },
           children: [],
         },
-        ...this.modules.map(this.moduleWrap),
+        ...this.modules.map((m) => moduleWrap(m, pageName)),
         {
           page: {
             pageID: 'pages',

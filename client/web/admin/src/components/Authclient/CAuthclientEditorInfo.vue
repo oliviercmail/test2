@@ -171,7 +171,6 @@
           <b-form-group
             data-test-id="valid-from"
             :label="$t('validFrom.label')"
-            label-cols="3"
             :description="$t('validFrom.description')"
           >
             <c-input-date-time
@@ -189,7 +188,6 @@
           <b-form-group
             data-test-id="expires-at"
             :label="$t('expiresAt.label')"
-            label-cols="3"
             :description="$t('expiresAt.description')"
           >
             <c-input-date-time
@@ -204,9 +202,7 @@
             />
           </b-form-group>
 
-          <b-form-group
-            label-cols="3"
-          >
+          <b-form-group>
             <b-form-checkbox
               data-test-id="checkbox-allow-access-to-user-profile"
               :checked="((resource.scope || []).includes('profile'))"
@@ -306,10 +302,9 @@
           cols="12"
           lg="6"
         >
-          <div v-if="isClientCredentialsGrant">
+          <div v-if="true">
             <b-form-group
               data-test-id="impersonate-user"
-              label-cols="3"
               :label="$t('security.impersonateUser.label')"
               :description="$t('security.impersonateUser.description')"
             >
@@ -319,8 +314,8 @@
               />
             </b-form-group>
 
-            <div v-if="!fresh">
-              <b-form-group label-cols="3">
+            <div v-if="true">
+              <b-form-group>
                 <b-button
                   data-test-id="button-cURL-snippet"
                   variant="light"

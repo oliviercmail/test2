@@ -51,9 +51,11 @@
           {{ connection.deletedAt ? $t('general:label.undelete') : $t('general:label.delete') }}
         </confirmation-toggle>
 
-        <c-submit-button
-          :processing="processing"
+        <c-button-submit
           :disabled="disabled || saveDisabled"
+          :processing="info.processing"
+          :success="info.success"
+          :text="$t('admin:general.label.submit')"
           class="ml-auto"
           @submit="onSubmit"
         />
@@ -65,14 +67,14 @@
 <script>
 import { isEqual } from 'lodash'
 import { system, NoID } from '@cortezaproject/corteza-js'
-import { handle } from '@cortezaproject/corteza-vue'
+import { handle, components } from '@cortezaproject/corteza-vue'
 import editorHelpers from 'corteza-webapp-admin/src/mixins/editorHelpers'
 import CConnectionEditorInfo from 'corteza-webapp-admin/src/components/Connection/CConnectionEditorInfo'
 import CConnectionEditorProperties from 'corteza-webapp-admin/src/components/Connection/CConnectionEditorProperties'
 import CConnectionEditorDal from 'corteza-webapp-admin/src/components/Connection/CConnectionEditorDAL'
 import ConfirmationToggle from 'corteza-webapp-admin/src/components/ConfirmationToggle'
-import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
 import { mapGetters } from 'vuex'
+const { CButtonSubmit } = components
 
 export default {
   components: {
@@ -80,7 +82,7 @@ export default {
     CConnectionEditorDal,
     CConnectionEditorProperties,
     ConfirmationToggle,
-    CSubmitButton,
+    CButtonSubmit,
   },
 
   i18nOptions: {
@@ -101,7 +103,11 @@ export default {
 
   data () {
     return {
-      processing: false,
+      info: {
+        processing: false,
+        success: false,
+      },
+
       connection: undefined,
       initialConnectionState: undefined,
 
@@ -123,7 +129,7 @@ export default {
     },
 
     disabled () {
-      return this.processing
+      return this.info.processing
     },
 
     fresh () {
@@ -187,7 +193,7 @@ export default {
     },
 
     async fetchSensitivityLevels () {
-      this.processing = true
+      this.info.processing = true
 
       return this.$SystemAPI.dalSensitivityLevelList()
         .then(({ set = [] }) => {
@@ -195,7 +201,7 @@ export default {
         })
         .catch(this.toastErrorHandler(this.$t('notification:sensitivityLevel.fetch.error')))
         .finally(() => {
-          this.processing = false
+          this.info.processing = false
         })
     },
 
@@ -204,13 +210,14 @@ export default {
       const op = updating ? 'update' : 'create'
       const fn = updating ? 'dalConnectionUpdate' : 'dalConnectionCreate'
 
-      this.processing = true
+      this.info.processing = true
       this.incLoader()
 
       return this.$SystemAPI[fn](this.connection)
         .then(connection => {
           const { connectionID } = connection
 
+          this.animateSuccess('info')
           this.toastSuccess(this.$t(`notification:connection.${op}.success`))
           if (!updating) {
             this.$router.push({ name: `system.connection.edit`, params: { connectionID } })
@@ -221,7 +228,7 @@ export default {
         })
         .catch(this.toastErrorHandler(this.$t(`notification:connection.${op}.error`)))
         .finally(() => {
-          this.processing = false
+          this.info.processing = false
         })
     },
 
@@ -231,11 +238,11 @@ export default {
       const op = deleting ? 'delete' : 'undelete'
       const fn = deleting ? 'dalConnectionDelete' : 'dalConnectionUndelete'
 
-      this.processing = true
+      this.info.processing = true
       this.incLoader()
 
       return this.$SystemAPI[fn](this.connection)
-        .then(connection => {
+        .then(() => {
           this.toastSuccess(this.$t(`notification:connection.${op}.success`))
 
           if (deleting) {
@@ -249,7 +256,7 @@ export default {
         })
         .catch(this.toastErrorHandler(this.$t(`notification:connection.${op}.error`)))
         .finally(() => {
-          this.processing = false
+          this.info.processing = false
         })
     },
 

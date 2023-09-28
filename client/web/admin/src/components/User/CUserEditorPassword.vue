@@ -60,11 +60,12 @@
         {{ $t('removePassword') }}
       </confirmation-toggle>
 
-      <c-submit-button
-        class="float-right"
+      <c-button-submit
+        :disabled="!passwordState || !confirmPasswordState"
         :processing="processing"
         :success="success"
-        :disabled="!passwordState || !confirmPasswordState"
+        :text="$t('admin:general.label.submit')"
+        class="float-right"
         @submit="onPasswordSubmit"
       />
 
@@ -80,7 +81,8 @@
 
 <script>
 import ConfirmationToggle from 'corteza-webapp-admin/src/components/ConfirmationToggle'
-import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
+import { components } from '@cortezaproject/corteza-vue'
+const { CButtonSubmit } = components
 
 export default {
   name: 'CUserEditorPassword',
@@ -92,7 +94,7 @@ export default {
 
   components: {
     ConfirmationToggle,
-    CSubmitButton,
+    CButtonSubmit,
   },
 
   props: {

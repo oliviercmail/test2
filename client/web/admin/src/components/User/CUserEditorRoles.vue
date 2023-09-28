@@ -18,10 +18,11 @@
     </template>
 
     <template #footer>
-      <c-submit-button
-        class="float-right"
+      <c-button-submit
         :processing="processing"
         :success="success"
+        :text="$t('admin:general.label.submit')"
+        class="float-right"
         @submit="$emit('submit')"
       />
     </template>
@@ -29,8 +30,9 @@
 </template>
 
 <script>
-import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
 import CRolePicker from 'corteza-webapp-admin/src/components/CRolePicker'
+import { components } from '@cortezaproject/corteza-vue'
+const { CButtonSubmit } = components
 
 export default {
   i18nOptions: {
@@ -39,7 +41,7 @@ export default {
   },
 
   components: {
-    CSubmitButton,
+    CButtonSubmit,
     CRolePicker,
   },
 

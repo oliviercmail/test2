@@ -75,10 +75,11 @@
     </b-form>
 
     <template #footer>
-      <c-submit-button
-        class="float-right"
+      <c-button-submit
         :processing="processing"
         :success="success"
+        :text="$t('admin:general.label.submit')"
+        class="float-right"
         @submit="$emit('submit', user)"
       />
     </template>
@@ -86,10 +87,9 @@
 </template>
 
 <script>
-import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
 import CUploaderWithPreview from 'corteza-webapp-admin/src/components/CUploaderWithPreview'
 import { components } from '@cortezaproject/corteza-vue'
-const { CInputColorPicker } = components
+const { CInputColorPicker, CButtonSubmit } = components
 
 export default {
   name: 'CUserEditorAvatar',
@@ -100,7 +100,7 @@ export default {
   },
 
   components: {
-    CSubmitButton,
+    CButtonSubmit,
     CUploaderWithPreview,
     CInputColorPicker,
   },

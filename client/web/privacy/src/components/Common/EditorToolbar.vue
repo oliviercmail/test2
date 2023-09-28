@@ -62,17 +62,16 @@
           </b-button>
         </template>
 
-        <b-button
+        <c-button-submit
           v-if="submitShow"
           :data-test-id="buttonLabelCypressId(submitLabel)"
           :disabled="submitDisabled || processing"
-          variant="primary"
+          :processing="processing"
+          :text="submitLabel"
           size="lg"
           class="ml-1"
-          @click="$emit('submit')"
-        >
-          {{ submitLabel }}
-        </b-button>
+          @submit="$emit('submit')"
+        />
 
         <slot />
       </b-col>
@@ -81,7 +80,14 @@
 </template>
 
 <script>
+import { components } from '@cortezaproject/corteza-vue'
+const { CButtonSubmit } = components
+
 export default {
+  components: {
+    CButtonSubmit,
+  },
+
   props: {
     processing: {
       type: Boolean,

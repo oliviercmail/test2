@@ -44,7 +44,7 @@
 
 <script>
 export default {
-  name: 'CSubmitButton',
+  name: 'CButtonSubmit',
 
   i18nOptions: {
     namespaces: 'admin',

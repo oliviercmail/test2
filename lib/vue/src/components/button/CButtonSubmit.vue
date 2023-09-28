@@ -12,25 +12,30 @@
   >
     <template v-if="processing">
       <span
+        data-test-id="button-loading-text"
         v-if="loadingText"
         class="loading-text mx-2"
       >
         {{ loadingText }}
       </span>
       <b-spinner
+        data-test-id="spinner"
         v-else
         small
-        :variant="iconVariant"
       />
     </template>
     <template v-else-if="success">
       <font-awesome-icon
+        data-test-id="icon-success"
+        :icon="['fas', 'check']"
         :class="iconVariant"
-        class="text-white h3 mb-0"
+        class="text-white"
       />
     </template>
     <template v-else>
-      <span>
+      <span
+        data-test-id="button-text"
+      >
         {{ text }}
       </span>
     </template>

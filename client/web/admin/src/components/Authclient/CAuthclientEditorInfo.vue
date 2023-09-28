@@ -443,11 +443,12 @@ curl -X POST {{ curlURL }} \
     </template>
 
     <template #footer>
-      <c-submit-button
-        class="float-right"
+      <c-button-submit
         :disabled="saveDisabled"
         :processing="processing"
         :success="success"
+        :text="$t('admin:general.label.submit')"
+        class="float-right"
         @submit="submit"
       />
 
@@ -479,13 +480,12 @@ curl -X POST {{ curlURL }} \
 import { NoID } from '@cortezaproject/corteza-js'
 import { handle, components } from '@cortezaproject/corteza-vue'
 import ConfirmationToggle from 'corteza-webapp-admin/src/components/ConfirmationToggle'
-import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
 import CRolePicker from 'corteza-webapp-admin/src/components/CRolePicker'
 import CSelectUser from 'corteza-webapp-admin/src/components/Authclient/CSelectUser'
 import copy from 'copy-to-clipboard'
 import axios from 'axios'
 
-const { CInputDateTime } = components
+const { CInputDateTime, CButtonSubmit } = components
 
 export default {
   name: 'CAuthclientEditorInfo',
@@ -497,7 +497,7 @@ export default {
 
   components: {
     ConfirmationToggle,
-    CSubmitButton,
+    CButtonSubmit,
     CRolePicker,
     CSelectUser,
     CInputDateTime,

@@ -179,14 +179,13 @@
         v-if="loaded && canGrant"
         #footer
       >
-        <c-submit-button
-          class="float-right"
+        <c-button-submit
           :processing="processing"
           :success="success"
+          :text="$t('ui.save')"
+          class="float-right"
           @submit="onSubmit"
-        >
-          {{ $t('ui.save') }}
-        </c-submit-button>
+        />
       </template>
     </b-card>
 
@@ -262,9 +261,10 @@
 </template>
 
 <script>
-import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
 import { VueSelect } from 'vue-select'
+import { components } from '@cortezaproject/corteza-vue'
 import _ from 'lodash'
+const { CButtonSubmit } = components
 
 export default {
   i18nOptions: {
@@ -272,7 +272,7 @@ export default {
   },
 
   components: {
-    CSubmitButton,
+    CButtonSubmit,
     VueSelect,
   },
 

@@ -52,10 +52,11 @@
     </b-form-row>
 
     <template #footer>
-      <c-submit-button
-        class="float-right"
+      <c-button-submit
         :processing="processing"
         :success="success"
+        :text="$t('admin:general.label.submit')"
+        class="float-right"
         @submit="$emit('submit', settings)"
       />
     </template>
@@ -63,7 +64,8 @@
 </template>
 
 <script>
-import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
+import { components } from '@cortezaproject/corteza-vue'
+const { CButtonSubmit } = components
 
 export default {
   name: 'CSettingsEditor',
@@ -74,7 +76,7 @@ export default {
   },
 
   components: {
-    CSubmitButton,
+    CButtonSubmit,
   },
 
   props: {

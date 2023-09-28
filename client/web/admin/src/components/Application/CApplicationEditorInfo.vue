@@ -103,11 +103,11 @@
     </template>
 
     <template #footer>
-      <c-submit-button
-        class="float-right"
+      <c-button-submit
         :processing="processing"
         :success="success"
-        :disabled="saveDisabled"
+        :text="$t('admin:general.label.submit')"
+        class="float-right"
         @submit="$emit('submit', application)"
       />
 
@@ -125,7 +125,8 @@
 <script>
 import { NoID } from '@cortezaproject/corteza-js'
 import ConfirmationToggle from 'corteza-webapp-admin/src/components/ConfirmationToggle'
-import CSubmitButton from 'corteza-webapp-admin/src/components/CSubmitButton'
+import { components } from '@cortezaproject/corteza-vue'
+const { CButtonSubmit } = components
 
 export default {
   name: 'CApplicationEditorInfo',
@@ -137,7 +138,7 @@ export default {
 
   components: {
     ConfirmationToggle,
-    CSubmitButton,
+    CButtonSubmit,
   },
 
   props: {

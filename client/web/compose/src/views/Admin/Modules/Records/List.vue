@@ -103,24 +103,26 @@ export default {
   },
 
   watch: {
-    module (module) {
-      const { meta = { ui: {} } } = module || {}
+    module: {
+      handler (module) {
+        if (module) {
+          const { meta = { ui: {} }, moduleID } = module || {}
 
-      let fields = ((meta.ui || {}).admin || {}).fields || []
-      fields = fields.length ? fields : module.fields
+          let fields = ((meta.ui || {}).admin || {}).fields || []
+          fields = fields.length ? fields : module.fields
 
-      this.block.options.moduleID = module.moduleID
-      this.block.options.fields = fields
+          this.block.options.moduleID = moduleID
+          this.block.options.fields = fields
+        }
+      },
     },
   },
 
   created () {
-    const { meta = { ui: {} } } = this.module || {}
+    const { meta = { ui: {} }, moduleID } = this.module || {}
 
     let fields = ((meta.ui || {}).admin || {}).fields || []
     fields = fields.length ? fields : this.module.fields
-
-    const { moduleID } = this.module
 
     // Init block
     const block = new compose.PageBlockRecordList({

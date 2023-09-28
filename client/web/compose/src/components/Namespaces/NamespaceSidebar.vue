@@ -351,7 +351,7 @@ export default {
 
     adminRoutes () {
       const routeName = this.$route.name
-      const pageName = routeName.endsWith('edit') ? 'admin.modules.edit' : 'admin.modules.record.list'
+      const pageName = routeName.startsWith('admin.modules.record') ? 'admin.modules.record.list' : 'admin.modules.edit'
 
       return [
         {
@@ -435,11 +435,11 @@ export default {
         }
 
         const routeName = this.$route.name
-        const currentPageType = routeName.endsWith('edit') ? 'edit' : 'builder'
+        const pageName = routeName.endsWith('builder') ? 'admin.pages.builder' : routeName
 
         return {
           page: {
-            name: `admin.pages.${currentPageType}`,
+            name: pageName,
             pageID: `page-${pageID}`,
             selfID: selfID !== NoID ? `page-${selfID}` : 'pages',
             rootSelfID: 'pages',

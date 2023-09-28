@@ -57,7 +57,7 @@
           :processing="processingClone"
           :variant="'light'"
           :text="$t('label.saveAsCopy')"
-          :size="'lg'"
+          size="lg"
           class="ml-2"
           @submit="$emit('clone')"
         />
@@ -68,7 +68,7 @@
           :processing="processingSaveAndClose"
           :variant="'light'"
           :text="$t('label.saveAndClose')"
-          :size="'lg'"
+          size="lg"
           class="ml-2"
           @submit="$emit('saveAndClose')"
         />
@@ -78,7 +78,7 @@
           :disabled="disableSave || processingSave"
           :processing="processingSave"
           :text="$t('label.save')"
-          :size="'lg'"
+          size="lg"
           class="ml-2"
           @submit="$emit('save')"
         />

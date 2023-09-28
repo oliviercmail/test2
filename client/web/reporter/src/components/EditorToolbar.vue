@@ -49,7 +49,7 @@
         <c-button-submit
           data-test-id="button-save"
           :disabled="saveDisabled || processingSave"
-          :size="'lg'"
+          size="lg"
           :processing="processingSave"
           :text="$t('general:label.save')"
           @submit="$emit('save')"

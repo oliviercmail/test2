@@ -172,6 +172,7 @@ export default {
 
     onInfoSubmit (route) {
       this.info.processing = true
+
       if (this.routeID) {
         this.$SystemAPI
           .apigwRouteUpdate(route)

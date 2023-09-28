@@ -166,7 +166,7 @@
             :disabled="!record || !canSaveRecord || processingSubmit"
             :processing="processingSubmit"
             :text="labels.submit || $t('label.save')"
-            :size="'lg'"
+            size="lg"
             style="min-height: 42px; min-width: 73px;"
             class="d-flex align-items-center justify-content-center ml-2"
             @submit="$emit('submit')"

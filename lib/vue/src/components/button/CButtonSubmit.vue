@@ -53,17 +53,14 @@ export default {
   props: {
     processing: {
       type: Boolean,
-      value: false,
     },
 
     success: {
       type: Boolean,
-      value: false,
     },
 
     disabled: {
       type: Boolean,
-      value: false,
     },
 
     title: {
@@ -93,7 +90,6 @@ export default {
 
     block: {
       type: Boolean,
-      value: false,
     },
 
     variant: {

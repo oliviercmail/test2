@@ -434,8 +434,7 @@ export default {
           iconSrc = `${this.$ComposeAPI.baseURL}${src}`
         }
 
-        const routeName = this.$route.name
-        const pageName = routeName.endsWith('builder') ? 'admin.pages.builder' : routeName
+        const pageName = this.$route.name === 'admin.pages.edit' ? 'admin.pages.edit' : 'admin.pages.builder'
 
         return {
           page: {

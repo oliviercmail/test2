@@ -227,7 +227,7 @@
 
     <!--
       no-enforce-focus flag doesn't set focus to sidebar when it is opened.
-      Bad for Accesability, since keyboard only users can't use sidebar.
+      Bad for Accessability, since keyboard only users can't use sidebar.
     -->
     <b-sidebar
       v-model="sidebar.show"
@@ -289,6 +289,7 @@
             size="md"
             size-confirm="md"
             variant="danger"
+            :processing="processingConfirm"
             :borderless="false"
             @confirmed="sidebarDelete()"
           >
@@ -559,17 +560,14 @@ export default {
 
     changeDetected: {
       type: Boolean,
-      default: false,
     },
 
     canCreate: {
       type: Boolean,
-      default: false,
     },
 
     processingSave: {
       type: Boolean,
-      default: false,
     },
   },
 
@@ -639,6 +637,8 @@ export default {
       functionTypes: [],
 
       deferredKinds: ['delay', 'prompt'],
+
+      processingConfirm: false,
     }
   },
 
@@ -798,6 +798,7 @@ export default {
     },
 
     sidebarClose () {
+      this.processingConfirm = true
       this.sidebar.show = false
 
       setTimeout(() => {
@@ -806,6 +807,7 @@ export default {
         this.sidebar.item = undefined
         this.sidebar.itemType = undefined
         this.redrawLabel(mxObjectId)
+        this.processingConfirm = false
       }, 300)
     },
 

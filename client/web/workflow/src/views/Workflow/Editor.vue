@@ -31,6 +31,7 @@ export default {
     return {
       processing: true,
       processingSave: false,
+      processingConfirm: false,
 
       workflow: {},
       triggers: [],
@@ -189,6 +190,8 @@ export default {
 
     deleteWorkflow () {
       if (this.workflow.workflowID) {
+        this.processingConfirm = true
+
         this.$AutomationAPI.workflowDelete(this.workflow)
           .then(() => {
             // Disable unsaved changes prompt
@@ -197,6 +200,9 @@ export default {
             this.toastSuccess(this.$t('notification:delete.success'))
           })
           .catch(this.toastErrorHandler(this.$t('notification:delete.failed')))
+          .finally(() => {
+            this.processingConfirm = false
+          })
       }
     },
 

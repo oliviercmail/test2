@@ -168,6 +168,7 @@
         :delete-disabled="!canDelete"
         :save-disabled="!canSave"
         :processing="processing"
+        :processing-confirm="processingConfirm"
         @delete="handleDelete"
         @save="handleSave"
       />
@@ -185,9 +186,11 @@ import { isEqual } from 'lodash'
 
 export default {
   name: 'EditReport',
+
   i18nOptions: {
     namespaces: 'edit',
   },
+
   components: {
     EditorToolbar,
   },

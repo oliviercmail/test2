@@ -121,6 +121,7 @@
 
           <c-input-confirm
             v-if="r.canDeleteReport"
+            icon-only
             borderless
             variant="link"
             size="md"

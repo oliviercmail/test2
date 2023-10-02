@@ -14,12 +14,17 @@
         @click.stop.prevent="onPrompt"
       >
         <slot>
+          <b-spinner
+            v-if="processing"
+            data-test-id="spinner"
+            small
+          />
           <font-awesome-icon
+            v-else-if="iconOnly"
             :icon="['far', 'trash-alt']"
           />
         </slot>
       </b-button>
-
     </template>
     <template v-else>
       <b-button
@@ -34,6 +39,7 @@
       >
         <slot name="yes">
           <font-awesome-icon
+            data-test-id="confirm"
             :icon="['fas', 'check']"
           />
         </slot>
@@ -48,8 +54,10 @@
       >
         <slot name="no">
           <font-awesome-icon
+            data-test-id="reject"
             :icon="['fas', 'times']"
-          /></slot>
+          />
+        </slot>
       </b-button>
     </template>
   </div>
@@ -61,35 +69,44 @@ export default {
     okDisabled: Boolean,
     cancelDisabled: Boolean,
     noPrompt: Boolean,
+    processing: Boolean,
+    iconOnly: Boolean,
 
     buttonClass: {
       type: String,
       default: '',
     },
+
     borderless: {
       type: Boolean,
       default: true,
     },
+
     variant: {
       type: String,
       default: 'outline-danger',
     },
+
     size: {
       type: String,
       default: 'sm',
     },
+
     variantOk: {
       type: String,
       default: 'danger',
     },
+
     variantCancel: {
       type: String,
       default: 'light',
     },
+
     sizeConfirm: {
       type: String,
       default: 'sm',
     },
+
     tooltip: {
       type: String,
       default: '',

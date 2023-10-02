@@ -39,7 +39,8 @@
           size="lg"
           size-confirm="lg"
           variant="danger"
-          :disabled="deleteDisabled || processing"
+          :disabled="deleteDisabled || processingConfirm"
+          :processing="processingConfirm"
           :borderless="false"
           @confirmed="$emit('delete')"
         >
@@ -69,24 +70,22 @@ export default {
     },
     hideDelete: {
       type: Boolean,
-      required: false,
     },
     deleteDisabled: {
       type: Boolean,
-      required: false,
     },
     hideSave: {
       type: Boolean,
-      required: false,
     },
     saveDisabled: {
       type: Boolean,
-      required: false,
-      default: false,
     },
     processing: {
       type: Boolean,
-      required: false,
+    },
+
+    processingConfirm: {
+      type: Boolean,
     },
   },
 }

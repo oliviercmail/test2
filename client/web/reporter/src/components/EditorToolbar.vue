@@ -41,11 +41,11 @@
           variant="danger"
           :disabled="deleteDisabled || processingConfirm"
           :processing="processingConfirm"
+          :text="$t('general:label.delete')"
           :borderless="false"
           @confirmed="$emit('delete')"
-        >
-          {{ $t('general:label.delete') }}
-        </c-input-confirm>
+        />
+
         <b-button
           variant="primary"
           data-test-id="button-save"

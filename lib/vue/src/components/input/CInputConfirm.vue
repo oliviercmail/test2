@@ -13,16 +13,20 @@
         :class="`${buttonClass} ${borderless ? 'border-0' : ''}`"
         @click.stop.prevent="onPrompt"
       >
-        <slot>
-          <b-spinner
-            v-if="processing"
-            data-test-id="spinner"
-            small
-          />
+        <b-spinner
+          v-if="processing"
+          data-test-id="spinner"
+          small
+        />
+        <slot v-else>
           <font-awesome-icon
-            v-else-if="iconOnly"
+            v-if="isIconVisible"
+            :class="iconClass"
             :icon="['far', 'trash-alt']"
           />
+          <template v-if="text">
+            {{ text }}
+          </template>
         </slot>
       </b-button>
     </template>
@@ -70,9 +74,14 @@ export default {
     cancelDisabled: Boolean,
     noPrompt: Boolean,
     processing: Boolean,
-    iconOnly: Boolean,
+    isIconVisible: Boolean,
 
     buttonClass: {
+      type: String,
+      default: '',
+    },
+
+    iconClass: {
       type: String,
       default: '',
     },
@@ -108,6 +117,11 @@ export default {
     },
 
     tooltip: {
+      type: String,
+      default: '',
+    },
+
+    text: {
       type: String,
       default: '',
     },

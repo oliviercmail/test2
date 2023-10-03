@@ -24,9 +24,12 @@
             :class="iconClass"
             :icon="['far', 'trash-alt']"
           />
-          <template v-if="text">
+          <span
+            v-if="text"
+            :class="textClass"
+          >
             {{ text }}
-          </template>
+          </span>
         </slot>
       </b-button>
     </template>
@@ -82,6 +85,11 @@ export default {
     },
 
     iconClass: {
+      type: String,
+      default: '',
+    },
+
+    textClass: {
       type: String,
       default: '',
     },

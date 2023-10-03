@@ -7,6 +7,7 @@
     :change-detected="changeDetected"
     :can-create="canCreate"
     :processing-save="processingSave"
+    :processing-confirm="processingConfirm"
     class="overflow-hidden"
     @save="saveWorkflow"
     @delete="deleteWorkflow"
@@ -208,6 +209,8 @@ export default {
 
     undeleteWorkflow () {
       if (this.workflow.workflowID) {
+        this.processingConfirm = true
+
         this.$AutomationAPI.workflowUndelete(this.workflow)
           .then(() => {
             this.workflow.deletedAt = undefined
@@ -215,6 +218,9 @@ export default {
             this.toastSuccess(this.$t('notification:undelete.success'))
           })
           .catch(this.toastErrorHandler(this.$t('notification:undelete.failed')))
+          .finally(() => {
+            this.processingConfirm = false
+          })
       }
     },
   },

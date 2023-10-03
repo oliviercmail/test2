@@ -289,12 +289,11 @@
             size="md"
             size-confirm="md"
             variant="danger"
-            :processing="processingConfirm"
+            :processing="processing"
+            :text="$t('editor:delete')"
             :borderless="false"
             @confirmed="sidebarDelete()"
-          >
-            {{ $t('editor:delete') }}
-          </c-input-confirm>
+          />
 
           <div
             class="ml-auto"
@@ -360,21 +359,21 @@
             v-if="workflow.canDeleteWorkflow && !isDeleted"
             size="md"
             size-confirm="md"
+            :processing="processingConfirm"
+            :text="$t('editor:delete')"
             :borderless="false"
             @confirmed="$emit('delete')"
-          >
-            {{ $t('editor:delete') }}
-          </c-input-confirm>
+          />
 
           <c-input-confirm
             v-else-if="isDeleted"
             size="md"
             size-confirm="md"
+            :processing="processingConfirm"
+            :text="$t('editor:undelete')"
             :borderless="false"
             @confirmed="$emit('undelete')"
-          >
-            {{ $t('editor:undelete') }}
-          </c-input-confirm>
+          />
 
           <b-button
             v-if="workflow.workflowID === '0'"
@@ -569,6 +568,10 @@ export default {
     processingSave: {
       type: Boolean,
     },
+
+    processingConfirm: {
+      type: Boolean,
+    },
   },
 
   data () {
@@ -637,8 +640,6 @@ export default {
       functionTypes: [],
 
       deferredKinds: ['delay', 'prompt'],
-
-      processingConfirm: false,
     }
   },
 
@@ -798,7 +799,6 @@ export default {
     },
 
     sidebarClose () {
-      this.processingConfirm = true
       this.sidebar.show = false
 
       setTimeout(() => {
@@ -807,7 +807,6 @@ export default {
         this.sidebar.item = undefined
         this.sidebar.itemType = undefined
         this.redrawLabel(mxObjectId)
-        this.processingConfirm = false
       }, 300)
     },
 

@@ -863,8 +863,7 @@ export default {
     async handleCloneLayout ({ ref = false }) {
       this.processing = true
       this.processingLayout = true
-      this.buttonProcessing = true
-      this.buttonCloneProcessing = true
+      this.processingClone = true
 
       const layout = {
         ...this.layout.clone(),
@@ -914,8 +913,7 @@ export default {
       }).finally(() => {
         this.processing = false
         this.processingLayout = false
-        this.buttonProcessing = false
-        this.buttonCloneProcessing = false
+        this.processingClone = false
       }).catch(this.toastErrorHandler(this.$t('notification:page.page-layout.clone.failed')))
     },
 

@@ -177,6 +177,11 @@ export default {
       type: Boolean,
       required: false,
     },
+
+    inEditMode: {
+      type: Boolean,
+      required: false,
+    },
   },
 
   data () {
@@ -308,6 +313,16 @@ export default {
             prev: undefined,
             next: undefined,
           }
+        }
+      },
+    },
+
+    inEditMode: {
+      immediate: true,
+      handler (value) {
+        if (value) {
+          this.inEditing = true
+          this.inCreating = true
         }
       },
     },

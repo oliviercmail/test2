@@ -24,6 +24,7 @@
       :record-i-d="recordID"
       :values="values"
       :ref-record="refRecord"
+      :in-edit-mode="modalInEditModal"
       show-record-modal
       @handle-record-redirect="loadRecord"
     />
@@ -73,6 +74,7 @@ export default {
       page: undefined,
       values: undefined,
       refRecord: undefined,
+      modalInEditModal: false,
     }
   },
 
@@ -126,10 +128,11 @@ export default {
       clearRecordIDs: 'ui/clearRecordIDs',
     }),
 
-    loadRecord ({ recordID, recordPageID, values, refRecord }) {
+    loadRecord ({ recordID, recordPageID, values, refRecord, editMode }) {
       this.recordID = recordID
       this.values = values
       this.refRecord = refRecord
+      this.modalInEditModal = editMode
 
       this.loadModal({ recordID, recordPageID })
 

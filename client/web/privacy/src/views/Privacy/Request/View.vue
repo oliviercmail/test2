@@ -27,6 +27,7 @@
     <portal to="editor-toolbar">
       <editor-toolbar
         :processing="processing.toolbar"
+        :processing-confirm="processingConfirmReject"
         :back-link="{ name: 'request.list' }"
         :delete-show="isDC"
         :delete-disabled="!request || !isPending"
@@ -35,29 +36,26 @@
       >
         <c-input-confirm
           v-if="!isDC"
-          :borderless="false"
           :disabled="!request || !isPending"
+          :processing="processingConfirmCancel"
+          :text="$t('cancel')"
           variant="light"
           size="lg"
           size-confirm="lg"
           @confirmed="handleRequest('canceled')"
-        >
-          {{ $t('cancel') }}
-        </c-input-confirm>
+        />
 
         <c-input-confirm
           v-else
-          :borderless="false"
-          :disabled="!request || !isPending"
+          :processing="processingConfirmApprove"
+          :text="$t('approve')"
           variant="primary"
           variant-ok="primary"
           size="lg"
           size-confirm="lg"
           class="ml-2"
           @confirmed="handleRequest('approved')"
-        >
-          {{ $t('approve') }}
-        </c-input-confirm>
+        />
       </editor-toolbar>
     </portal>
   </b-container>
@@ -97,6 +95,10 @@ export default {
         request: false,
         toolbar: false,
       },
+
+      processingConfirmApprove: false,
+      processingConfirmReject: false,
+      processingConfirmCancel: false,
 
       isDC: null,
 
@@ -174,12 +176,29 @@ export default {
     handleRequest (status) {
       this.processing.toolbar = true
 
+      if (status === 'approved') {
+        this.processingConfirmApprove = true
+      } else if (status === 'rejected') {
+        this.processingConfirmReject = true
+      } else {
+        this.processingConfirmCancel = true
+      }
+      
+
       this.$SystemAPI.dataPrivacyRequestUpdateStatus({ requestID: this.requestID, status })
         .then(() => {
           this.$router.push({ name: 'request.list' })
         })
         .finally(() => {
           this.processing.toolbar = false
+
+        if (status === 'approved') {
+          this.processingConfirmApprove = false
+        } else if (status === 'rejected') {
+          this.processingConfirmReject = false
+        } else {
+          this.processingConfirmCancel = false
+        }
         })
     },
 

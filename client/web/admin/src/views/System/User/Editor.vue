@@ -56,6 +56,7 @@
       v-if="user && userID && $Settings.get('auth.internal.profile-avatar.Enabled', false)"
       :user="user"
       :processing="avatar.processing"
+      :processing-confirm="processingConfirm"
       :success="avatar.success"
       class="mt-3"
       @submit="onAvatarSubmit"
@@ -143,6 +144,8 @@ export default {
       user: undefined,
       initialUserState: undefined,
 
+      processingConfirm: false,
+
       membership: {
         active: [],
         initial: [],
@@ -155,18 +158,22 @@ export default {
         processing: false,
         success: false,
       },
+
       avatar: {
         processing: false,
         success: false,
       },
+
       password: {
         processing: false,
         success: false,
       },
+
       mfa: {
         processing: false,
         success: false,
       },
+
       roles: {
         processing: false,
         success: false,
@@ -503,6 +510,8 @@ export default {
     },
 
     onResetAvatar () {
+      this.processingConfirm = true
+
       const userID = this.userID
 
       this.$SystemAPI.userDeleteAvatar({ userID })
@@ -511,6 +520,9 @@ export default {
           this.toastSuccess(this.$t('notification:user.avatarDelete.success'))
         })
         .catch(this.toastErrorHandler(this.$t('notification:user.avatarDelete.error')))
+        .finally(() => {
+          this.processingConfirm = false
+        })
     },
 
     checkUnsavedChanges (next, to) {

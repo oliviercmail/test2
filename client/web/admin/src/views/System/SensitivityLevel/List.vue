@@ -72,31 +72,16 @@
           </template>
 
           <c-input-confirm
+            :text="inputConfirmText(s.deletedAt)"
+            is-icon-visible
             borderless
             variant="link"
             size="md"
+            icon-class="text-danger"
             button-class="dropdown-item text-decoration-none text-dark regular-font rounded-0"
             class="w-100"
             @confirmed="handleDelete(s)"
-          >
-            <font-awesome-icon
-              :icon="['far', 'trash-alt']"
-              class="text-danger"
-            />
-            <span
-              v-if="!s.deletedAt"
-              class="p-1"
-            >
-              {{ $t('delete') }}
-            </span>
-
-            <span
-              v-else
-              class="p-1"
-            >
-              {{ $t('undelete') }}
-            </span>
-          </c-input-confirm>
+          />
         </b-dropdown>
       </template>
     </c-resource-list>
@@ -187,6 +172,10 @@ export default {
         resourceName: 'dalSensitivityLevel',
         locale: 'sensitivityLevel',
       })
+    },
+
+    inputConfirmText (deletedAt) {
+      return deletedAt ? this.$t('undelete') : this.$t('delete')
     },
   },
 }

@@ -106,7 +106,7 @@
       />
 
       <c-input-confirm
-        icon
+        is-icon-visible
         @confirmed="$emit('delete')"
       />
     </td>

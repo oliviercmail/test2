@@ -118,7 +118,7 @@
           <c-input-confirm
             v-if="r.canDeleteApigwRoute"
             :text="inputConfirmText(r.deletedAt)"
-            icon
+            is-icon-visible
             borderless
             variant="link"
             size="md"

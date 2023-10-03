@@ -133,7 +133,7 @@
           <c-input-confirm
             v-if="r.canDeleteRole"
             :text="inputConfirmText(r.deletedAt)"
-            icon
+            is-icon-visible
             borderless
             variant="link"
             size="md"

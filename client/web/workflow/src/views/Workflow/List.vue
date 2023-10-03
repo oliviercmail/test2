@@ -174,7 +174,7 @@
             borderless
             variant="link"
             size="md"
-            icon
+            is-icon-visible
             :text="$t('delete')"
             icon-class="text-danger"
             text-class="p-1"
@@ -188,7 +188,7 @@
             borderless
             variant="link"
             size="md"
-            icon
+            is-icon-visible
             :text="$t('undelete')"
             icon-class="text-danger"
             text-class="p-1"

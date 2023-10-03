@@ -240,7 +240,7 @@
 
             <div class="d-flex align-items-center ml-auto">
               <c-input-confirm
-                icon
+                is-icon-visible
                 class="mr-2"
                 @confirmed="removeMetric(i)"
               />

@@ -115,7 +115,7 @@
           >
             <c-input-confirm
               variant="link"
-              icon
+              is-icon-visible
               size="lg"
               button-class="text-dark px-0"
               @confirmed="deleteFilter(groupIndex, argIndex)"

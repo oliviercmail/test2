@@ -56,7 +56,7 @@
             <c-input-confirm
               variant="link"
               size="lg"
-              icon
+              is-icon-visible
               button-class="text-dark px-0"
               @confirmed="deleteGroup(index)"
             />

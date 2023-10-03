@@ -114,7 +114,7 @@
           <c-input-confirm
             v-if="a.canDeleteApplication"
             :text="inputConfirmText(a.deletedAt)"
-            icon
+            is-icon-visible
             borderless
             variant="link"
             size="md"

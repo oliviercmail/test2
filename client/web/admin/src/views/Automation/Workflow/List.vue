@@ -113,7 +113,7 @@
           <c-input-confirm
             v-if="(w.canDeleteWorkflow && !w.deletedAt) || (w.canUndeleteWorkflow && w.deletedAt)"
             :text="inputConfirmText(w.deletedAt)"
-            icon
+            is-icon-visible
             borderless
             variant="link"
             size="md"

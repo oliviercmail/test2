@@ -77,7 +77,12 @@ export default {
     cancelDisabled: Boolean,
     noPrompt: Boolean,
     processing: Boolean,
-    icon: Boolean,
+    isIconVisible: false,
+
+    icon: {
+      type: Array,
+      default: ['far', 'trash-alt'],
+    },
 
     buttonClass: {
       type: String,

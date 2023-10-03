@@ -105,6 +105,7 @@
 
                   <c-input-confirm
                     v-if="!f.roles"
+                    is-icon-visible
                     class="mr-1"
                     @confirmed="removeStorageRecordListFilterPreset(f.name)"
                   />
@@ -206,6 +207,7 @@
 
             <template v-if="canDeleteSelectedRecords && !areAllRowsDeleted">
               <c-input-confirm
+                is-icon-visible
                 :tooltip="$t('recordList.tooltip.deleteSelected')"
                 @confirmed="handleDeleteSelectedRecords()"
               />
@@ -213,6 +215,7 @@
 
             <template v-if="canRestoreSelectedRecords && areAllRowsDeleted">
               <c-input-confirm
+                is-icon-visible
                 :tooltip="$t('recordList.tooltip.restoreSelected')"
                 variant="outline-warning"
                 @confirmed="handleRestoreSelectedRecords()"
@@ -544,35 +547,30 @@
 
                     <c-input-confirm
                       v-if="isDeleteActionVisible(item.r)"
+                      :text="$t('recordList.record.tooltip.delete')"
+                      is-icon-visible
                       borderless
                       variant="link"
                       size="md"
+                      icon-class="text-danger"
                       button-class="dropdown-item text-decoration-none text-dark regular-font rounded-0"
                       class="w-100"
                       @confirmed="handleDeleteSelectedRecords(item.r.recordID)"
-                    >
-                      <font-awesome-icon
-                        :icon="['far', 'trash-alt']"
-                        class="text-danger"
-                      />
-                      {{ $t('recordList.record.tooltip.delete') }}
-                    </c-input-confirm>
+                    />
 
                     <c-input-confirm
                       v-else-if="isRestoreActionVisible(item.r)"
+                      :text="$t('recordList.record.tooltip.restore')"
+                      icon-type="trash-restore"
+                      :icon="['fas', 'trash-restore']"
                       borderless
                       variant="link"
                       size="md"
+                      icon-class="text-danger"
                       button-class="dropdown-item text-decoration-none text-dark regular-font rounded-0"
                       class="w-100"
                       @confirmed="handleRestoreSelectedRecords(item.r.recordID)"
-                    >
-                      <font-awesome-icon
-                        :icon="['fas', 'trash-restore']"
-                        class="text-warning"
-                      />
-                      {{ $t('recordList.record.tooltip.restore') }}
-                    </c-input-confirm>
+                    />
                   </template>
                 </b-dropdown>
               </b-td>

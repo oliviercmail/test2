@@ -275,6 +275,7 @@
 
     <editor-toolbar
       :processing="processing"
+      :processing-confirm="processingConfirm"
       :hide-delete="hideDelete"
       :hide-clone="!isEdit"
       :hide-save="hideSave"
@@ -340,6 +341,7 @@ export default {
   data () {
     return {
       processing: false,
+      processingConfirm: false,
 
       namespace: undefined,
       initialNamespaceState: undefined,
@@ -626,6 +628,7 @@ export default {
 
     handleDelete () {
       this.processing = true
+      this.processingConfirm = true
 
       const { namespaceID } = this.namespace
       const { applicationID } = this.application || {}
@@ -643,6 +646,7 @@ export default {
         })
         .finally(() => {
           this.processing = false
+          this.processingConfirm = false
         })
     },
 

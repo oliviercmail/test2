@@ -439,6 +439,7 @@
     <portal to="admin-toolbar">
       <editor-toolbar
         :processing="processing"
+        :processing-confirm="processingConfirm"
         :hide-delete="hideDelete"
         hide-clone
         :hide-save="hideSave"
@@ -521,6 +522,7 @@ export default {
       initialModuleState: undefined,
       hasRecords: true,
       processing: false,
+      processingConfirm: false,
 
       federationSettings: {
         modal: false,
@@ -826,18 +828,21 @@ export default {
 
     handleDelete () {
       this.processing = true
+      this.processingConfirm = true
 
       this.deleteModule(this.module).then(() => {
         const moduleRecordPage = this.pages.find(p => p.moduleID === this.module.moduleID)
         if (moduleRecordPage) {
           return this.deletePage({ ...moduleRecordPage, strategy: 'rebase' })
         }
-      }).catch(this.toastErrorHandler(this.$t('notification:module.deleteFailed')))
-        .finally(() => {
-          this.toastSuccess(this.$t('notification:module.deleted'))
-          this.processing = false
-          this.$router.push({ name: 'admin.modules' })
-        })
+      })
+      .catch(this.toastErrorHandler(this.$t('notification:module.deleteFailed')))
+      .finally(() => {
+        this.toastSuccess(this.$t('notification:module.deleted'))
+        this.processing = false
+        this.processingConfirm = false
+        this.$router.push({ name: 'admin.modules' })
+      })
     },
 
     async fetchConnection (connectionID) {

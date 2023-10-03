@@ -821,6 +821,7 @@
         :hide-save="hideSave"
         :disable-save="disableSave"
         :processing="processing"
+        :processing-confirm="processingConfirm"
         @clone="handleClone()"
         @delete="handleDeletePage()"
         @save="handleSave()"
@@ -902,6 +903,7 @@ export default {
   data () {
     return {
       processing: false,
+      processingConfirm: false,
 
       page: new compose.Page(),
       initialPageState: new compose.Page(),
@@ -1219,9 +1221,15 @@ export default {
     },
 
     handleDeletePage (strategy = 'abort') {
+      this.processingConfirm = true
+
       this.deletePage({ ...this.page, strategy }).then(() => {
         this.$router.push({ name: 'admin.pages' })
-      }).catch(this.toastErrorHandler(this.$t('notification:page.deleteFailed')))
+      })
+      .catch(this.toastErrorHandler(this.$t('notification:page.deleteFailed')))
+      .finally(() => {
+        this.processingConfirm = false
+      })
     },
 
     uploadAttachment ({ attachmentID }) {

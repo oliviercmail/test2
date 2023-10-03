@@ -298,6 +298,7 @@
     <portal to="admin-toolbar">
       <editor-toolbar
         :processing="processing"
+        :processing-confirm="processingConfirm"
         :hide-delete="hideDelete"
         :hide-save="hideSave"
         hide-clone
@@ -373,6 +374,7 @@ export default {
       chart: undefined,
       initialChartState: undefined,
       processing: false,
+      processingConfirm: false,
 
       editReportIndex: undefined,
       checkboxLabel: {
@@ -645,10 +647,16 @@ export default {
     },
 
     handleDelete () {
+      this.processingConfirm = true
+
       this.deleteChart(this.chart).then(() => {
         this.toastSuccess(this.$t('notification:chart.deleted'))
         this.$router.push({ name: 'admin.charts' })
-      }).catch(this.toastErrorHandler(this.$t('notification:chart.deleteFailed')))
+      })
+      .catch(this.toastErrorHandler(this.$t('notification:chart.deleteFailed')))
+      .finally(() => {
+        this.processingConfirm = false
+      })
     },
 
     redirect () {

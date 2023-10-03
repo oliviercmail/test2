@@ -256,6 +256,7 @@
       <editor-toolbar
         :hide-save="!page.canUpdatePage"
         :processing="processing"
+        :processing-confirm="processingConfirm"
         hide-clone
         @save="handleSaveLayout()"
         @delete="handleDeleteLayout()"
@@ -361,6 +362,7 @@ export default {
       title: '',
 
       processing: false,
+      processingConfirm: false,
 
       processingLayout: false,
 
@@ -899,6 +901,7 @@ export default {
 
     handleDeleteLayout () {
       this.processing = true
+      this.processingConfirm = true
 
       this.deletePageLayout({ ...this.layout }).then(() => {
         return this.fetchPageLayouts()
@@ -907,6 +910,7 @@ export default {
         this.toastSuccess(this.$t('notification:page.page-layout.delete.success'))
       }).finally(() => {
         this.processing = false
+        this.processingConfirm = false
       }).catch(this.toastErrorHandler(this.$t('notification:page.page-layout.delete.failed')))
     },
 

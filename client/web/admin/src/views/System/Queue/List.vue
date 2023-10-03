@@ -88,7 +88,7 @@
 
           <c-input-confirm
             :text="inputConfirmText(q.deletedAt)"
-            is-icon-visible
+            icon
             borderless
             variant="link"
             size="md"

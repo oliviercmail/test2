@@ -126,7 +126,7 @@
             borderless
             variant="link"
             size="md"
-            is-icon-visible
+            icon
             icon-class="text-danger"
             button-class="dropdown-item text-decoration-none text-dark regular-font rounded-0"
             class="w-100"

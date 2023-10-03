@@ -122,7 +122,7 @@
           <c-input-confirm
             v-if="t.canDeleteTemplate"
             :text="inputConfirmText(t.deletedAt)"
-            is-icon-visible
+            icon
             borderless
             variant="link"
             size="md"

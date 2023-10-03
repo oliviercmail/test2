@@ -35,7 +35,7 @@
           <c-input-confirm
             data-test-id="button-remove-role"
             no-prompt
-            is-icon-visible
+            icon
             @confirmed="removeRole(role)"
           />
         </b-col>

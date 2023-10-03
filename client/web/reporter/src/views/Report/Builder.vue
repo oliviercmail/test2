@@ -134,7 +134,7 @@
 
             <c-input-confirm
               :tooltip="$t('builder:tooltip.delete.block')"
-              is-icon-visible
+              icon
               size="md"
               class="ml-1"
               @confirmed="deleteBlock(index)"

@@ -56,7 +56,7 @@
             <c-input-confirm
               variant="link"
               size="lg"
-              is-icon-visible
+              icon
               button-class="text-dark px-0"
               @confirmed="deleteColumn(index)"
             />

@@ -140,7 +140,7 @@
           <c-input-confirm
             v-if="u.canDeleteUser"
             :text="inputConfirmText(u.deletedAt)"
-            is-icon-visible
+            icon
             borderless
             variant="link"
             size="md"

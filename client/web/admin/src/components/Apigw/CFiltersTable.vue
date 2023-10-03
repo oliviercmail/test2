@@ -49,7 +49,7 @@
               />
             </b-button>
             <c-input-confirm
-              is-icon-visible
+              icon
               class="ml-1"
               @confirmed="onRemoveFilter(filter)"
               @click.stop

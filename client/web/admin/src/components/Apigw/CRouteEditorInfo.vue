@@ -4,7 +4,7 @@
     data-test-id="card-route-edit"
     header-bg-variant="white"
     footer-bg-variant="white"
-    footer-class="d-flex flex-wrap gap-3"
+    footer-class="d-flex flex-wrap gap-1"
   >
     <b-form
       @submit.prevent="$emit('submit', route)"

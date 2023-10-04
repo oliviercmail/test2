@@ -20,9 +20,9 @@
         />
         <slot v-else>
           <font-awesome-icon
-            v-if="icon"
+            v-if="isIconVisible"
             :class="iconClass"
-            :icon="['far', 'trash-alt']"
+            :icon="icon"
           />
           <span
             v-if="text"
@@ -77,11 +77,11 @@ export default {
     cancelDisabled: Boolean,
     noPrompt: Boolean,
     processing: Boolean,
-    isIconVisible: false,
+    isIconVisible: Boolean,
 
     icon: {
       type: Array,
-      default: ['far', 'trash-alt'],
+      default: () => ['far', 'trash-alt'],
     },
 
     buttonClass: {

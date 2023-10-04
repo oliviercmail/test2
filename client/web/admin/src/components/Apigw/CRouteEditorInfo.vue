@@ -15,24 +15,6 @@
           lg="6"
         >
           <b-form-group
-            v-if="route.routeID"
-            :label="$t('id')"
-            label-class="text-primary"
-          >
-            <b-form-input
-              v-model="route.routeID"
-              data-test-id="input-route-id"
-              plaintext
-              disabled
-            />
-          </b-form-group>
-        </b-col>
-
-        <b-col
-          cols="12"
-          lg="6"
-        >
-          <b-form-group
             :description="routeEndpointDescription"
             label-class="text-primary"
           >
@@ -122,6 +104,7 @@
       </b-row>
 
       <c-system-fields
+        :id="route.routeID"
         :resource="route"
       />
     </b-form>

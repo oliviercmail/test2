@@ -14,23 +14,6 @@
           lg="6"
         >
           <b-form-group
-            v-if="workflow.workflowID"
-            :label="$t('id')"
-            label-class="text-primary"
-          >
-            <b-form-input
-              v-model="workflow.workflowID"
-              plaintext
-              disabled
-            />
-          </b-form-group>
-        </b-col>
-
-        <b-col
-          cols="12"
-          lg="6"
-        >
-          <b-form-group
             v-if="workflow.meta"
             :label="$t('name')"
             label-class="text-primary"
@@ -81,6 +64,7 @@
       </b-row>
 
       <c-system-fields
+        :id="workflow.workflowID"
         :resource="workflow"
       />
 

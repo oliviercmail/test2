@@ -32,24 +32,6 @@
           lg="6"
         >
           <b-form-group
-            v-if="application.applicationID"
-            :label="$t('id')"
-            label-class="text-primary"
-          >
-            <b-form-input
-              v-model="application.applicationID"
-              data-test-id="input-application-id"
-              plaintext
-              disabled
-            />
-          </b-form-group>
-        </b-col>
-
-        <b-col
-          cols="12"
-          lg="6"
-        >
-          <b-form-group
             :label="$t('enabled')"
             :class="{ 'mb-0': !application.applicationID }"
             label-class="text-primary"
@@ -65,6 +47,7 @@
       </b-row>
 
       <c-system-fields
+        :id="application.applicationID"
         :resource="application"
       />
 

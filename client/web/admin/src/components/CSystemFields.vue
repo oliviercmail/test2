@@ -3,10 +3,25 @@
     class="py-4"
   >
     <b-col
+      v-if="id"
+      cols="12"
+    >
+      <b-form-group
+        :label="$t('id')"
+        label-class="text-primary"
+      >
+        <b-form-input
+          v-model="id"
+          plaintext
+          disabled
+        />
+      </b-form-group>
+    </b-col>
+
+    <b-col
       v-for="(f, i) in systemFields"
       :key="i"
       cols="12"
-      lg="4"
     >
       <b-form-group
         :label="$t(f) || $t(label)"
@@ -32,6 +47,11 @@ export default {
     },
 
     label: {
+      type: String,
+      default: '',
+    },
+
+    id: {
       type: String,
       default: '',
     },

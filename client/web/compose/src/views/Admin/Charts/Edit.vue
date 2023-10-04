@@ -300,10 +300,11 @@
         :processing="processing"
         :hide-delete="hideDelete"
         :hide-save="hideSave"
-        hide-clone
+        :hide-clone="!isEdit"
         :disable-save="disableSave"
         @delete="handleDelete()"
         @save="handleSave()"
+        @clone="handleClone()"
         @saveAndClose="handleSave({ closeOnSuccess: true })"
         @back="$router.push(previousPage || { name: 'admin.charts' })"
       />
@@ -527,7 +528,9 @@ export default {
         const { namespaceID } = this.namespace
 
         if (chartID === NoID) {
-          let c = new compose.Chart({ namespaceID: this.namespace.namespaceID })
+          const chartClone = this.$attrs.chart || {}
+
+          let c = new compose.Chart({ namespaceID: this.namespace.namespaceID, ...chartClone })
           switch (this.category) {
             case 'gauge':
               c = new compose.GaugeChart(c)
@@ -649,6 +652,22 @@ export default {
         this.toastSuccess(this.$t('notification:chart.deleted'))
         this.$router.push({ name: 'admin.charts' })
       }).catch(this.toastErrorHandler(this.$t('notification:chart.deleteFailed')))
+    },
+
+    handleClone () {
+      const chart = this.chart.clone()
+      chart.chartID = NoID
+      chart.name = `${this.chart.name} (copy)`
+      chart.handle = `${this.chart.handle}_copy`
+
+      this.$router.push({
+        name: 'admin.charts.create',
+        params: {
+          chartID: NoID,
+          category: this.category || 'generic',
+          chart,
+        },
+      })
     },
 
     redirect () {

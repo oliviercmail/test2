@@ -440,12 +440,13 @@
       <editor-toolbar
         :processing="processing"
         :hide-delete="hideDelete"
-        hide-clone
+        :hide-clone="!isEdit"
         :hide-save="hideSave"
         :disable-save="disableSave"
         @delete="handleDelete"
         @save="handleSave()"
         @saveAndClose="handleSave({ closeOnSuccess: true })"
+        @clone="handleClone"
         @back="$router.push(previousPage || { name: 'admin.modules' })"
       />
     </portal>
@@ -657,10 +658,15 @@ export default {
         this.activeTab = 0
 
         if (moduleID === NoID) {
-          this.module = new compose.Module(
-            { fields: [new compose.ModuleFieldString({ fieldID: NoID, name: this.$t('general.placeholder.sample') })] },
-            this.namespace,
-          )
+          if (this.$attrs.module) {
+            this.module = new compose.Module(this.$attrs.module, this.namespace)
+          } else {
+            this.module = new compose.Module(
+              { fields: [new compose.ModuleFieldString({ fieldID: NoID, name: this.$t('general.placeholder.sample') })] },
+              this.namespace,
+            )
+          }
+
           this.initialModuleState = this.module.clone()
         } else {
           const params = {
@@ -838,6 +844,15 @@ export default {
           this.processing = false
           this.$router.push({ name: 'admin.modules' })
         })
+    },
+
+    handleClone () {
+      const module = this.module.clone()
+      module.moduleID = NoID
+      module.name = `${this.module.name} (copy)`
+      module.handle = `${this.module.handle}_copy`
+
+      this.$router.push({ name: 'admin.modules.create', params: { module, moduleID: NoID } })
     },
 
     async fetchConnection (connectionID) {

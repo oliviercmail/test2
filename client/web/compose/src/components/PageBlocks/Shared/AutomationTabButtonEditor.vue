@@ -75,6 +75,7 @@
 
     <template #footer>
       <c-input-confirm
+        is-icon-visible
         variant="link-light"
         @confirmed="$emit('delete', button)"
       />

@@ -131,6 +131,7 @@
 
             <c-input-confirm
               :title="$t('tooltip.delete.block')"
+              is-icon-visible
               link
               size="md"
               class="ml-1"
@@ -224,12 +225,10 @@
           size="md"
           size-confirm="md"
           variant="danger"
-          :title="$t('label.delete')"
-          :borderless="false"
+          :text="$t('label.delete')"
+          :tooltip="$t('label.delete')"
           @confirmed="deleteBlock(editor.index)"
-        >
-          {{ $t('label.delete') }}
-        </c-input-confirm>
+        />
 
         <div>
           <b-button

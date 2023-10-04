@@ -352,6 +352,8 @@
                       />
 
                       <c-input-confirm
+                        v-if="layout.pageLayoutID !== '0'"
+                        is-icon-visible
                         @confirmed="removeLayout(index)"
                       />
                     </td>
@@ -694,6 +696,8 @@
                   class="align-middle text-center"
                 >
                   <c-input-confirm
+                    v-if="layout.pageLayoutID !== '0'"
+                    is-icon-visible
                     class="ml-2"
                     @confirmed="removeLayoutAction(index)"
                   />

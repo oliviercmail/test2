@@ -125,19 +125,16 @@
 
           <c-input-confirm
             v-if="c.canDeleteChart"
+            :text="$t('chart.delete')"
+            is-icon-visible
             borderless
             variant="link"
             size="md"
+            icon-class="text-danger"
             button-class="dropdown-item text-decoration-none text-dark regular-font rounded-0"
             class="w-100"
             @confirmed="handleDelete(c)"
-          >
-            <font-awesome-icon
-              :icon="['far', 'trash-alt']"
-              class="text-danger"
-            />
-            {{ $t('chart.delete') }}
-          </c-input-confirm>
+          />
         </b-dropdown>
       </template>
 

@@ -63,6 +63,7 @@
 
             <c-input-confirm
               v-if="enableDelete"
+              is-icon-visible
               class="ml-2"
               @confirmed="deleteAttachment(index)"
             />

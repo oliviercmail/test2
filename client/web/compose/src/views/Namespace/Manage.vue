@@ -125,19 +125,16 @@
 
             <c-input-confirm
               v-if="n.canDeleteNamespace"
+              :text="$t('delete')"
+              is-icon-visible
               borderless
               variant="link"
               size="md"
+              icon-class="text-danger"
               button-class="dropdown-item text-decoration-none text-dark regular-font rounded-0"
               class="w-100"
               @confirmed="handleDelete(n)"
-            >
-              <font-awesome-icon
-                :icon="['far', 'trash-alt']"
-                class="text-danger"
-              />
-              {{ $t('delete') }}
-            </c-input-confirm>
+            />
           </b-dropdown>
         </div>
       </template>

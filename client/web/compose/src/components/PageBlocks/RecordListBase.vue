@@ -216,14 +216,11 @@
             <template v-if="canRestoreSelectedRecords && areAllRowsDeleted">
               <c-input-confirm
                 is-icon-visible
+                :icon="['fa', 'trash-restore']"
                 :tooltip="$t('recordList.tooltip.restoreSelected')"
                 variant="outline-warning"
                 @confirmed="handleRestoreSelectedRecords()"
-              >
-                <font-awesome-icon
-                  :icon="['fa', 'trash-restore']"
-                />
-              </c-input-confirm>
+              />
             </template>
           </div>
         </div>

@@ -190,19 +190,16 @@
 
           <c-input-confirm
             v-if="m.canDeleteModule"
+            :text="$t('list.delete')"
+            is-icon-visible
             borderless
             variant="link"
             size="md"
+            icon-class="text-danger"
             button-class="dropdown-item text-decoration-none text-dark regular-font rounded-0"
             class="w-100"
             @confirmed="handleDelete(m)"
-          >
-            <font-awesome-icon
-              :icon="['far', 'trash-alt']"
-              class="text-danger"
-            />
-            {{ $t('list.delete') }}
-          </c-input-confirm>
+          />
         </b-dropdown>
       </template>
 

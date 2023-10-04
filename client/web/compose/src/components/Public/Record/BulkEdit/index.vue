@@ -40,8 +40,9 @@
           >
             <template #tools>
               <c-input-confirm
-                class="ml-2"
                 :tooltip="$t('recordList.bulkRecord.field.remove')"
+                is-icon-visible
+                class="ml-2"
                 @confirmed="fields.splice(index, 1)"
               />
             </template>

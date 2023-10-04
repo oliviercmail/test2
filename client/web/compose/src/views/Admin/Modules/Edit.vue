@@ -729,7 +729,11 @@ export default {
     }),
 
     checkUnsavedModule (next) {
-      next(!isEqual(this.module.clone(), this.initialModuleState.clone()) ? window.confirm(this.$t('general.unsavedChanges')) : true)
+      if (!this.module.deletedAt) {
+        return next(!isEqual(this.module.clone(), this.initialModuleState.clone()) ? window.confirm(this.$t('general.unsavedChanges')) : true)
+      }
+
+      next()
     },
 
     handleNewField () {
@@ -828,6 +832,8 @@ export default {
       this.processing = true
 
       this.deleteModule(this.module).then(() => {
+        this.module.deletedAt = new Date()
+
         const moduleRecordPage = this.pages.find(p => p.moduleID === this.module.moduleID)
         if (moduleRecordPage) {
           return this.deletePage({ ...moduleRecordPage, strategy: 'rebase' })

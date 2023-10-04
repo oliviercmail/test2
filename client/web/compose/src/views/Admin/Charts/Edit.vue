@@ -646,6 +646,8 @@ export default {
 
     handleDelete () {
       this.deleteChart(this.chart).then(() => {
+        this.chart.deletedAt = new Date()
+
         this.toastSuccess(this.$t('notification:chart.deleted'))
         this.$router.push({ name: 'admin.charts' })
       }).catch(this.toastErrorHandler(this.$t('notification:chart.deleteFailed')))
@@ -675,7 +677,10 @@ export default {
     },
 
     checkUnsavedChart (next) {
-      next(!isEqual(this.chart, this.initialChartState) ? window.confirm(this.$t('notification.unsavedChanges')) : true)
+      if (!this.chart.deletedAt) {
+        return next(!isEqual(this.chart, this.initialChartState) ? window.confirm(this.$t('notification.unsavedChanges')) : true)
+      }
+      next()
     },
   },
 }

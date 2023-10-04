@@ -645,7 +645,7 @@
           </div>
 
           <div
-            v-if="showPerPageSelector"
+            v-if="options.showRecordPerPageOption"
             class="d-flex align-items-center ml-2 my-1 gap-1 text-nowrap"
           >
             <span>
@@ -655,7 +655,7 @@
             <b-form-select
               v-model="recordsPerPage"
               :options="perPageOptions"
-              @change="showMoreRecords"
+              @change="handlePerPageChange"
             />
           </div>
         </div>
@@ -867,18 +867,21 @@ export default {
     },
 
     showFooter () {
-      return this.showPageNavigation || this.options.showTotalCount || this.options.showPerPageSelector
+      return this.showPageNavigation || this.options.showTotalCount || this.options.showRecordPerPageOption
     },
 
     perPageOptions () {
+      const defaultText = this.options.perPage === 0 ? this.$t('general:label.all') : this.options.perPage.toString()
       return [
-        { text: this.options.perPage, value: this.options.perPage },
+        { text: defaultText, value: this.options.perPage },
         { text: '25', value: 25 },
         { text: '50', value: 50 },
         { text: '100', value: 100 },
-      ]
-      // remove duplicates
-        .filter((v, i, a) => a.findIndex(t => (t.value === v.value)) === i)
+      ].filter((v, i) => i === 0 || v.value !== this.options.perPage).sort((a, b) => {
+        if (a.value === 0) return 1
+        if (b.value === 0) return -1
+        return a.value - b.value
+      })
     },
 
     getPagination () {
@@ -1082,7 +1085,6 @@ export default {
     if (!this.inlineEditing) {
       this.refreshBlock(this.refresh, false, true)
     }
-    this.recordsPerPage = this.options.perPage
   },
 
   methods: {
@@ -1137,7 +1139,7 @@ export default {
       this.refresh(true)
     },
 
-    showMoreRecords () {
+    handlePerPageChange () {
       this.filter.limit = this.recordsPerPage
       this.refresh(true)
     },
@@ -1292,7 +1294,8 @@ export default {
     // Sanitizes record list config and
     // prepares prefilter
     prepRecordList () {
-      const { moduleID, presort, prefilter, editable, perPage, refField, positionField } = this.options
+      this.recordsPerPage = this.options.perPage
+      const { moduleID, presort, prefilter, editable, refField, positionField } = this.options
 
       // Validate props
       if (!moduleID) {
@@ -1341,7 +1344,7 @@ export default {
       }
 
       this.prefilter = filter.join(' AND ')
-      const limit = perPage
+      const limit = this.recordsPerPage
       this.filter = {
         limit,
         sort,

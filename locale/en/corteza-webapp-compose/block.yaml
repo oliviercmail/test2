@@ -416,7 +416,7 @@ recordList:
     single: One record
     single_plural: '{{count}} records'
     recordsPerPage: 'Records per page:'
-    selectLabel: 'Select an option'
+    selectLabel: Select an option
   positionField:
     footnote: Records will be sorted based on this field
     label: Record sort field

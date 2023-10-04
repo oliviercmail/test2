@@ -216,8 +216,8 @@ $line-height: 30px;
     height: 100%;
     font-family: $btn-font-family;
     line-height: $line-height;
-    background-color: $light;
-    color: $dark;
+    background-color: var(--light);
+    color: var(--dark);
     font-weight: 400;
     padding: $btn-padding-y $btn-padding-x;
   }

@@ -319,6 +319,8 @@ export default {
           .then(() => {
             this.fetchNode()
 
+            this.node.deletedAt = new Date()
+
             this.toastSuccess(this.$t('notification:federation.delete.success'))
             this.$router.push({ name: 'federation.nodes' })
           })
@@ -369,7 +371,7 @@ export default {
     checkUnsavedChanges (next, to) {
       const isNewPage = this.$route.path.includes('/new') && to.name.includes('edit')
 
-      if (isNewPage) {
+      if (isNewPage || this.node.deletedAt) {
         next(true)
       } else if (!to.name.includes('edit')) {
         next(!isEqual(this.node, this.initialNodeState) ? window.confirm(this.$t('general:editor.unsavedChanges')) : true)
